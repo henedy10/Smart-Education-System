@@ -11,7 +11,7 @@
   <div class="flex h-screen">
 
     <!-- الشريط الجانبي -->
-    <aside id="sidebar" class="w-64 bg-white shadow-lg p-4 space-y-4 transition-all duration-300 overflow-y-auto">
+    <aside id="sidebar" class="w-64 bg-white shadow-lg p-4  transition-all duration-300 overflow-y-auto">
       <h2 class="text-xl font-bold text-blue-600 mb-4">👨‍🎓 الطالب</h2>
 
       <nav class="space-y-2">
@@ -19,7 +19,7 @@
         <a href="#assignments" class="block py-2 px-4 rounded hover:bg-gray-200">📝 الواجبات</a>
         <a href="#quizzes" class="block py-2 px-4 rounded hover:bg-gray-200">🧪 الاختبارات</a>
         <a href="#results" class="block py-2 px-4 rounded hover:bg-gray-200">📊 النتائج</a>
-        <a href="index.html" class="block py-2 px-4 rounded hover:bg-red-100 text-red-600">🚪 تسجيل الخروج</a>
+        <a href="{{route('index')}}" class="block py-2 px-4 rounded hover:bg-red-100 text-red-600">🚪 تسجيل الخروج</a>
       </nav>
     </aside>
 

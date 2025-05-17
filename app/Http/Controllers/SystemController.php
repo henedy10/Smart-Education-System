@@ -18,7 +18,10 @@ class SystemController extends Controller
     public function choose()  {
         return view('choose');
     }
-    public function show(){
+    public function show_student(){
         return view('show_student');
+    }
+    public function show_teacher(){
+        return view('show_teacher');
     }
 }
