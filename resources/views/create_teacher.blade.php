@@ -43,7 +43,7 @@
     </form>
 
     <p class="text-center text-sm text-gray-600">
-      لديك حساب؟ <a href="index.html" class="text-blue-600 hover:underline">سجل الدخول</a>
+      لديك حساب؟ <a href="{{route('index')}}" class="text-blue-600 hover:underline">سجل الدخول</a>
     </p>
   </div>
 

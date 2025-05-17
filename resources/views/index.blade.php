@@ -12,6 +12,7 @@
     <h2 class="text-2xl font-bold text-center text-gray-800">تسجيل الدخول</h2>
 
     <form action="#" method="#" class="space-y-4">
+        @csrf
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">البريد الإلكتروني</label>
         <input type="email" name="email" required
@@ -39,7 +40,7 @@
     </form>
 
     <p class="text-center text-sm text-gray-600">
-      ليس لديك حساب؟ <a href="#" class="text-blue-600 hover:underline">سجل الآن</a>
+      ليس لديك حساب؟ <a href="{{route('choose')}}" class="text-blue-600 hover:underline">سجل الآن</a>
     </p>
   </div>
 

@@ -13,19 +13,19 @@
     <p class="text-gray-600">يرجى اختيار نوع الحساب الذي ترغب في إنشائه:</p>
 
     <div class="flex flex-col gap-4 mt-6">
-      <a href="#"
+      <a href="{{route('create_student')}}"
          class="block w-full py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition duration-200">
         تسجيل كطالب
       </a>
 
-      <a href="#"
+      <a href="{{route('create_teacher')}}"
          class="block w-full py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition duration-200">
         تسجيل كمدرس
       </a>
     </div>
 
     <p class="text-sm text-gray-600 mt-6">
-      لديك حساب بالفعل؟ <a href="#" class="text-blue-600 hover:underline">سجل الدخول من هنا</a>
+      لديك حساب بالفعل؟ <a href="{{route('index')}}" class="text-blue-600 hover:underline">سجل الدخول من هنا</a>
     </p>
   </div>
 
