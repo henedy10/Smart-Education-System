@@ -9,3 +9,4 @@ Route::get('/create/teacher',[SystemController::class,'create_teacher'])->name('
 Route::get('/choose',[SystemController::class,'choose'])->name('choose');
 Route::get('/show/student',[SystemController::class,'show_student'])->name('show_student');
 Route::get('/show/teacher',[SystemController::class,'show_teacher'])->name('show_teacher');
+Route::get('/show/quiz',[SystemController::class,'quiz'])->name('show_quiz');

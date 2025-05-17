@@ -71,11 +71,11 @@
           <ul class="space-y-3">
             <li class="bg-white p-4 rounded-lg shadow flex justify-between items-center">
               <span>اختبار رياضيات - الفصل الأول</span>
-              <a href="quiz.html" class="text-blue-600 hover:underline text-sm">ابدأ الآن</a>
+              <a href="{{route('show_quiz')}}" class="text-blue-600 hover:underline text-sm">ابدأ الآن</a>
             </li>
             <li class="bg-white p-4 rounded-lg shadow flex justify-between items-center">
               <span>اختبار علوم - الطاقة والحرارة</span>
-              <a href="quiz.html" class="text-blue-600 hover:underline text-sm">ابدأ الآن</a>
+              <a href="#" class="text-blue-600 hover:underline text-sm">ابدأ الآن</a>
             </li>
           </ul>
         </section>

@@ -24,4 +24,7 @@ class SystemController extends Controller
     public function show_teacher(){
         return view('show_teacher');
     }
+    public function quiz(){
+        return view('quiz');
+    }
 }
