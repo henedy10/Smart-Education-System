@@ -9,6 +9,16 @@ class SystemController extends Controller
     public function index()  {
         return view('index');
     }
+    public function show_student(){
+        request()->validate([
+                'email'=>'required|exists:users,email',
+                'password'=>'required',
+        ]);
+        return view('show_student');
+    }
+    public function show_teacher(){
+        return view('show_teacher');
+    }
     public function create_student() {
         return view('create_student');
     }
@@ -17,12 +27,6 @@ class SystemController extends Controller
     }
     public function choose()  {
         return view('choose');
-    }
-    public function show_student(){
-        return view('show_student');
-    }
-    public function show_teacher(){
-        return view('show_teacher');
     }
     public function quiz(){
         return view('quiz');
