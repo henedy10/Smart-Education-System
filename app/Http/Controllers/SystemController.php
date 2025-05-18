@@ -17,7 +17,10 @@ class SystemController extends Controller
         $email=request()->email;
         $user= User::where('email',$email)->first();
         if($user->user_as =='teacher'){
-        return view('show_teacher');}
+            return view('show_teacher');
+        } else{
+            return view('show_student');
+        }
     }
     // public function show_teacher(){
     //     return view('show_teacher');
