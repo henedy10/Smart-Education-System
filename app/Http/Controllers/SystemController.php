@@ -22,9 +22,7 @@ class SystemController extends Controller
             return view('show_student');
         }
     }
-    // public function show_teacher(){
-    //     return view('show_teacher');
-    // }
+
     public function create_student() {
         return view('create_student');
     }

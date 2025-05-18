@@ -8,6 +8,4 @@ Route::get('/create/student',[SystemController::class,'create_student'])->name('
 Route::get('/create/teacher',[SystemController::class,'create_teacher'])->name('create_teacher');
 Route::get('/choose',[SystemController::class,'choose'])->name('choose');
 Route::get('/show',[SystemController::class,'show'])->name('show');
-// Route::get('/show/teacher',[SystemController::class,'show_teacher'])->name('show_teacher');
-// Route::get('/show/student',[SystemController::class,'show_teacher'])->name('show_student');
 Route::get('/show/quiz',[SystemController::class,'quiz'])->name('show_quiz');

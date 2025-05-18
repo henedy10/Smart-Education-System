@@ -11,15 +11,15 @@
 
   <div class="bg-white shadow-lg rounded-xl w-full max-w-md p-6 space-y-6">
     <h2 class="text-2xl font-bold text-center text-gray-800">تسجيل الدخول</h2>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     <form action="{{route('show')}}" method="get" class="space-y-4">
         @csrf
       <div>
