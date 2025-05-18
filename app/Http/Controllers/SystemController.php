@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class SystemController extends Controller
@@ -9,16 +9,19 @@ class SystemController extends Controller
     public function index()  {
         return view('index');
     }
-    public function show_student(){
+    public function show(){
         request()->validate([
                 'email'=>'required|exists:users,email',
-                'password'=>'required',
+                'password'=>'required|exists:users,password',
         ]);
-        return view('show_student');
+        $email=request()->email;
+        $user= User::where('email',$email)->first();
+        if($user->user_as =='teacher'){
+        return view('show_teacher');}
     }
-    public function show_teacher(){
-        return view('show_teacher');
-    }
+    // public function show_teacher(){
+    //     return view('show_teacher');
+    // }
     public function create_student() {
         return view('create_student');
     }

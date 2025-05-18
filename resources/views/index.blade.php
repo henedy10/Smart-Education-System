@@ -20,7 +20,7 @@
             </ul>
         </div>
     @endif
-    <form action="{{route('show_student')}}" method="get" class="space-y-4">
+    <form action="{{route('show')}}" method="get" class="space-y-4">
         @csrf
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">البريد الإلكتروني</label>
