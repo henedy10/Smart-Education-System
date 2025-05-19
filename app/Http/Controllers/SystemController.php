@@ -11,20 +11,27 @@ class SystemController extends Controller
     }
     public function show(){
         request()->validate([
-                'email'=>'required|exists:users,email',
-                'password'=>'required|exists:users,password',
+            'email'=>'required|exists:users,email',
+            'password'=>'required|exists:users,password',
         ]);
-        $email=request()->email;
-        $user= User::where('email',$email)->first();
+        $user= User::where('email',request()->email)->first();
         if($user->user_as =='teacher'){
             return view('show_teacher');
-        } else{
+        }else{
             return view('show_student');
         }
     }
 
     public function create_student() {
         return view('create_student');
+    }
+    public function store_student(){
+        request()->validate([
+            'name'=>'required|unique:users,name|alpha_dash:ascii',
+            'email'=> 'required|unique:users,email|email:rfc,dns',
+            'password'=>'required|unique:users,password|min:5',
+            'grade'=>'required'
+        ]);
     }
     public function create_teacher() {
         return view('create_teacher');
