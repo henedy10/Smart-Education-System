@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -16,7 +18,8 @@ class SystemController extends Controller
         ]);
         $user= User::where('name',request()->name)->first();
         if($user->user_as =='teacher'){
-            return view('show_teacher',['user'=>$user]);
+            $teacher=Teacher::where('user_id',$user->id)->first();
+            return view('show_teacher',['teacher'=>$teacher]);
         }else{
             return view('show_student',['user'=>$user]);
         }

@@ -7,9 +7,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
-
-  <div class="flex h-screen overflow-hidden">
-    <!-- الشريط الجانبي -->
+    <div class="flex h-screen overflow-hidden">
+        <!-- الشريط الجانبي -->
     <aside
       id="sidebar"
       class="w-64 bg-white shadow-lg p-4 space-y-4 transition-all duration-300 transform translate-x-0 md:relative fixed top-0 right-0 h-full z-50"
@@ -31,7 +30,7 @@
       <!-- رأس الصفحة -->
       <header class="bg-blue-600 text-white p-4 flex justify-between items-center shadow-md">
         <button id="toggleSidebar" class="text-white text-2xl">☰</button>
-        <h1 class="text-lg font-semibold">لوحة تحكم المعلم</h1>
+        <h1 class="text-lg font-semibold">  {{$teacher->user->name}} ({{$teacher->subject}})</h1>
       </header>
 
       <!-- المحتوى -->
@@ -39,7 +38,7 @@
 
         <!-- إدارة الحصص -->
         <section id="lessons">
-          <h2 class="text-xl font-bold mb-3 text-gray-700">📚 إدارة الحصص</h2>
+          <h2 class="text-xl font-bold mb-3 text-gray-700">📚  إدارة الحصص </h2>
           <div class="bg-white p-4 rounded-lg shadow space-y-3">
             <label class="block">
               <span class="text-sm">عنوان الحصة:</span>

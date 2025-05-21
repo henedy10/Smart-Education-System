@@ -4,9 +4,5 @@ use App\Http\Controllers\SystemController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/',[SystemController::class,'index'])->name('index');
-// Route::get('/create/student',[SystemController::class,'create_student'])->name('create_student');
-// Route::get('/create/teacher',[SystemController::class,'create_teacher'])->name('create_teacher');
-// Route::post('/store/student',[SystemController::class,'store_student'])->name('store_student');
-// Route::get('/choose',[SystemController::class,'choose'])->name('choose');
 Route::get('/show',[SystemController::class,'show'])->name('show');
 Route::get('/show/quiz',[SystemController::class,'quiz'])->name('show_quiz');
