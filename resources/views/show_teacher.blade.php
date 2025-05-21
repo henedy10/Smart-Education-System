@@ -9,7 +9,6 @@
 <body class="bg-gray-100 text-gray-800">
 
   <div class="flex h-screen overflow-hidden">
-
     <!-- الشريط الجانبي -->
     <aside
       id="sidebar"
@@ -22,7 +21,7 @@
         <a href="#assignments" class="block py-2 px-4 rounded hover:bg-gray-200">📝 الواجبات</a>
         <a href="#quizzes" class="block py-2 px-4 rounded hover:bg-gray-200">🧪 الاختبارات</a>
         <a href="#results" class="block py-2 px-4 rounded hover:bg-gray-200">📊 نتائج الطلاب</a>
-        <a href="index.html" class="block py-2 px-4 rounded hover:bg-red-100 text-red-600">🚪 تسجيل الخروج</a>
+        <a href="{{route('index')}}" class="block py-2 px-4 rounded hover:bg-red-100 text-red-600">🚪 تسجيل الخروج</a>
       </nav>
     </aside>
 

@@ -9,7 +9,6 @@
 <body class="bg-gray-100 text-gray-800">
 
   <div class="flex h-screen">
-
     <!-- الشريط الجانبي -->
     <aside id="sidebar" class="w-64 bg-white shadow-lg p-4  transition-all duration-300 overflow-y-auto">
       <h2 class="text-xl font-bold text-blue-600 mb-4">👨‍🎓 الطالب</h2>
