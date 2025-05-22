@@ -25,6 +25,9 @@ class SystemController extends Controller
         }
     }
 
+    public function store_teacher($TeacherId){
+        return $TeacherId;
+    }
     public function quiz(){
         return view('quiz');
     }
