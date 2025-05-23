@@ -5,9 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>لوحة تحكم المعلم</title>
         <script src="https://cdn.tailwindcss.com"></script>
+         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     </head>
     <body class="bg-gray-100 text-gray-800">
-    <form action="{{route('store_teacher',$teacher->id)}}" method="post">
+    <form action="{{route('store_teacher',$teacher->id)}}" method="post" enctype="multipart/form-data">
         @csrf
     <div class="flex h-screen overflow-hidden">
         <!-- الشريط الجانبي -->
@@ -48,10 +49,19 @@
                     </label>
                     <label class="block">
                         <span class="text-sm">تحميل ملف:</span>
-                        <input type="file" name="upload_file" class="mt-1" />
+                        <input type="file" name="file_lesson" class="mt-1" />
                     </label>
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">نشر الحصة</button>
+                    <button  name="upload_lesson" value="upload_lesson" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">نشر الحصة</button>
                     </div>
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                 </section>
 
                 <!-- الواجبات -->

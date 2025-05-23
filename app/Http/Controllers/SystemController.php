@@ -26,7 +26,16 @@ class SystemController extends Controller
     }
 
     public function store_teacher($TeacherId){
-        return $TeacherId;
+        if((request()->upload_lesson)=='upload_lesson'){
+            request()->validate([
+                'title_lesson'=>'required',
+                'file_lesson'=>'required|mimes:pdf,doc,docx,zip,rar,jpg,png',
+            ]);
+            $path=request()->file('file_lesson')->store('lessons','public');
+            dd(request()->file('file_lesson'));
+            // return redirect()->back()->with('success', 'تم رفع الملف بنجاح');
+        }
+
     }
     public function quiz(){
         return view('quiz');
