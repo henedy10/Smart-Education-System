@@ -38,7 +38,11 @@
 
                 <!-- المحتوى -->
                 <main class="p-6 overflow-y-auto space-y-8">
-
+                    @if(session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
                 <!-- إدارة الحصص -->
                 <section id="lessons">
                     <h2 class="text-xl font-bold mb-3 text-gray-700">📚  إدارة الحصص </h2>

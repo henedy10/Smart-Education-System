@@ -34,13 +34,14 @@ class SystemController extends Controller
                 'file_lesson'=>'required|mimes:pdf,doc,docx,zip,rar,jpg,png',
             ]);
             $path=request()->file('file_lesson')->store('lessons','public');
+            $title_lesson=request()->title_lesson;
             Lesson::create([
                     'teacher_id'=>$TeacherId,
                     'file_lesson'=>$path,
-                    'title_lesson'=> request()->title_lesson,
+                    'title_lesson'=> $title_lesson,
             ]);
 
-            // return redirect()->back()->with('success', 'تم رفع الملف بنجاح');
+            return redirect()->back()->with('success', 'تم رفع الملف بنجاح');
         }
 
     }
