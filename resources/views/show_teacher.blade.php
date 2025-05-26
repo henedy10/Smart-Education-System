@@ -38,7 +38,7 @@
 
                 <!-- المحتوى -->
                 <main class="p-6 overflow-y-auto space-y-8">
-
+<a href="{{asset('storage/'.$info->file_lesson)}}" target="_blank">الحصه الاولي </a>
                 <!-- إدارة الحصص -->
                 <section id="lessons">
                     <h2 class="text-xl font-bold mb-3 text-gray-700">📚  إدارة الحصص </h2>
