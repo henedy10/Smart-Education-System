@@ -20,9 +20,8 @@ class SystemController extends Controller
         $user= User::where('name',request()->name)->first();
         if($user->user_as =='teacher'){
             $teacher=Teacher::where('user_id',$user->id)->first();
-            $info=Lesson::where('teacher_id',$user->id)->first();
 
-            return view('show_teacher',['teacher'=>$teacher,'info'=>$info]);
+            return view('show_teacher',['teacher'=>$teacher]);
         }else{
             return view('show_student',['user'=>$user]);
         }
