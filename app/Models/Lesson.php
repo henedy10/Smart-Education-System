@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Lesson extends Model
 {
+    protected $fillable=[
+'teacher_id','file_lesson','title_lesson',
+    ];
     public function teacher() {
-        return $this->belongsTo(Teacher::class);
+        return $this->belongsTo(User::class);
     }
 }
+

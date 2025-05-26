@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Teacher;
+use App\Models\Lesson;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -32,7 +33,12 @@ class SystemController extends Controller
                 'file_lesson'=>'required|mimes:pdf,doc,docx,zip,rar,jpg,png',
             ]);
             $path=request()->file('file_lesson')->store('lessons','public');
-            dd(request()->file('file_lesson'));
+            Lesson::create([
+                    'teacher_id'=>$TeacherId,
+                    'file_lesson'=>$path,
+                    'title_lesson'=> request()->title_lesson,
+            ]);
+
             // return redirect()->back()->with('success', 'تم رفع الملف بنجاح');
         }
 
@@ -41,3 +47,4 @@ class SystemController extends Controller
         return view('quiz');
     }
 }
+
