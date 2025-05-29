@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\Homework;
 use App\Models\Teacher;
 use App\Models\Lesson;
+use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Codec\TimestampLastCombCodec;
@@ -27,7 +28,10 @@ class SystemController extends Controller
 
             return view('show_teacher',['teacher'=>$teacher,'lessons'=>$lessons]);
         }else{
-            return view('show_student',['user'=>$user]);
+            $student=Student::where('user_id',$user->id)->first();
+            $teachers=Teacher::where('class',$student->class)->first();
+            $lessons=Lesson::where('teacher_id',$teachers->id)->get();
+            return view('show_student',['student'=>$student,'lessons'=>$lessons]);
         }
     }
 
@@ -66,6 +70,8 @@ class SystemController extends Controller
         }
 
     }
+
+
     public function quiz(){
         return view('quiz');
     }

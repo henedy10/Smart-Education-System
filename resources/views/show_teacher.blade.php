@@ -8,23 +8,21 @@
          <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     </head>
     <body class="bg-gray-100 text-gray-800">
-    <form action="{{route('store_teacher',$teacher->id)}}" method="post" enctype="multipart/form-data">
-        @csrf
-    <div class="flex h-screen overflow-hidden">
-        <!-- الشريط الجانبي -->
-        <aside
-        id="sidebar"
-        class="w-64 bg-white shadow-lg p-4 space-y-4 transition-all duration-300 transform translate-x-0 md:relative fixed top-0 right-0 h-full z-50"
-        >
-        <h2 class="text-xl font-bold text-blue-600 mb-4">👨‍🏫 المعلم</h2>
+        <div class="flex h-screen overflow-hidden">
+            <!-- الشريط الجانبي -->
+            <aside
+            id="sidebar"
+            class="w-64 bg-white shadow-lg p-4 space-y-4 transition-all duration-300 transform translate-x-0 md:relative fixed top-0 right-0 h-full z-50"
+            >
+            <h2 class="text-xl font-bold text-blue-600 mb-4">👨‍🏫 المعلم</h2>
 
-        <nav class="space-y-2">
-            <a href="#lessons" class="block py-2 px-4 rounded hover:bg-gray-200">📚 إدارة الحصص</a>
-            <a href="#assignments" class="block py-2 px-4 rounded hover:bg-gray-200">📝 الواجبات</a>
-            <a href="#quizzes" class="block py-2 px-4 rounded hover:bg-gray-200">🧪 الاختبارات</a>
-            <a href="#results" class="block py-2 px-4 rounded hover:bg-gray-200">📊 نتائج الطلاب</a>
-            <a href="{{route('index')}}" class="block py-2 px-4 rounded hover:bg-red-100 text-red-600">🚪 تسجيل الخروج</a>
-        </nav>
+            <nav class="space-y-2">
+                <a href="#lessons" class="block py-2 px-4 rounded hover:bg-gray-200">📚 إدارة الحصص</a>
+                <a href="#assignments" class="block py-2 px-4 rounded hover:bg-gray-200">📝 الواجبات</a>
+                <a href="#quizzes" class="block py-2 px-4 rounded hover:bg-gray-200">🧪 الاختبارات</a>
+                <a href="#results" class="block py-2 px-4 rounded hover:bg-gray-200">📊 نتائج الطلاب</a>
+                <a href="{{route('index')}}" class="block py-2 px-4 rounded hover:bg-red-100 text-red-600">🚪 تسجيل الخروج</a>
+            </nav>
         </aside>
 
         <!-- المحتوى الرئيسي -->
@@ -33,9 +31,10 @@
             <!-- رأس الصفحة -->
             <header class="bg-blue-600 text-white p-4 flex justify-between items-center shadow-md">
                 <button id="toggleSidebar" class="text-white text-2xl">☰</button>
+                <form action="{{route('store_teacher',$teacher->id)}}" method="post" enctype="multipart/form-data">
                 <h1 class="text-lg font-semibold">  {{$teacher->user->name}} ({{$teacher->subject}})</h1>
             </header>
-
+                @csrf
             <!-- المحتوى -->
             @if ($errors->any())
                 <div class="alert alert-danger">

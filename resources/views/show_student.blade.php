@@ -28,7 +28,7 @@
       <!-- رأس الصفحة -->
       <header class="bg-blue-600 text-white p-4 flex justify-between items-center shadow-md">
         <button id="toggleSidebar" class="text-white text-2xl">☰</button>
-        <h1 class="text-lg font-semibold">لوحة تحكم الطالب</h1>
+        <h1 class="text-lg font-semibold">({{$student->class}}) {{$student->user->name}}</h1>
       </header>
 
       <!-- المحتوى الداخلي -->
@@ -36,17 +36,15 @@
 
         <!-- الحصص -->
         <section id="lessons">
-          <h2 class="text-xl font-bold mb-3 text-gray-700">📚 الحصص الدراسية</h2>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-white p-4 rounded-lg shadow">
-              <h3 class="font-bold text-blue-700 mb-2">الرياضيات - الفصل 1</h3>
-              <a href="#" class="text-blue-500 hover:underline text-sm">تحميل الملف</a>
+            <h2 class="text-xl font-bold mb-3 text-gray-700">📚 الحصص الدراسية</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                @foreach ($lessons as $lesson)
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <h3 class="font-bold text-blue-700 mb-2">{{$lesson->title_lesson}}</h3>
+                        <a href="{{ asset('storage/'.$lesson->file_lesson)}}" target="_blank" class="text-blue-500 hover:underline text-sm">تحميل الملف</a>
+                    </div>
+                @endforeach
             </div>
-            <div class="bg-white p-4 rounded-lg shadow">
-              <h3 class="font-bold text-blue-700 mb-2">العلوم - الفصل 2</h3>
-              <a href="#" class="text-blue-500 hover:underline text-sm">تحميل الملف</a>
-            </div>
-          </div>
         </section>
 
         <!-- الواجبات -->
