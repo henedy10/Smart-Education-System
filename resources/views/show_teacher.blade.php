@@ -30,13 +30,22 @@
         <!-- المحتوى الرئيسي -->
         <div class="flex-1 flex flex-col ">
 
-        <!-- رأس الصفحة -->
-        <header class="bg-blue-600 text-white p-4 flex justify-between items-center shadow-md">
-            <button id="toggleSidebar" class="text-white text-2xl">☰</button>
-            <h1 class="text-lg font-semibold">  {{$teacher->user->name}} ({{$teacher->subject}})</h1>
-        </header>
+            <!-- رأس الصفحة -->
+            <header class="bg-blue-600 text-white p-4 flex justify-between items-center shadow-md">
+                <button id="toggleSidebar" class="text-white text-2xl">☰</button>
+                <h1 class="text-lg font-semibold">  {{$teacher->user->name}} ({{$teacher->subject}})</h1>
+            </header>
 
-                <!-- المحتوى -->
+            <!-- المحتوى -->
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
                 <main class="p-6 overflow-y-auto space-y-8">
                     @if(session('success'))
                         <div class="alert alert-success">
@@ -55,17 +64,8 @@
                         <span class="text-sm">تحميل ملف:</span>
                         <input type="file" name="file_lesson" class="mt-1" />
                     </label>
-                    <button  name="upload_lesson" value="upload_lesson" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">نشر الحصة</button>
+                    <button  name="upload" value="upload_lesson" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">نشر الحصة</button>
                     </div>
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
                 </section>
 
                 <!-- الواجبات -->
@@ -74,13 +74,13 @@
                     <div class="bg-white p-4 rounded-lg shadow space-y-3">
                     <label class="block">
                         <span class="text-sm">محتوى الواجب:</span>
-                        <textarea rows="3" placeholder="مثال: حل التمارين 3 و 4" class="w-full border rounded p-2 mt-1"></textarea>
+                        <textarea rows="3" name="content_homework" placeholder="مثال: حل التمارين 3 و 4" class="w-full border rounded p-2 mt-1"></textarea>
                     </label>
                     <label class="block">
                         <span class="text-sm">ملف الواجب:</span>
-                        <input type="file" class="mt-1" />
+                        <input type="file" name="file_homework" class="mt-1" />
                     </label>
-                    <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">إرسال الواجب</button>
+                    <button name="upload" value="upload_homework" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">إرسال الواجب</button>
                     </div>
                 </section>
 
