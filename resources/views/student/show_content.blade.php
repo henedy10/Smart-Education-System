@@ -20,10 +20,15 @@
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body class="bg-gradient-to-tr from-gray-100 to-blue-50 font-cairo p-6 min-h-screen">
-
+  <!-- ✅ Header -->
+  <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <span class="text-lg font-semibold text-gray-800"> لوحة التحكم</span>
+    </div>
+    <a href="#" class="text-sm text-blue-600 hover:underline">العودة للوحة التحكم</a>
+  </div>
   <!-- ✅ Dashboard Content -->
   <div class="max-w-6xl mx-auto">
-    <h1 class="text-3xl font-bold text-blue-700 text-center mb-8">لوحة التحكم</h1>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
 

@@ -34,6 +34,8 @@ class SystemController extends Controller
         }
     }
 
+
+
     public function show_student_content($class,$subject) {
         return view('student.show_content',['subject'=>$subject,'class'=>$class]);
     }
