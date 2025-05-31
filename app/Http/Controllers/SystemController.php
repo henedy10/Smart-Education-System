@@ -29,13 +29,20 @@ class SystemController extends Controller
             return view('show_teacher',['teacher'=>$teacher,'lessons'=>$lessons]);
         }else{
             $student=Student::where('user_id',$user->id)->first();
-            $teachers=Teacher::where('class',$student->class)->first();
-            $lessons=Lesson::where('teacher_id',$teachers->id)->get();
-            $homeworks=Homework::where('teacher_id',$teachers->id)->get();
-            return view('show_student',['student'=>$student,'lessons'=>$lessons,'homeworks'=>$homeworks]);
+            $teachers=Teacher::where('class',$student->class)->get();
+            return view('student.show_student',['student'=>$student,'teachers'=>$teachers]);
         }
     }
 
+    public function show_student_content($class,$subject) {
+        return view('student.show_content',['subject'=>$subject,'class'=>$class]);
+    }
+    public function show_student_lesson($class,$subject){
+        $teacher=Teacher::where('class',$class)
+                        -> where('subject',$subject)->first();
+        $lessons=Lesson::where('teacher_id',$teacher->id)->get();
+        return view('student.show_lesson',['subject'=>$subject,'class'=>$class,'lessons'=>$lessons]);
+    }
     public function store_teacher($TeacherId){
         // نشر الحصه
         if((request()->upload)=='upload_lesson'){
@@ -46,9 +53,9 @@ class SystemController extends Controller
             $path=request()->file('file_lesson')->store('lessons','public');
             $title_lesson=request()->title_lesson;
             Lesson::create([
-                    'teacher_id'=>$TeacherId,
-                    'file_lesson'=>$path,
-                    'title_lesson'=> $title_lesson,
+                'teacher_id'=>$TeacherId,
+                'file_lesson'=>$path,
+                'title_lesson'=> $title_lesson,
             ]);
 
             return redirect()->back()->with('success', 'تم رفع الملف بنجاح');
