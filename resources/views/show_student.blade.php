@@ -157,7 +157,7 @@
           </div>
           <p class="text-sm text-gray-600 mb-4">الجبر - الهندسة - الاحتمالات</p>
           <a href="lessons.html" class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm transition">
-            عرض الحصص
+            عرض المحتوي
           </a>
         </div>
       </div>
