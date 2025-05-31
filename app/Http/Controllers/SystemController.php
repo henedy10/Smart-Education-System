@@ -31,7 +31,8 @@ class SystemController extends Controller
             $student=Student::where('user_id',$user->id)->first();
             $teachers=Teacher::where('class',$student->class)->first();
             $lessons=Lesson::where('teacher_id',$teachers->id)->get();
-            return view('show_student',['student'=>$student,'lessons'=>$lessons]);
+            $homeworks=Homework::where('teacher_id',$teachers->id)->get();
+            return view('show_student',['student'=>$student,'lessons'=>$lessons,'homeworks'=>$homeworks]);
         }
     }
 

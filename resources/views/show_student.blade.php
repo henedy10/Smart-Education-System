@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
@@ -51,15 +51,17 @@
         <section id="assignments">
           <h2 class="text-xl font-bold mb-3 text-gray-700">📝 الواجبات</h2>
           <ul class="space-y-3">
+            @foreach ($homeworks as $homework )
             <li class="bg-white p-4 rounded-lg shadow flex justify-between items-center">
-              <span>حل التمارين من 1 إلى 5 في كتاب الرياضيات</span>
+              <span>{{$homework->}}</span>
               <a href="#" class="text-green-600 hover:underline text-sm">تسليم</a>
             </li>
-            <li class="bg-white p-4 rounded-lg shadow flex justify-between items-center">
+            @endforeach
+            {{-- <li class="bg-white p-4 rounded-lg shadow flex justify-between items-center">
               <span>اكتب تقرير عن دورة الماء في الطبيعة</span>
               <a href="#" class="text-green-600 hover:underline text-sm">تسليم</a>
-            </li>
-          </ul>
+            </li> --}}
+          {{-- </ul>
         </section>
 
         <!-- الاختبارات -->
@@ -107,4 +109,72 @@
 
 
 </body>
+</html> --}}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>المواد الدراسية</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            cairo: ['Cairo', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-100 to-blue-50 font-cairo p-6 min-h-screen">
+
+  <!-- ✅ شريط الطالب -->
+  <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <i data-lucide="user" class="w-6 h-6 text-blue-600"></i>
+      <span class="text-lg font-semibold text-gray-800">👋 مرحبًا، <span id="studentName">{{$student->user->name}}</span></span>
+    </div>
+    <button class="text-sm text-red-500 hover:underline">تسجيل الخروج</button>
+  </div>
+
+  <!-- 👇 باقي الصفحة كما هي -->
+  <div class="max-w-6xl mx-auto">
+    <h1 class="text-3xl md:text-4xl font-bold text-center text-blue-700 mb-10">📚 المواد الدراسية المتاحة</h1>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+
+      <!-- كارت مادة -->
+      <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border-t-4 border-blue-500 group relative overflow-hidden">
+        <div class="p-5">
+          <div class="flex items-center gap-2 text-blue-600 mb-3">
+            <i data-lucide="calculator" class="w-5 h-5"></i>
+            <h2 class="text-xl font-semibold">الرياضيات</h2>
+          </div>
+          <p class="text-sm text-gray-600 mb-4">الجبر - الهندسة - الاحتمالات</p>
+          <a href="lessons.html" class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm transition">
+            عرض الحصص
+          </a>
+        </div>
+      </div>
+
+      <!-- باقي المواد زي ما هي ... -->
+
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons(); // لتشغيل الأيقونات
+
+    // ✅ لو عايز تجيب الاسم من الـ backend
+    // document.getElementById("studentName").innerText = "الاسم من السيرفر";
+  </script>
+
+</body>
+
 </html>
+
