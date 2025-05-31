@@ -7,7 +7,7 @@ Route::get('/',[SystemController::class,'index'])->name('index');
 Route::get('/show',[SystemController::class,'show'])->name('show');
 Route::get('/show/content/{class}/{subject}/lessons',[SystemController::class,'show_student_lesson'])->name('show_student_lesson');
 Route::get('/show/content/{class}/{subject}',[SystemController::class,'show_student_content'])->name('show_student_content');
-
+Route::get('/show/content/{class}/{subject}/homeworks',[SystemController::class,'show_student_homework'])->name('show_student_homework');
 
 
 

@@ -43,6 +43,13 @@ class SystemController extends Controller
         $lessons=Lesson::where('teacher_id',$teacher->id)->get();
         return view('student.show_lesson',['subject'=>$subject,'class'=>$class,'lessons'=>$lessons]);
     }
+
+    public function show_student_homework($class,$subject){
+        $teacher=Teacher::where('class',$class)
+                        -> where('subject',$subject)->first();
+        $homeworks=Homework::where('teacher_id',$teacher->id)->get();
+        return view('student.show_homework',['subject'=>$subject,'class'=>$class,'homeworks'=>$homeworks]);
+    }
     public function store_teacher($TeacherId){
         // نشر الحصه
         if((request()->upload)=='upload_lesson'){

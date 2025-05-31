@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الواجبات الدراسية</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            cairo: ['Cairo', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="bg-gradient-to-br from-gray-100 to-blue-50 font-cairo p-6 min-h-screen">
+
+  <!-- ✅ Header -->
+  <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <i data-lucide="file-text" class="w-6 h-6 text-red-600"></i>
+      <span class="text-lg font-semibold text-gray-800">📚 الواجبات الدراسية</span>
+    </div>
+    <a href="{{route('show_student_content',[$class,$subject])}}" class="text-sm text-blue-600 hover:underline">العودة للوحة التحكم</a>
+  </div>
+
+  <!-- ✅ قائمة الواجبات -->
+  <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
+    @foreach ($homeworks as $homework )
+    <div class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition border-r-4 border-yellow-500">
+        <div class="flex items-center gap-2 text-yellow-600 mb-2">
+            <i data-lucide="clipboard-edit" class="w-5 h-5"></i>
+            <a href="{{asset('storage/'.$homework->file_homework)}}" target="_blank"><h2 class="text-lg font-semibold">Sheet</h2></a>
+        </div>
+    <p class="text-sm text-gray-700 mb-4">{{$homework->content_homework}}</p>
+    <p class="text-xs text-gray-500 mb-3">تاريخ التسليم: {{$homework->deadline}}</p>
+    <a href="#" class="bg-yellow-600 text-white px-4 py-1 rounded hover:bg-yellow-500 text-sm">رفع الواجب</a>
+    <a href="{{asset('storage/'.$homework->file_homework)}}" download class="bg-gray-300 text-white px-3 py-1 rounded hover:bg-gray-400 text-sm">تحميل</a>
+    </div>
+    @endforeach
+
+  </div>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
