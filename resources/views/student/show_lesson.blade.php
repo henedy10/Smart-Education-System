@@ -27,7 +27,7 @@
       <i data-lucide="video" class="w-6 h-6 text-blue-600"></i>
       <span class="text-lg font-semibold text-gray-800">📺 المحاضرات الدراسية</span>
     </div>
-    <a href="{{route('show_student_content',[$class,$subject])}}" class="text-sm text-blue-600 hover:underline">العودة للوحة التحكم</a>
+    <a href="{{route('show_student_content',[$class,$subject])}}" class="text-sm text-blue-600 hover:underline">السابق -></a>
   </div>
 
   <!-- ✅ محتوى المحاضرات -->
