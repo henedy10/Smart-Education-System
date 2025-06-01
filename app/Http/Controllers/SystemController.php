@@ -41,16 +41,19 @@ class SystemController extends Controller
     }
     public function show_student_lesson($class,$subject){
         $teacher=Teacher::where('class',$class)
-                        -> where('subject',$subject)->first();
+        -> where('subject',$subject)->first();
         $lessons=Lesson::where('teacher_id',$teacher->id)->get();
         return view('student.show_lesson',['subject'=>$subject,'class'=>$class,'lessons'=>$lessons]);
     }
 
     public function show_student_homework($class,$subject){
         $teacher=Teacher::where('class',$class)
-                        -> where('subject',$subject)->first();
+        -> where('subject',$subject)->first();
         $homeworks=Homework::where('teacher_id',$teacher->id)->get();
         return view('student.show_homework',['subject'=>$subject,'class'=>$class,'homeworks'=>$homeworks]);
+    }
+    public function show_student_quizzes($class,$subject){
+        return view('student.show_quiz',['subject'=>$subject,'class'=>$class]);
     }
     public function store_teacher($TeacherId){
         // نشر الحصه
@@ -89,8 +92,5 @@ class SystemController extends Controller
     }
 
 
-    public function quiz(){
-        return view('quiz');
-    }
 }
 

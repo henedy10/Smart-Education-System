@@ -59,7 +59,7 @@
           <h2 class="text-xl font-semibold">الامتحانات</h2>
         </div>
         <p class="text-sm text-gray-600 mb-4">قم بحل الاختبارات الإلكترونية وتابع تقييمك.</p>
-        <a href="#" class="inline-block bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-sm">عرض الامتحانات</a>
+        <a href="{{route('show_student_quizzes',[$class,$subject])}}" class="inline-block bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-sm">عرض الامتحانات</a>
       </div>
 
     </div>
