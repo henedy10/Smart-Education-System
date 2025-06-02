@@ -28,7 +28,11 @@
       <i data-lucide="user" class="w-6 h-6 text-blue-600"></i>
       <span class="text-lg font-semibold text-gray-800">👋 مرحبًا، <span id="studentName">{{$student->user->name}}</span></span>
     </div>
-    <button class="text-sm text-red-500 hover:underline">تسجيل الخروج</button>
+    <form action="{{route("log_out_student")}}" method="GET">
+     @method('delete')
+      @csrf
+      <button type="submit" class="text-sm text-red-500 hover:underline">تسجيل الخروج</button>
+    </form>
   </div>
 
   <!-- 👇 باقي الصفحة كما هي -->

@@ -21,21 +21,28 @@ class SystemController extends Controller
             'name'=>'required|alpha_dash:ascii|exists:users,name',
             'password'=>'required|exists:users,password',
         ]);
-        $user= User::where('name',request()->name)->first();
+        session(['name'=>request()->name]);
+        $user= User::where('name',session('name'))->first();
         if($user->user_as =='teacher'){
             $teacher=Teacher::where('user_id',$user->id)->first();
             $lessons=Lesson::where('teacher_id',$user->id)->get();
 
             return view('show_teacher',['teacher'=>$teacher,'lessons'=>$lessons]);
-        }else{
+        }else if($user->user_as=='student'){
             $student=Student::where('user_id',$user->id)->first();
             $teachers=Teacher::where('class',$student->class)->get();
             return view('student.show_student',['student'=>$student,'teachers'=>$teachers]);
         }
     }
 
-
-
+    public function show_student(){
+        if(request()->show_student=='student'){
+            $user= User::where('name',session('name'))->first();
+            $student=Student::where('user_id',$user->id)->first();
+            $teachers=Teacher::where('class',$student->class)->get();
+            return view('student.show_student',['student'=>$student,'teachers'=>$teachers]);
+        }
+    }
     public function show_student_content($class,$subject) {
         return view('student.show_content',['subject'=>$subject,'class'=>$class]);
     }
@@ -54,6 +61,11 @@ class SystemController extends Controller
     }
     public function show_student_quizzes($class,$subject){
         return view('student.show_quiz',['subject'=>$subject,'class'=>$class]);
+    }
+
+    public function log_out_student(){
+        session()->flush();
+        return view('index');
     }
     public function store_teacher($TeacherId){
         // نشر الحصه

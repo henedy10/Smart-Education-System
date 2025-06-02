@@ -25,7 +25,10 @@
     <div class="flex items-center gap-3">
       <span class="text-lg font-semibold text-gray-800"> لوحة التحكم</span>
     </div>
-    <a href="#" class="text-sm text-blue-600 hover:underline">السابق -></a>
+    <form action="{{route('show_student')}}" method="get">
+        @csrf
+        <button type="submit" name='show_student' value='student' class="text-sm text-blue-600 hover:underline">السابق -></button>
+    </form>
   </div>
   <!-- ✅ Dashboard Content -->
   <div class="max-w-6xl mx-auto">
