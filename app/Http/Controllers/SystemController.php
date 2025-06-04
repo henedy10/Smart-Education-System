@@ -26,8 +26,14 @@ class SystemController extends Controller
         if($user->user_as =='teacher'){
             $teacher=Teacher::where('user_id',$user->id)->first();
             $lessons=Lesson::where('teacher_id',$user->id)->get();
+            $num_lessons=Lesson::where('teacher_id',$user->id)->count();
+            $num_homeworks=Homework::where('teacher_id',$user->id)->count();
 
-            return view('show_teacher',['teacher'=>$teacher,'lessons'=>$lessons]);
+            return view('teacher.show_teacher',['teacher'=>$teacher,
+                                        'lessons'=>$lessons,
+                                        'num_lessons'=>$num_lessons,
+                                        'num_homeworks'=>$num_homeworks
+                                        ]);
         }else if($user->user_as=='student'){
             $student=Student::where('user_id',$user->id)->first();
             $teachers=Teacher::where('class',$student->class)->get();
