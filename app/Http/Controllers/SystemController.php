@@ -28,12 +28,12 @@ class SystemController extends Controller
             $lessons=Lesson::where('teacher_id',$user->id)->get();
             $num_lessons=Lesson::where('teacher_id',$user->id)->count();
             $num_homeworks=Homework::where('teacher_id',$user->id)->count();
-
             return view('teacher.show_teacher',['teacher'=>$teacher,
-                                        'lessons'=>$lessons,
-                                        'num_lessons'=>$num_lessons,
-                                        'num_homeworks'=>$num_homeworks
-                                        ]);
+                                                'lessons'=>$lessons,
+                                                'num_lessons'=>$num_lessons,
+                                                'num_homeworks'=>$num_homeworks,
+                                                'TeacherId'=>$user->id
+                                                ]);
         }else if($user->user_as=='student'){
             $student=Student::where('user_id',$user->id)->first();
             $teachers=Teacher::where('class',$student->class)->get();
@@ -73,6 +73,26 @@ class SystemController extends Controller
         session()->flush();
         return view('index');
     }
+
+
+
+    /*  TEACHER */
+    public function show_teacher(){
+        $user= User::where('name',session('name'))->first();
+        if($user->user_as =='teacher'){
+            $teacher=Teacher::where('user_id',$user->id)->first();
+            $lessons=Lesson::where('teacher_id',$user->id)->get();
+            $num_lessons=Lesson::where('teacher_id',$user->id)->count();
+            $num_homeworks=Homework::where('teacher_id',$user->id)->count();
+            return view('teacher.show_teacher',['teacher'=>$teacher,
+                                                'lessons'=>$lessons,
+                                                'num_lessons'=>$num_lessons,
+                                                'num_homeworks'=>$num_homeworks,
+                                                'TeacherId'=>$user->id
+                                                ]);
+        }
+    }
+
     public function store_teacher($TeacherId){
         // نشر الحصه
         if((request()->upload)=='upload_lesson'){
@@ -107,6 +127,10 @@ class SystemController extends Controller
             return redirect()->back()->with('success', 'تم رفع الملف بنجاح');
         }
 
+    }
+    public function show_teacher_lessons($TeacherId){
+        $lessons=Lesson::where('teacher_id',$TeacherId)->get();
+        return view('teacher.show_lesson',['TeacherId'=>$TeacherId,'lessons'=>$lessons]);
     }
 
 
