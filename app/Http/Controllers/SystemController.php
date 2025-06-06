@@ -41,6 +41,8 @@ class SystemController extends Controller
         }
     }
 
+    /* STUDENT */
+
     public function show_student(){
         if(request()->show_student=='student'){
             $user= User::where('name',session('name'))->first();
