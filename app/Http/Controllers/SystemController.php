@@ -114,12 +114,15 @@ class SystemController extends Controller
         else if(request()->upload=='upload_homework'){
             request()->validate([
                 'content_homework'=>'required',
+                'title_homework'=>'required',
                 'file_homework'=>'required|mimes:pdf,doc,docx,zip,rar,jpg,png'
             ]);
             $path=request()->file('file_homework')->store('homeworks','public');
             $content_homework=request()->content_homework;
+            $title_homework=request()->title_homework;
             Homework::create([
                 'teacher_id'=>$TeacherId,
+                'title_homework'=>$title_homework,
                 'file_homework'=>$path,
                 'content_homework'=>$content_homework,
             ]);
@@ -131,6 +134,10 @@ class SystemController extends Controller
     public function show_teacher_lessons($TeacherId){
         $lessons=Lesson::where('teacher_id',$TeacherId)->get();
         return view('teacher.show_lesson',['TeacherId'=>$TeacherId,'lessons'=>$lessons]);
+    }
+    public function show_teacher_homeworks($TeacherId){
+        $homeworks=Homework::where('teacher_id',$TeacherId)->get();
+        return view('teacher.show_homework',['TeacherId'=>$TeacherId,'homeworks'=>$homeworks]);
     }
 
 
