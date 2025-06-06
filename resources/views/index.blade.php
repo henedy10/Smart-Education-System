@@ -20,7 +20,7 @@
                 </ul>
             </div>
         @endif
-    <form action="{{route('show')}}" method="GET" class="space-y-4">
+    <form action="{{route('login')}}" method="GET" class="space-y-4">
         @csrf
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-1">اسم المستخدم</label>

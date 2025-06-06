@@ -10,46 +10,41 @@ use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Codec\TimestampLastCombCodec;
+use Illuminate\Support\Facades\Hash;
 
 class SystemController extends Controller
 {
     public function index()  {
         return view('index');
     }
-    public function show(){
+    public function login(){
         request()->validate([
             'name'=>'required|alpha_dash:ascii|exists:users,name',
-            'password'=>'required|exists:users,password',
+            'password'=>'required',
         ]);
-        session(['name'=>request()->name]);
         $user= User::where('name',session('name'))->first();
+        if(!$user|| request()->password!= $user->password){
+            return back()->withErrors(['login'=>'بيانات الدخول غير صحيحه']);
+        }
+        session([
+            'name'=>request()->name,
+            'id'=>$user->id,
+        ]);
+
         if($user->user_as =='teacher'){
-            $teacher=Teacher::where('user_id',$user->id)->first();
-            $lessons=Lesson::where('teacher_id',$user->id)->get();
-            $num_lessons=Lesson::where('teacher_id',$user->id)->count();
-            $num_homeworks=Homework::where('teacher_id',$user->id)->count();
-            return view('teacher.show_teacher',['teacher'=>$teacher,
-                                                'lessons'=>$lessons,
-                                                'num_lessons'=>$num_lessons,
-                                                'num_homeworks'=>$num_homeworks,
-                                                'TeacherId'=>$user->id
-                                                ]);
-        }else if($user->user_as=='student'){
-            $student=Student::where('user_id',$user->id)->first();
-            $teachers=Teacher::where('class',$student->class)->get();
-            return view('student.show_student',['student'=>$student,'teachers'=>$teachers]);
+            return redirect()->route('show_teacher');
+        }else{
+            return redirect()->route('show_student');
         }
     }
 
     /* STUDENT */
 
     public function show_student(){
-        if(request()->show_student=='student'){
             $user= User::where('name',session('name'))->first();
             $student=Student::where('user_id',$user->id)->first();
             $teachers=Teacher::where('class',$student->class)->get();
             return view('student.show_student',['student'=>$student,'teachers'=>$teachers]);
-        }
     }
     public function show_student_content($class,$subject) {
         return view('student.show_content',['subject'=>$subject,'class'=>$class]);
@@ -80,8 +75,7 @@ class SystemController extends Controller
 
     /*  TEACHER */
     public function show_teacher(){
-        $user= User::where('name',session('name'))->first();
-        if($user->user_as =='teacher'){
+        $user= User::where('name',session('id'))->first();
             $teacher=Teacher::where('user_id',$user->id)->first();
             $lessons=Lesson::where('teacher_id',$user->id)->get();
             $num_lessons=Lesson::where('teacher_id',$user->id)->count();
@@ -92,7 +86,6 @@ class SystemController extends Controller
                                                 'num_homeworks'=>$num_homeworks,
                                                 'TeacherId'=>$user->id
                                                 ]);
-        }
     }
 
     public function store_teacher($TeacherId){
@@ -100,7 +93,7 @@ class SystemController extends Controller
         if((request()->upload)=='upload_lesson'){
             request()->validate([
                 'title_lesson'=>'required',
-                'file_lesson'=>'required|mimes:pdf,doc,docx,zip,rar,jpg,png',
+                'file_lesson'=>'required|mimes:pdf,doc,docx,zip,rar,jpg,png|max:2048',
             ]);
             $path=request()->file('file_lesson')->store('lessons','public');
             $title_lesson=request()->title_lesson;
@@ -117,7 +110,7 @@ class SystemController extends Controller
             request()->validate([
                 'content_homework'=>'required',
                 'title_homework'=>'required',
-                'file_homework'=>'required|mimes:pdf,doc,docx,zip,rar,jpg,png'
+                'file_homework'=>'required|mimes:pdf,doc,docx,zip,rar,jpg,png|max:2048'
             ]);
             $path=request()->file('file_homework')->store('homeworks','public');
             $content_homework=request()->content_homework;
