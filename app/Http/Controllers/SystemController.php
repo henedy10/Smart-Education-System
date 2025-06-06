@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\Homework;
 use App\Models\Teacher;
 use App\Models\Lesson;
@@ -37,6 +36,8 @@ class SystemController extends Controller
             return redirect()->route('show_student');
         }
     }
+
+
 
     /* STUDENT */
 
