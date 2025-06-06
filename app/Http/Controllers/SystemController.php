@@ -22,12 +22,12 @@ class SystemController extends Controller
             'name'=>'required|alpha_dash:ascii|exists:users,name',
             'password'=>'required',
         ]);
-        $user= User::where('name',session('name'))->first();
+        $user= User::where('name',request()->name)->first();
         if(!$user|| request()->password!= $user->password){
             return back()->withErrors(['login'=>'بيانات الدخول غير صحيحه']);
         }
         session([
-            'name'=>request()->name,
+            'name'=>$user->name,
             'id'=>$user->id,
         ]);
 
@@ -75,7 +75,7 @@ class SystemController extends Controller
 
     /*  TEACHER */
     public function show_teacher(){
-        $user= User::where('name',session('id'))->first();
+        $user= User::where('name',session('name'))->first();
             $teacher=Teacher::where('user_id',$user->id)->first();
             $lessons=Lesson::where('teacher_id',$user->id)->get();
             $num_lessons=Lesson::where('teacher_id',$user->id)->count();
