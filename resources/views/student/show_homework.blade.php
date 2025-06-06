@@ -36,7 +36,7 @@
     <div class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition border-r-4 border-yellow-500">
         <div class="flex items-center gap-2 text-yellow-600 mb-2">
             <i data-lucide="clipboard-edit" class="w-5 h-5"></i>
-            <a href="{{asset('storage/'.$homework->file_homework)}}" target="_blank"><h2 class="text-lg font-semibold">Sheet</h2></a>
+            <a href="{{asset('storage/'.$homework->file_homework)}}" target="_blank"><h2 class="text-lg font-semibold">{{$homework->title_homework}}</h2></a>
         </div>
     <p class="text-sm text-gray-700 mb-4">{{$homework->content_homework}}</p>
     <p class="text-xs text-gray-500 mb-3">تاريخ التسليم: {{$homework->deadline}}</p>
