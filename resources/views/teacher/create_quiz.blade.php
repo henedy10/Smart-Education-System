@@ -27,17 +27,6 @@
           <textarea rows="3" placeholder="معلومات عن الاختبار..." class="w-full p-3 rounded-lg border border-gray-300"></textarea>
         </div>
 
-        <!-- اختيار المادة -->
-        {{-- <div class="mb-4">
-          <label class="block mb-2 text-sm font-medium text-gray-700">اختر المادة</label>
-          <select class="w-full p-3 rounded-lg border border-gray-300">
-            <option disabled selected>اختر المادة</option>
-            <option>الرياضيات</option>
-            <option>اللغة العربية</option>
-            <option>العلوم</option>
-          </select>
-        </div> --}}
-
         <!-- موعد الامتحان -->
         <div class="mb-4">
           <label class="block mb-2 text-sm font-medium text-gray-700">موعد الامتحان</label>
