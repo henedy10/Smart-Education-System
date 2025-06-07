@@ -90,20 +90,20 @@
 
               <!-- زر حذف السؤال -->
               <button type="button" onclick="removeQuestion(this)" class="mt-4 px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600">
-                ❌ حذف السؤال
+                 حذف السؤال
               </button>
             </div>
           </div>
 
           <!-- زر إضافة سؤال -->
           <button type="button" onclick="addQuestion()" class="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
-            ➕ إضافة سؤال جديد
+             إضافة سؤال جديد
           </button>
         </div>
 
         <!-- زر إرسال -->
         <button type="submit" class="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold">
-          ✅ إنشاء الاختبار
+          إنشاء الاختبار
         </button>
       </form>
     </div>
