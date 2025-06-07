@@ -12,7 +12,6 @@
 <body class="bg-gray-100 min-h-screen">
     <div class="max-w-5xl mx-auto py-10 px-4">
         <div style="display: flex; justify-content:space-between">
-
             <h1 class="text-2xl font-bold text-blue-600 mb-6">إدارة المحاضرات</h1>
             <a href="{{route('show_teacher')}}" class="text-2xl font-medium text-red-600 mb-6">السابق -></a>
         </div>

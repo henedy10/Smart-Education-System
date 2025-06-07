@@ -9,7 +9,10 @@
 <body class="bg-gray-100 font-sans">
   <div class="max-w-4xl mx-auto p-6">
     <div class="bg-white p-6 rounded-2xl shadow-md">
-      <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">📝 إنشاء اختبار جديد</h2>
+        <div style="display: flex; justify-content:space-between">
+            <h1 class="text-2xl font-bold text-blue-600 mb-6">إنشاء اختبار جديد</h1>
+            <a href="{{route('show_teacher')}}" class="text-2xl font-medium text-red-600 mb-6">السابق -></a>
+        </div>
 
       <form>
         <!-- عنوان الاختبار -->
