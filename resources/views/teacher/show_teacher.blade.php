@@ -31,7 +31,7 @@
             <nav class="space-y-2">
                 <a href="{{route('show_teacher_lessons',$TeacherId)}}" class="block py-2 px-4 rounded hover:bg-blue-100 text-gray-700"><i class="fas fa-chalkboard-teacher mr-2"></i> محاضراتي</a>
                 <a href="{{route('show_teacher_homeworks',$TeacherId)}}" class="block py-2 px-4 rounded hover:bg-green-100 text-gray-700"><i class="fas fa-tasks mr-2"></i> الواجبات</a>
-                <a href="#" class="block py-2 px-4 rounded hover:bg-yellow-100 text-gray-700"><i class="fas fa-file-alt mr-2"></i> الامتحانات</a>
+                <a href="{{route('create_teacher_quiz')}}" class="block py-2 px-4 rounded hover:bg-yellow-100 text-gray-700"><i class="fas fa-file-alt mr-2"></i> الامتحانات</a>
                 <a href="#" class="block py-2 px-4 rounded hover:bg-red-200 text-gray-700"><i class="fas fa-chart-line mr-2"></i> النتائج</a>
                 <a href="#" class="block py-2 px-4 rounded hover:bg-red-100 text-red-600"><i class="fas fa-sign-out-alt mr-2"></i> تسجيل الخروج</a>
             </nav>

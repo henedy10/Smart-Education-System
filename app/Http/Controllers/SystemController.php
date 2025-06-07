@@ -136,6 +136,9 @@ class SystemController extends Controller
         return view('teacher.show_homework',['TeacherId'=>$TeacherId,'homeworks'=>$homeworks]);
     }
 
+    public function create_teacher_quiz() {
+return view('teacher.create_quiz');
+    }
 
 }
 
