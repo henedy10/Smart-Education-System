@@ -14,29 +14,30 @@
             <a href="{{route('show_teacher')}}" class="text-2xl font-medium text-red-600 mb-6">السابق -></a>
         </div>
 
-      <form>
+      <form method="POST" action="{{route('store_teacher',$TeacherId)}}">
+        @csrf
         <!-- عنوان الاختبار -->
         <div class="mb-4">
           <label class="block mb-2 text-sm font-medium text-gray-700">عنوان الاختبار</label>
-          <input type="text" placeholder="مثال: اختبار نهاية الفصل" class="w-full p-3 rounded-lg border border-gray-300" />
+          <input type="text" name="quiz_title" placeholder="مثال: اختبار نهاية الفصل" class="w-full p-3 rounded-lg border border-gray-300" />
         </div>
 
         <!-- وصف الاختبار -->
         <div class="mb-4">
           <label class="block mb-2 text-sm font-medium text-gray-700">الوصف</label>
-          <textarea rows="3" placeholder="معلومات عن الاختبار..." class="w-full p-3 rounded-lg border border-gray-300"></textarea>
+          <textarea rows="3" name="quiz_description" placeholder="معلومات عن الاختبار..." class="w-full p-3 rounded-lg border border-gray-300"></textarea>
         </div>
 
         <!-- موعد الامتحان -->
         <div class="mb-4">
           <label class="block mb-2 text-sm font-medium text-gray-700">موعد الامتحان</label>
-          <input type="datetime-local" class="w-full p-3 rounded-lg border border-gray-300" />
+          <input type="datetime-local" name="quiz_date" class="w-full p-3 rounded-lg border border-gray-300" />
         </div>
 
         <!-- مدة الامتحان -->
         <div class="mb-4">
           <label class="block mb-2 text-sm font-medium text-gray-700">مدة الامتحان (بالدقائق)</label>
-          <input type="number" min="1" placeholder="مثال: 60" class="w-full p-3 rounded-lg border border-gray-300" />
+          <input type="number" name="quiz_duration" min="1" placeholder="مثال: 60" class="w-full p-3 rounded-lg border border-gray-300" />
         </div>
 
         <!-- الأسئلة -->
@@ -91,7 +92,7 @@
         </div>
 
         <!-- زر إرسال -->
-        <button type="submit" class="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold">
+        <button type="submit" name="upload" value="create_quiz"  class="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold">
           إنشاء الاختبار
         </button>
       </form>

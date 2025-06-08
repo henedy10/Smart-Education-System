@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Homework;
 use App\Models\Teacher;
 use App\Models\Lesson;
+use App\Models\Quiz;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -126,7 +127,28 @@ class SystemController extends Controller
             return redirect()->back()->with('success', 'تم رفع الملف بنجاح');
         }
 
+        // عمل اختبار
+        else if (request()->upload=='create_quiz'){
+                request()->validate([
+                'quiz_title'=>'required',
+                'quiz_date'=>'required',
+                'quiz_duration'=>'required',
+                ]);
+                $quiz_title=request()->quiz_title;
+                $quiz_date=request()->quiz_date;
+                $quiz_duration=request()->quiz_duration;
+                $quiz_description=request()->quiz_description;
+                Quiz::create([
+                    'teacher_id'=>$TeacherId,
+                    'title'=>$quiz_title,
+                    'discription'=>$quiz_description,
+                    'start_time'=>$quiz_date,
+                    'duration'=>$quiz_duration,
+                ]);
+        }
+
     }
+
     public function show_teacher_lessons($TeacherId){
         $lessons=Lesson::where('teacher_id',$TeacherId)->get();
         return view('teacher.show_lesson',['TeacherId'=>$TeacherId,'lessons'=>$lessons]);
@@ -135,10 +157,9 @@ class SystemController extends Controller
         $homeworks=Homework::where('teacher_id',$TeacherId)->get();
         return view('teacher.show_homework',['TeacherId'=>$TeacherId,'homeworks'=>$homeworks]);
     }
-
-    public function create_teacher_quiz() {
-return view('teacher.create_quiz');
-    }
+public function create_teacher_quiz($TeacherId){
+    return view('teacher.create_quiz',['TeacherId'=>$TeacherId]);
+}
 
 }
 

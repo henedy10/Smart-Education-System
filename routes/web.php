@@ -17,4 +17,4 @@ Route::get('/show/teacher',[SystemController::class,'show_teacher'])->name('show
 Route::post('/store/teacher/{teacher}',[SystemController::class,'store_teacher'])->name('store_teacher');
 Route::get('/show/teacher/{teacher}/lessons',[SystemController::class,'show_teacher_lessons'])->name('show_teacher_lessons');
 Route::get('/show/teacher/{teacher}/homeworks',[SystemController::class,'show_teacher_homeworks'])->name('show_teacher_homeworks');
-Route::get('/create/teacher/quiz',[SystemController::class,'create_teacher_quiz'])->name('create_teacher_quiz');
+Route::get('/create/teacher/{teacher}/quiz',[SystemController::class,'create_teacher_quiz'])->name('create_teacher_quiz');
