@@ -17,9 +17,9 @@ return new class extends Migration
             // foreign key
             $table->unsignedBigInteger('teacher_id');
             $table->foreign('teacher_id')->references('id')->on('teachers');
-            
+
             $table->string('title');
-            $table->string('discription');
+            $table->string('discription')->nullable();
             $table->dateTime('start_time');
             $table->integer('duration');
             $table->timestamps();

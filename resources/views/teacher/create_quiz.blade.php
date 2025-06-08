@@ -4,9 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>إنشاء اختبار جديد</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 font-sans">
+                    @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+        @endif
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
   <div class="max-w-4xl mx-auto p-6">
     <div class="bg-white p-6 rounded-2xl shadow-md">
         <div style="display: flex; justify-content:space-between">
@@ -47,34 +64,34 @@
             <!-- سؤال واحد افتراضي -->
             <div class="question bg-gray-50 p-4 rounded-lg border">
               <label class="block text-sm font-medium text-gray-700 mb-1">نص السؤال</label>
-              <input type="text" placeholder="ما هي عاصمة مصر؟" class="w-full p-2 rounded border" />
+              <input type="text" name="question_title" placeholder="ما هي عاصمة مصر؟" class="w-full p-2 rounded border" />
 
               <div class="grid grid-cols-2 gap-3 mt-3">
                 <div>
-                  <label class="block text-sm">الإجابة 1</label>
-                  <input type="text" class="w-full p-2 rounded border" />
+                  <label class="block text-sm" name='option_key_1' value="1">الإجابة 1</label>
+                  <input type="text" name="title_option_1" class="w-full p-2 rounded border" />
                 </div>
                 <div>
-                  <label class="block text-sm">الإجابة 2</label>
-                  <input type="text" class="w-full p-2 rounded border" />
+                  <label class="block text-sm" name='option_key_2' value="2">الإجابة 2</label>
+                  <input type="text" name="title_option_2" class="w-full p-2 rounded border" />
                 </div>
                 <div>
-                  <label class="block text-sm">الإجابة 3</label>
-                  <input type="text" class="w-full p-2 rounded border" />
+                  <label class="block text-sm" name='option_key_3' value="3">الإجابة 3</label>
+                  <input type="text" name="title_option_3" class="w-full p-2 rounded border" />
                 </div>
                 <div>
-                  <label class="block text-sm">الإجابة 4</label>
-                  <input type="text" class="w-full p-2 rounded border" />
+                  <label class="block text-sm" name='option_key_4' value="4">الإجابة 4</label>
+                  <input type="text" name="title_option_4" class="w-full p-2 rounded border" />
                 </div>
               </div>
 
               <div class="mt-3">
                 <label class="block text-sm font-medium">الإجابة الصحيحة</label>
                 <select class="w-full p-2 rounded border">
-                  <option>الإجابة 1</option>
-                  <option>الإجابة 2</option>
-                  <option>الإجابة 3</option>
-                  <option>الإجابة 4</option>
+                  <option name="correct_option" value="الإجابة 1">الإجابة 1</option>
+                  <option name="correct_option" value="الإجابة 2">الإجابة 2</option>
+                  <option name="correct_option" value="الإجابة 3">الإجابة 3</option>
+                  <option name="correct_option" value="الإجابة 4">الإجابة 4</option>
                 </select>
               </div>
 

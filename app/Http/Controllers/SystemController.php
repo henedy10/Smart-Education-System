@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Homework;
 use App\Models\Teacher;
 use App\Models\Lesson;
+use App\Models\Option;
+use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\Student;
 use App\Models\User;
@@ -130,14 +132,15 @@ class SystemController extends Controller
         // عمل اختبار
         else if (request()->upload=='create_quiz'){
                 request()->validate([
-                'quiz_title'=>'required',
-                'quiz_date'=>'required',
-                'quiz_duration'=>'required',
+                    'quiz_title'=>'required',
+                    'quiz_date'=>'required',
+                    'quiz_duration'=>'required'
                 ]);
                 $quiz_title=request()->quiz_title;
                 $quiz_date=request()->quiz_date;
                 $quiz_duration=request()->quiz_duration;
                 $quiz_description=request()->quiz_description;
+
                 Quiz::create([
                     'teacher_id'=>$TeacherId,
                     'title'=>$quiz_title,
@@ -145,6 +148,7 @@ class SystemController extends Controller
                     'start_time'=>$quiz_date,
                     'duration'=>$quiz_duration,
                 ]);
+                return redirect()->back()->with('success','تم عمل اختبار جديد بنجاح ');
         }
 
     }

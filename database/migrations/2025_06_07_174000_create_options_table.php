@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('options', function (Blueprint $table) {
             $table->id();
             // foreign key
-            $table->unsignedBigInteger('quiz_id');
-            $table->foreign('quiz_id')->references('id')->on('quizzes');
+            $table->unsignedBigInteger('question_id');
+            $table->foreign('question_id')->references('id')->on('questions');
             $table->string('option_title');
             $table->enum('option_key',['الإجابة 1','الإجابة 2','الإجابة 3','الإجابة 4']);
             $table->timestamps();
