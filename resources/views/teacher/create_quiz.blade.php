@@ -64,34 +64,34 @@
             <!-- سؤال واحد افتراضي -->
             <div class="question bg-gray-50 p-4 rounded-lg border">
               <label class="block text-sm font-medium text-gray-700 mb-1">نص السؤال</label>
-              <input type="text" name="question_title" placeholder="ما هي عاصمة مصر؟" class="w-full p-2 rounded border" />
+              <input type="text" name="question_title[]" placeholder="ما هي عاصمة مصر؟" class="w-full p-2 rounded border" />
 
               <div class="grid grid-cols-2 gap-3 mt-3">
                 <div>
-                  <label class="block text-sm" name='option_key_1' value="1">الإجابة 1</label>
-                  <input type="text" name="title_option_1" class="w-full p-2 rounded border" />
+                  <label class="block text-sm" >الإجابة 1</label>
+                  <input type="text" name="option_title[]" class="w-full p-2 rounded border" />
                 </div>
                 <div>
-                  <label class="block text-sm" name='option_key_2' value="2">الإجابة 2</label>
-                  <input type="text" name="title_option_2" class="w-full p-2 rounded border" />
+                  <label class="block text-sm" >الإجابة 2</label>
+                  <input type="text" name="option_title[]" class="w-full p-2 rounded border" />
                 </div>
                 <div>
-                  <label class="block text-sm" name='option_key_3' value="3">الإجابة 3</label>
-                  <input type="text" name="title_option_3" class="w-full p-2 rounded border" />
+                  <label class="block text-sm" >الإجابة 3</label>
+                  <input type="text" name="option_title[]" class="w-full p-2 rounded border" />
                 </div>
                 <div>
-                  <label class="block text-sm" name='option_key_4' value="4">الإجابة 4</label>
-                  <input type="text" name="title_option_4" class="w-full p-2 rounded border" />
+                  <label class="block text-sm">الإجابة 4</label>
+                  <input type="text" name="option_title[]" class="w-full p-2 rounded border" />
                 </div>
               </div>
 
               <div class="mt-3">
                 <label class="block text-sm font-medium">الإجابة الصحيحة</label>
-                <select class="w-full p-2 rounded border">
-                  <option name="correct_option" value="الإجابة 1">الإجابة 1</option>
-                  <option name="correct_option" value="الإجابة 2">الإجابة 2</option>
-                  <option name="correct_option" value="الإجابة 3">الإجابة 3</option>
-                  <option name="correct_option" value="الإجابة 4">الإجابة 4</option>
+                <select class="w-full p-2 rounded border" name="correct_option[]">
+                  <option value="الإجابة 1">الإجابة 1</option>
+                  <option value="الإجابة 2">الإجابة 2</option>
+                  <option value="الإجابة 3">الإجابة 3</option>
+                  <option  value="الإجابة 4">الإجابة 4</option>
                 </select>
               </div>
 
@@ -103,13 +103,13 @@
           </div>
 
           <!-- زر إضافة سؤال -->
-          <button type="button" onclick="addQuestion()" class="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
+          <button type="button" name="add_question" onclick="addQuestion()" class="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
              إضافة سؤال جديد
           </button>
         </div>
 
         <!-- زر إرسال -->
-        <button type="submit" name="upload" value="create_quiz"  class="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold">
+        <button type="submit"  name="upload" value="create_quiz"  class="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold">
           إنشاء الاختبار
         </button>
       </form>

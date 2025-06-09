@@ -140,16 +140,39 @@ class SystemController extends Controller
                 $quiz_date=request()->quiz_date;
                 $quiz_duration=request()->quiz_duration;
                 $quiz_description=request()->quiz_description;
+                $question_title=request()->question_title;
+                $correct_option=request()->correct_option;
+                $option_title=request()->option_title;
+                $count=1;
+                $Quiz=Quiz::create([
+                        'teacher_id'=>$TeacherId,
+                        'title'=>$quiz_title,
+                        'discription'=>$quiz_description,
+                        'start_time'=>$quiz_date,
+                        'duration'=>$quiz_duration,
+                    ]);
+                    foreach($question_title as $index=>$Ques_title){
+                    $question=Question::create([
+                            'quiz_id'=>$Quiz->id,
+                            'title'=>$Ques_title,
+                            'correct_option'=>$correct_option[$index],
+                        ]);
+                        foreach($option_title as $index_option=>$Opt_title){
+                            Option::create([
+                                'question_id'=>$question->id,
+                                'option_title'=>$Opt_title,
+                                'option_key'=>'الإجابة '.($count),
+                            ]);
+                            if($count==4)
+                            break;
+                            else
+                                $count++;
+                        }
+                    }
 
-                Quiz::create([
-                    'teacher_id'=>$TeacherId,
-                    'title'=>$quiz_title,
-                    'discription'=>$quiz_description,
-                    'start_time'=>$quiz_date,
-                    'duration'=>$quiz_duration,
-                ]);
                 return redirect()->back()->with('success','تم عمل اختبار جديد بنجاح ');
         }
+
 
     }
 
