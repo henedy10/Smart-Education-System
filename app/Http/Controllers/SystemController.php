@@ -16,9 +16,6 @@ use Illuminate\Support\Facades\Hash;
 
 class SystemController extends Controller
 {
-    public function index()  {
-        return view('index');
-    }
     public function login(){
         request()->validate([
             'name'=>'required|alpha_dash:ascii|exists:users,name',
