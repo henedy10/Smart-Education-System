@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('teacher_id')->references('id')->on('teachers');
 
             $table->string('title');
-            $table->string('discription')->nullable();
+            $table->string('description')->nullable();
             $table->dateTime('start_time');
             $table->integer('duration');
             $table->timestamps();

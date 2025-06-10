@@ -42,7 +42,7 @@
         <!-- وصف الاختبار -->
         <div class="mb-4">
           <label class="block mb-2 text-sm font-medium text-gray-700">الوصف</label>
-          <textarea rows="3" name="quiz_description" placeholder="معلومات عن الاختبار..." class="w-full p-3 rounded-lg border border-gray-300"></textarea>
+          <textarea rows="3" type="text" name="quiz_description" placeholder="معلومات عن الاختبار..." class="w-full p-3 rounded-lg border border-gray-300"></textarea>
         </div>
 
         <!-- موعد الامتحان -->

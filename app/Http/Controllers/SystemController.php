@@ -131,7 +131,13 @@ class SystemController extends Controller
                 request()->validate([
                     'quiz_title'=>'required',
                     'quiz_date'=>'required',
-                    'quiz_duration'=>'required'
+                    'quiz_duration'=>'required',
+                    'question_title'=>'required|array',
+                    'question_title.*'=>'required|string',
+                    'option_title'=>'required|array',
+                    'option_title.*'=>'required|string',
+                    'correct_option'=>'required|array',
+                    'correct_option.*'=>'required'
                 ]);
                 $quiz_title=request()->quiz_title;
                 $quiz_date=request()->quiz_date;
@@ -140,31 +146,32 @@ class SystemController extends Controller
                 $question_title=request()->question_title;
                 $correct_option=request()->correct_option;
                 $option_title=request()->option_title;
-                $count=1;
+
+                $option_index=0;
                 $Quiz=Quiz::create([
                         'teacher_id'=>$TeacherId,
                         'title'=>$quiz_title,
-                        'discription'=>$quiz_description,
+                        'description'=>$quiz_description,
                         'start_time'=>$quiz_date,
                         'duration'=>$quiz_duration,
                     ]);
-                    foreach($question_title as $index=>$Ques_title){
+                    for($i=0;$i<sizeof($question_title);$i++){
+                        $index_key=0;
                     $question=Question::create([
                             'quiz_id'=>$Quiz->id,
-                            'title'=>$Ques_title,
-                            'correct_option'=>$correct_option[$index],
+                            'title'=>$question_title[$i],
+                            'correct_option'=>$correct_option[$i],
                         ]);
-                        foreach($option_title as $index_option=>$Opt_title){
+                        for($j=$option_index;$j<=$option_index+3;$j++){
+
                             Option::create([
                                 'question_id'=>$question->id,
-                                'option_title'=>$Opt_title,
-                                'option_key'=>'الإجابة '.($count),
+                                'option_title'=>$option_title[$j],
+                                'option_key'=>'الإجابة '.($index_key+1),
                             ]);
-                            if($count==4)
-                            break;
-                            else
-                                $count++;
+                            $index_key++;
                         }
+                        $option_index+=4;
                     }
 
                 return redirect()->back()->with('success','تم عمل اختبار جديد بنجاح ');
@@ -181,8 +188,8 @@ class SystemController extends Controller
         $homeworks=Homework::where('teacher_id',$TeacherId)->get();
         return view('teacher.show_homework',['TeacherId'=>$TeacherId,'homeworks'=>$homeworks]);
     }
-public function create_teacher_quiz($TeacherId){
-    return view('teacher.create_quiz',['TeacherId'=>$TeacherId]);
+    public function create_teacher_quiz($TeacherId){
+        return view('teacher.create_quiz',['TeacherId'=>$TeacherId]);
 }
 
 }
