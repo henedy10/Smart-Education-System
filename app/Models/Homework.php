@@ -11,7 +11,8 @@ class Homework extends Model
     'teacher_id',
     'file_homework',
     'content_homework',
-    'title_homework'
+    'title_homework',
+    'deadline',
     ];
 
     public function teacher(){

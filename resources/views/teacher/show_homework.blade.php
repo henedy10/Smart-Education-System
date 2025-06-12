@@ -47,6 +47,11 @@
             </div>
 
             <div>
+                <label class="block mb-1 text-sm text-gray-600">اخر ميعاد للتسليم</label>
+                <input type="datetime-local" name="deadline_homework" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400">
+            </div>
+
+            <div>
                 <label class="block mb-1 text-sm text-gray-600">رفع ملف (pdf,doc,docx,zip,rar,jpg,png)</label>
                 <input type="file" name="file_homework" class="w-full">
             </div>

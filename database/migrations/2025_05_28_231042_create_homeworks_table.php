@@ -20,8 +20,8 @@ return new class extends Migration
 
             $table->string('file_homework');
             $table->string('content_homework');
+            $table->dateTime('deadline');
             $table->timestamps();
-            $table->timestamp('deadline');
         });
     }
 

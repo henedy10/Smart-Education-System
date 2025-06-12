@@ -111,16 +111,19 @@ class SystemController extends Controller
             request()->validate([
                 'content_homework'=>'required',
                 'title_homework'=>'required',
-                'file_homework'=>'required|mimes:pdf,doc,docx,zip,rar,jpg,png|max:2048'
+                'file_homework'=>'required|mimes:pdf,doc,docx,zip,rar,jpg,png|max:2048',
+                'deadline_homework'=>'required',
             ]);
             $path=request()->file('file_homework')->store('homeworks','public');
             $content_homework=request()->content_homework;
             $title_homework=request()->title_homework;
+            $deadline_homework=request()->deadline_homework;
             Homework::create([
                 'teacher_id'=>$TeacherId,
                 'title_homework'=>$title_homework,
                 'file_homework'=>$path,
                 'content_homework'=>$content_homework,
+                'deadline'=>$deadline_homework,
             ]);
 
             return redirect()->back()->with('success', 'تم رفع الملف بنجاح');
