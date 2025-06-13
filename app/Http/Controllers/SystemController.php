@@ -10,6 +10,7 @@ use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\Student;
 use App\Models\User;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Codec\TimestampLastCombCodec;
 use Illuminate\Support\Facades\Hash;
@@ -54,14 +55,19 @@ class SystemController extends Controller
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
         $lessons=Lesson::where('teacher_id',$teacher->id)->get();
-        return view('student.show_lesson',['subject'=>$subject,'class'=>$class,'lessons'=>$lessons]);
+        return view('student.show_lesson',['subject'=>$subject,
+                                            'class'=>$class,
+                                            'lessons'=>$lessons]);
     }
 
     public function show_student_homework($class,$subject){
+$time=Carbon::now('africa/cairo');
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
         $homeworks=Homework::where('teacher_id',$teacher->id)->get();
-        return view('student.show_homework',['subject'=>$subject,'class'=>$class,'homeworks'=>$homeworks]);
+        return view('student.show_homework',['subject'=>$subject,
+                                            'class'=>$class,
+                                            'homeworks'=>$homeworks,'time'=>$time]);
     }
     public function show_student_quizzes($class,$subject){
         return view('student.show_quiz',['subject'=>$subject,'class'=>$class]);
