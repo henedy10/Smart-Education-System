@@ -1,24 +1,8 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>المحاضرات الدراسية</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            cairo: ['Cairo', 'sans-serif']
-          }
-        }
-      }
-    }
-  </script>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-</head>
+@extends('student.layout.app')
+
+@section('title')  المحاضرات الدراسيه   @endsection
+
+@section('content')
 <body class="bg-gradient-to-br from-gray-100 to-blue-50 font-cairo p-6 min-h-screen">
 
   <!-- ✅ Header -->
@@ -46,9 +30,6 @@
             </div>
         @endforeach
   </div>
+@endsection
 
-  <script>
-    lucide.createIcons();
-  </script>
-</body>
-</html>
+

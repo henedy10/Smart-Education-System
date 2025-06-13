@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <title>الكويزات المتاحة</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
+@extends('student.layout.app')
+
+@section('title') الكويزات المتاحة @endsection
+
+@section('content')
+
 <body class="bg-gray-100 p-6">
       <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
     <div class="flex items-center gap-3">
@@ -28,4 +27,5 @@
     </ul>
   </div>
 </body>
-</html>
+
+@endsection
