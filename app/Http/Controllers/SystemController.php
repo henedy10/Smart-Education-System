@@ -61,22 +61,25 @@ class SystemController extends Controller
     }
 
     public function show_student_homework($class,$subject){
-$time=Carbon::now('africa/cairo');
+        $time=Carbon::now('africa/cairo');
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
         $homeworks=Homework::where('teacher_id',$teacher->id)->get();
         return view('student.show_homework',['subject'=>$subject,
-                                            'class'=>$class,
-                                            'homeworks'=>$homeworks,'time'=>$time]);
+        'class'=>$class,
+        'homeworks'=>$homeworks,'time'=>$time]);
     }
     public function show_student_quizzes($class,$subject){
-        return view('student.show_quiz',['subject'=>$subject,'class'=>$class]);
+        $teacher=Teacher::where('class',$class)
+        -> where('subject',$subject)->first();
+        $quizzes=Quiz::where('teacher_id',$teacher->id)->get();
+        return view('student.show_quiz',['subject'=>$subject,
+                                        'class'=>$class,
+                                        'quizzes'=>$quizzes,
+                                    ]);
     }
 
-    public function log_out_student(){
-        session()->flush();
-        return view('index');
-    }
+
 
 
 
@@ -87,10 +90,12 @@ $time=Carbon::now('africa/cairo');
             $lessons=Lesson::where('teacher_id',$user->id)->get();
             $num_lessons=Lesson::where('teacher_id',$user->id)->count();
             $num_homeworks=Homework::where('teacher_id',$user->id)->count();
+            $num_quizzes=Quiz::where('teacher_id',$user->id)->count();
             return view('teacher.show_teacher',['teacher'=>$teacher,
                                                 'lessons'=>$lessons,
                                                 'num_lessons'=>$num_lessons,
                                                 'num_homeworks'=>$num_homeworks,
+                                                'num_quizzes'=>$num_quizzes,
                                                 'TeacherId'=>$user->id
                                                 ]);
     }
@@ -200,6 +205,13 @@ $time=Carbon::now('africa/cairo');
     public function create_teacher_quiz($TeacherId){
         return view('teacher.create_quiz',['TeacherId'=>$TeacherId]);
 }
+
+    // تسجيل الخروج لكل من الطالب و المدرس
+
+    public function log_out_student(){
+        session()->flush();
+        return view('index');
+    }
 
 }
 

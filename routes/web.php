@@ -7,8 +7,8 @@ Route::view('/','index');
 
 Route::get('/show',[SystemController::class,'login'])->name('login');
 Route::get('/show/student',[SystemController::class,'show_student'])->name('show_student');
-Route::get('/show/content/{class}/{subject}/lessons',[SystemController::class,'show_student_lesson'])->name('show_student_lesson');
 Route::get('/show/content/{class}/{subject}',[SystemController::class,'show_student_content'])->name('show_student_content');
+Route::get('/show/content/{class}/{subject}/lessons',[SystemController::class,'show_student_lesson'])->name('show_student_lesson');
 Route::get('/show/content/{class}/{subject}/homeworks',[SystemController::class,'show_student_homework'])->name('show_student_homework');
 Route::get('/show/quiz/{class}/{subject}',[SystemController::class,'show_student_quizzes'])->name('show_student_quizzes');
 Route::get('/log_out',[SystemController::class,'log_out_student'])->name('log_out_student');

@@ -13,7 +13,6 @@
       <span class="text-lg font-semibold text-gray-800">👋 مرحبًا، <span id="studentName">{{$student->user->name}}</span></span>
     </div>
     <form action="{{route("log_out_student")}}" method="GET">
-     @method('delete')
       @csrf
       <button type="submit" class="text-sm text-red-500 hover:underline">تسجيل الخروج</button>
     </form>
@@ -43,7 +42,7 @@
       <!-- باقي المواد زي ما هي ... -->
     </div>
   </div>
-  
+
 @endsection
 
 
