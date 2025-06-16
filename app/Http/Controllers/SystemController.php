@@ -70,17 +70,19 @@ class SystemController extends Controller
         'homeworks'=>$homeworks,'time'=>$time]);
     }
     public function show_student_quizzes($class,$subject){
+        $time=Carbon::now('africa/cairo');
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
-        $quizzes=Quiz::where('teacher_id',$teacher->id)->get();
+        $quiz=Quiz::where('teacher_id',$teacher->id)->get();
         return view('student.show_quiz',['subject'=>$subject,
                                         'class'=>$class,
-                                        'quizzes'=>$quizzes,
+                                        'quiz'=>$quiz,
                                     ]);
     }
 
-
-
+        public function show_content_quiz(){
+            return view('student.show_content_quiz');
+        }
 
 
     /*  TEACHER */
@@ -187,7 +189,6 @@ class SystemController extends Controller
                         }
                         $option_index+=4;
                     }
-
                 return redirect()->back()->with('success','تم عمل اختبار جديد بنجاح ');
         }
 
