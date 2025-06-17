@@ -87,11 +87,12 @@ class SystemController extends Controller
         -> where('subject',$subject)->first();
         $quiz=Quiz::where('teacher_id',$teacher->id)->first();
         $question=Question::where('quiz_id',$quiz->id)->get();
+        $options=[];
+
         foreach($question as $q){
-            $options=Option::where('question_id',$q->id)->get();
+            $options[$q->id]=Option::where('question_id',$q->id)->get();
         }
         return view('student.show_content_quiz',['question'=>$question,'options'=>$options]);
-
     }
 
 

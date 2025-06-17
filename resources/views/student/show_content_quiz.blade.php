@@ -19,7 +19,7 @@
             <div class="mb-6">
                 <p class="font-semibold text-lg mb-2">{{$Q->title}}</p>
                 <div class="space-y-2">
-                    @foreach ($options as $option)
+                    @foreach ($options[$Q->id] as $option)
                             <label class="block">
                                 <input type="radio" name="answers[1]" value="option_1" class="mr-2"> {{$option->option_title}}
                             </label>
