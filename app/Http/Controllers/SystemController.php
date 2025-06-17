@@ -67,22 +67,32 @@ class SystemController extends Controller
         $homeworks=Homework::where('teacher_id',$teacher->id)->get();
         return view('student.show_homework',['subject'=>$subject,
         'class'=>$class,
-        'homeworks'=>$homeworks,'time'=>$time]);
+        'homeworks'=>$homeworks,
+        'time'=>$time]);
     }
     public function show_student_quizzes($class,$subject){
-        $time=Carbon::now('africa/cairo');
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
-        $quiz=Quiz::where('teacher_id',$teacher->id)->get();
+        $quiz=Quiz::where('teacher_id',$teacher->id)->first();
+        // $num_questions=Question::where('quiz_id',$quiz->id)->count();
         return view('student.show_quiz',['subject'=>$subject,
                                         'class'=>$class,
                                         'quiz'=>$quiz,
+                                        // 'num_questions'=>$num_questions,
                                     ]);
     }
 
-        public function show_content_quiz(){
-            return view('student.show_content_quiz');
+        public function show_content_quiz($class,$subject){
+        $teacher=Teacher::where('class',$class)
+        -> where('subject',$subject)->first();
+        $quiz=Quiz::where('teacher_id',$teacher->id)->first();
+        $question=Question::where('quiz_id',$quiz->id)->get();
+        foreach($question as $key=>$q){
+            $options=Option::where('question_id',$q->id)->get();
+            return view('student.show_content_quiz',['question'=>$question,'options'=>$options]);
         }
+
+    }
 
 
     /*  TEACHER */

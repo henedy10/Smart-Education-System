@@ -16,22 +16,26 @@
 
   <!-- ✅ قائمة الواجبات -->
   <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
-    @foreach ($homeworks as $homework )
-    <div class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition border-r-4 border-yellow-500">
-        <div class="flex items-center gap-2 text-yellow-600 mb-2">
-            <i data-lucide="clipboard-edit" class="w-5 h-5"></i>
-            <h2 class="text-lg font-semibold">{{$homework->title_homework}}</h2>
+    @if ($homeworks->isempty())
+                <h2 class="text-lg text-red-700">  * لا يوجد واجبات حاليا  </h2>
+    @else
+        @foreach ($homeworks as $homework )
+        <div class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition border-r-4 border-yellow-500">
+            <div class="flex items-center gap-2 text-yellow-600 mb-2">
+                <i data-lucide="clipboard-edit" class="w-5 h-5"></i>
+                <h2 class="text-lg font-semibold">{{$homework->title_homework}}</h2>
 
+            </div>
+        <p class="text-sm text-gray-700 mb-4">{{$homework->content_homework}}</p>
+        <p class="text-xs text-gray-500 mb-3">تاريخ التسليم: {{$homework->deadline}}</p>
+        <a href="{{asset('storage/'.$homework->file_homework)}}" download class="bg-gray-300 text-white px-3 py-1 rounded hover:bg-gray-400 text-sm">تحميل</a>
+        <a href="{{asset('storage/'.$homework->file_homework)}}" target="_blank" class="bg-green-300 text-white px-3 py-1 rounded hover:bg-green-400 text-sm">مشاهده</a>
+        @if ($time<=$homework->deadline)
+        <a href="#" class="bg-yellow-600 text-white px-4 py-1 rounded hover:bg-yellow-500 text-sm">رفع الواجب</a>
+        @endif
         </div>
-    <p class="text-sm text-gray-700 mb-4">{{$homework->content_homework}}</p>
-    <p class="text-xs text-gray-500 mb-3">تاريخ التسليم: {{$homework->deadline}}</p>
-    <a href="{{asset('storage/'.$homework->file_homework)}}" download class="bg-gray-300 text-white px-3 py-1 rounded hover:bg-gray-400 text-sm">تحميل</a>
-    <a href="{{asset('storage/'.$homework->file_homework)}}" target="_blank" class="bg-green-300 text-white px-3 py-1 rounded hover:bg-green-400 text-sm">مشاهده</a>
-    @if ($time<=$homework->deadline)
-    <a href="#" class="bg-yellow-600 text-white px-4 py-1 rounded hover:bg-yellow-500 text-sm">رفع الواجب</a>
+        @endforeach
     @endif
-    </div>
-    @endforeach
 
   </div>
 @endsection
