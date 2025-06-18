@@ -74,11 +74,11 @@ class SystemController extends Controller
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
         $quiz=Quiz::where('teacher_id',$teacher->id)->first();
-        // $num_questions=Question::where('quiz_id',$quiz->id)->count();
+        $num_questions=Question::where('quiz_id',$quiz->id)->count();
         return view('student.show_quiz',['subject'=>$subject,
                                         'class'=>$class,
                                         'quiz'=>$quiz,
-                                        // 'num_questions'=>$num_questions,
+                                        'num_questions'=>$num_questions,
                                     ]);
     }
 
@@ -93,6 +93,11 @@ class SystemController extends Controller
             $options[$q->id]=Option::where('question_id',$q->id)->get();
         }
         return view('student.show_content_quiz',['question'=>$question,'options'=>$options]);
+    }
+
+    public function store_student_answers(){
+        $options=request()->answer;
+        return $options;
     }
 
 

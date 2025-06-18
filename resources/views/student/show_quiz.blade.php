@@ -20,7 +20,7 @@
             <li class="bg-gray-50 p-4 rounded shadow flex justify-between items-center">
                 <div>
                     <h2 class="text-lg font-semibold">{{$quiz->title}}</h2>
-                    <p class="text-sm text-gray-600">عدد الأسئلة : </p>
+                    <p class="text-sm text-gray-600">عدد الأسئلة :{{$num_questions}} </p>
                     <p class="text-sm text-gray-600">الوقت : {{$quiz->duration}}</p>
                 </div>
                 <a href="{{route('show_content_quiz',[$class,$subject])}}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
