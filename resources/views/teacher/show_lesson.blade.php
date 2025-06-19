@@ -50,16 +50,15 @@
             <table class="w-full text-right border-collapse">
                 <thead>
                     <tr class="bg-gray-200 text-sm">
-                        <th class="p-2 border">#</th>
                         <th class="p-2 border">العنوان</th>
                         <th class="p-2 border">التاريخ</th>
                         <th class="p-2 border">الملف</th>
                     </tr>
                 </thead>
                 <tbody>
+
                     @foreach ($lessons as $lesson )
                         <tr>
-                        <td class="border p-2">{{$lesson->id}}</td>
                         <td class="border p-2">{{$lesson->title_lesson}}</td>
                         <td class="border p-2">{{$lesson->date_lesson}}</td>
                         <td class="border p-2 text-blue-600"><a href="{{asset('storage/'.$lesson->file_lesson)}}"  download class="hover:underline">تحميل</a></td>

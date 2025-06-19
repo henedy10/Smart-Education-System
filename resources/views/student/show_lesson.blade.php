@@ -16,6 +16,9 @@
 
   <!-- ✅ محتوى المحاضرات -->
   <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
+    @if (is_null($lessons))
+            <h2 class="text-lg text-red-700">  * لا توجد محاضرات حاليا  </h2>
+    @else
         @foreach ($lessons as $lesson )
             <!-- 🧪 محاضرة واحدة -->
             <div class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition border-r-4 border-blue-500">
@@ -29,6 +32,7 @@
             </div>
             </div>
         @endforeach
+    @endif
   </div>
 @endsection
 
