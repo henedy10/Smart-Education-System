@@ -12,7 +12,7 @@ Route::get('/show/content/{class}/{subject}/lessons',[SystemController::class,'s
 Route::get('/show/content/{class}/{subject}/homeworks',[SystemController::class,'show_student_homework'])->name('show_student_homework');
 Route::get('/show/quiz/{class}/{subject}',[SystemController::class,'show_student_quizzes'])->name('show_student_quizzes');
 Route::get('/show/{class}/{subject}/content/quiz',[SystemController::class,'show_content_quiz'])->name('show_content_quiz');
-Route::post('/store/students/answers',[SystemController::class,'store_student_answers'])->name('store_student_answers');
+Route::post('/store/{class}/{subject}/student/answers',[SystemController::class,'store_student_answers'])->name('store_student_answers');
 Route::get('/log_out',[SystemController::class,'log_out_student'])->name('log_out_student');
 
 Route::get('/show/teacher',[SystemController::class,'show_teacher'])->name('show_teacher');

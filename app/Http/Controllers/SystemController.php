@@ -9,6 +9,7 @@ use App\Models\Option;
 use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\Student;
+use App\Models\StudentOption;
 use App\Models\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
@@ -74,12 +75,19 @@ class SystemController extends Controller
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
         $quiz=Quiz::where('teacher_id',$teacher->id)->first();
-        $num_questions=Question::where('quiz_id',$quiz->id)->count();
-        return view('student.show_quiz',['subject'=>$subject,
-                                        'class'=>$class,
-                                        'quiz'=>$quiz,
-                                        'num_questions'=>$num_questions,
-                                    ]);
+        if(!is_null($quiz)){
+            $num_questions=Question::where('quiz_id',$quiz->id)->count();
+            return view('student.show_quiz',['subject'=>$subject,
+                                            'class'=>$class,
+                                            'quiz'=>$quiz,
+                                            'num_questions'=>$num_questions,
+                                        ]);
+        }else{
+            return view('student.show_quiz',['subject'=>$subject,
+                                            'class'=>$class,
+                                            'quiz'=>$quiz,
+                                        ]);
+        }
     }
 
         public function show_content_quiz($class,$subject){
@@ -92,12 +100,39 @@ class SystemController extends Controller
         foreach($question as $q){
             $options[$q->id]=Option::where('question_id',$q->id)->get();
         }
-        return view('student.show_content_quiz',['question'=>$question,'options'=>$options]);
+        return view('student.show_content_quiz',['question'=>$question,
+                                                'options'=>$options,
+                                                'class'=>$class,
+                                                'subject'=>$subject]);
     }
 
-    public function store_student_answers(){
-        $options=request()->answer;
-        return $options;
+    //store of selection of student
+
+    public function store_student_answers($class,$subject){
+        $check_selection=[];
+        $user= User::where('name',session('name'))->first();
+        $student=Student::where('user_id',$user->id)->first();
+        $teacher=Teacher::where('class',$class)
+        -> where('subject',$subject)->first();
+        $quiz=Quiz::where('teacher_id',$teacher->id)->first();
+        $question=Question::where('quiz_id',$quiz->id)->get();
+        foreach($question as $Q){
+            $options=request()->answer;
+            if($Q->correct_option==$options[$Q->id]){
+                $check_selection[$Q->id]=true;
+            }else{
+                $check_selection[$Q->id]=false;
+            }
+            $store_student_option=StudentOption::create([
+                    'student_id'=> $student->id,
+                    'quiz_id'=> $quiz->id,
+                    'question_id'=>$Q->id,
+                    'select_option'=>$options[$Q->id],
+                    'status_option'=> $check_selection[$Q->id],
+            ]);
+        }
+
+        return view('student.show_content',['class'=>$class,'subject'=>$subject]);
     }
 
 

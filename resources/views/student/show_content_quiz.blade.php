@@ -14,7 +14,7 @@
       <span class="text-sm text-gray-600">الوقت المتبقي: <span id="timer" class="font-bold text-red-600">10:00</span></span>
     </div>
 
-    <form action="{{route('store_student_answers')}}" method="POST">
+    <form action="{{route('store_student_answers',[$class,$subject])}}" method="POST">
         @csrf
         @foreach ($question as $Q)
             <div class="mb-6">

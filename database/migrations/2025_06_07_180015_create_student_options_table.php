@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('student_option', function (Blueprint $table) {
+        Schema::create('student_options', function (Blueprint $table) {
             $table->id();
 
             // foreign key
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->unsignedBigInteger('question_id');
             $table->foreign('question_id')->references('id')->on('questions');
 
-            $table->enum('select_option',['الإجابة 1','الإجابة 2','الإجابة 3','الإجابة 4']);
+            $table->enum('select_option',['الإجابة 1','الإجابة 2','الإجابة 3','الإجابة 4'])->nullable();
             $table->boolean('status_option');
             $table->timestamps();
         });
@@ -37,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('student_option');
+        Schema::dropIfExists('student_options');
     }
 };
