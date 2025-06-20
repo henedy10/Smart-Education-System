@@ -4,6 +4,7 @@ use App\Http\Controllers\SystemController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(SystemController::class)->group(function (){
+
     Route::view('/','index');
 
     // Routes of Student
@@ -13,6 +14,7 @@ Route::controller(SystemController::class)->group(function (){
     Route::get('/show/content/{class}/{subject}','show_student_content')->name('show_student_content');
     Route::get('/show/content/{class}/{subject}/lessons','show_student_lesson')->name('show_student_lesson');
     Route::get('/show/content/{class}/{subject}/homeworks','show_student_homework')->name('show_student_homework');
+    Route::get('/show/content/{class}/{subject}/homeworks/upload','upload_homework')->name('upload_student_homework');
     Route::get('/show/quiz/{class}/{subject}','show_student_quizzes')->name('show_student_quizzes');
     Route::get('/show/{class}/{subject}/content/quiz','show_content_quiz')->name('show_content_quiz');
     Route::post('/store/{class}/{subject}/student/answers','store_student_answers')->name('store_student_answers');

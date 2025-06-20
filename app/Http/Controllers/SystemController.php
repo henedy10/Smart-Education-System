@@ -142,6 +142,9 @@ class SystemController extends Controller
         return view('student.show_content',['class'=>$class,'subject'=>$subject]);
     }
 
+    public function upload_homework($class,$subject){
+        return view('student.show_homework_uploading',['class'=>$class,'subject'=>$subject]);
+    }
 
     /*  TEACHER */
     public function show_teacher(){

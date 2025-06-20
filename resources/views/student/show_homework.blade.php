@@ -31,7 +31,7 @@
         <a href="{{asset('storage/'.$homework->file_homework)}}" download class="bg-gray-300 text-white px-3 py-1 rounded hover:bg-gray-400 text-sm">تحميل</a>
         <a href="{{asset('storage/'.$homework->file_homework)}}" target="_blank" class="bg-green-300 text-white px-3 py-1 rounded hover:bg-green-400 text-sm">مشاهده</a>
         @if ($time<=$homework->deadline)
-        <a href="#" class="bg-yellow-600 text-white px-4 py-1 rounded hover:bg-yellow-500 text-sm">رفع الواجب</a>
+        <a href="{{route('upload_student_homework',[$class,$subject])}}" class="bg-yellow-600 text-white px-4 py-1 rounded hover:bg-yellow-500 text-sm">رفع الواجب</a>
         @endif
         </div>
         @endforeach
