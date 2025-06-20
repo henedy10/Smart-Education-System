@@ -16,19 +16,22 @@
         @if (is_null($quiz))
                 <h2 class="text-lg text-red-700">  * لا يوجد اختبارات حاليا  </h2>
         @else
-        <ul class="space-y-4">
-            <li class="bg-gray-50 p-4 rounded shadow flex justify-between items-center">
-                <div>
-                    <h2 class="text-lg font-semibold">{{$quiz->title}}</h2>
-                    <p class="text-sm text-gray-600">عدد الأسئلة :{{$num_questions}} </p>
-                    <p class="text-sm text-gray-600">الوقت : {{$quiz->duration}}</p>
-                </div>
-                <a href="{{route('show_content_quiz',[$class,$subject])}}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
-                ابدأ الاختبار
-                </a>
-            </li>
-        </ul>
-
+            @if ($currentTime <= $startTime->copy()->addMinutes(2) && $currentTime >= $startTime)
+                <ul class="space-y-4">
+                    <li class="bg-gray-50 p-4 rounded shadow flex justify-between items-center">
+                        <div>
+                            <h2 class="text-lg font-semibold">{{$quiz->title}}</h2>
+                            <p class="text-sm text-gray-600">عدد الأسئلة :{{$num_questions}} </p>
+                            <p class="text-sm text-gray-600">الوقت : {{$quiz->duration}}</p>
+                        </div>
+                        <a href="{{route('show_content_quiz',[$class,$subject])}}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+                        ابدأ الاختبار
+                        </a>
+                    </li>
+                </ul>
+            @else
+                    <h2 class="text-lg text-red-700">  * لا يوجد اختبارات حاليا  </h2>
+            @endif
         @endif
     </div>
 </body>

@@ -74,13 +74,19 @@ class SystemController extends Controller
     public function show_student_quizzes($class,$subject){
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
-        $quiz=Quiz::where('teacher_id',$teacher->id)->first();
+        $quiz=Quiz::where('teacher_id',$teacher->id)
+        ->orderBy('start_time','desc')
+        ->first();
+        $startTime = Carbon::parse($quiz->start_time,'africa/cairo');
+        $currentTime = Carbon::now('africa/cairo');
         if(!is_null($quiz)){
             $num_questions=Question::where('quiz_id',$quiz->id)->count();
             return view('student.show_quiz',['subject'=>$subject,
                                             'class'=>$class,
                                             'quiz'=>$quiz,
                                             'num_questions'=>$num_questions,
+                                            'currentTime'=>$currentTime,
+                                            'startTime'=>$startTime,
                                         ]);
         }else{
             return view('student.show_quiz',['subject'=>$subject,
@@ -91,6 +97,7 @@ class SystemController extends Controller
     }
 
         public function show_content_quiz($class,$subject){
+
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
         $quiz=Quiz::where('teacher_id',$teacher->id)->first();
@@ -215,6 +222,7 @@ class SystemController extends Controller
                 $option_title=request()->option_title;
 
                 $option_index=0;
+
                 $Quiz=Quiz::create([
                         'teacher_id'=>$TeacherId,
                         'title'=>$quiz_title,
