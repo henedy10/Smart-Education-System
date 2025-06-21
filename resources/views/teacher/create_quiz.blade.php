@@ -79,15 +79,21 @@
                 </div>
               </div>
 
-              <div class="mt-3">
+            <div class="mt-3">
                 <label class="block text-sm font-medium">الإجابة الصحيحة</label>
                 <select class="w-full p-2 rounded border" name="correct_option[]">
-                  <option value="الإجابة 1">الإجابة 1</option>
-                  <option value="الإجابة 2">الإجابة 2</option>
-                  <option value="الإجابة 3">الإجابة 3</option>
-                  <option  value="الإجابة 4">الإجابة 4</option>
+                    <option value="الإجابة 1">الإجابة 1</option>
+                    <option value="الإجابة 2">الإجابة 2</option>
+                    <option value="الإجابة 3">الإجابة 3</option>
+                    <option  value="الإجابة 4">الإجابة 4</option>
                 </select>
-              </div>
+            </div>
+
+            <!-- درجة كل سؤال  -->
+            <div class="mt-4">
+                <label class="block mb-2 text-sm font-medium text-gray-700">درجة السؤال</label>
+                <input type="number" name="question_mark[]" min="1" placeholder="مثال: 2" class="w-full p-3 rounded-lg border border-gray-300" />
+            </div>
 
               <!-- زر حذف السؤال -->
               <button type="button" onclick="removeQuestion(this)" class="mt-4 px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600">

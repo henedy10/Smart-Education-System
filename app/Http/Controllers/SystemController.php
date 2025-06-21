@@ -214,7 +214,9 @@ class SystemController extends Controller
                     'option_title'=>'required|array',
                     'option_title.*'=>'required|string',
                     'correct_option'=>'required|array',
-                    'correct_option.*'=>'required'
+                    'correct_option.*'=>'required',
+                    'question_mark'=>'required|array',
+                    'question_mark.*'=>'required|integer',
                 ]);
                 $quiz_title=request()->quiz_title;
                 $quiz_date=request()->quiz_date;
@@ -223,7 +225,7 @@ class SystemController extends Controller
                 $question_title=request()->question_title;
                 $correct_option=request()->correct_option;
                 $option_title=request()->option_title;
-
+                $question_mark=request()->question_mark;
                 $option_index=0;
 
                 $Quiz=Quiz::create([
@@ -238,6 +240,7 @@ class SystemController extends Controller
                     $question=Question::create([
                             'quiz_id'=>$Quiz->id,
                             'title'=>$question_title[$i],
+                            'question_mark'=>$question_mark[$i],
                             'correct_option'=>$correct_option[$i],
                         ]);
                         for($j=$option_index;$j<=$option_index+3;$j++){
