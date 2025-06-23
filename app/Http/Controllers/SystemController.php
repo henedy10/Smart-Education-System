@@ -271,6 +271,9 @@ class SystemController extends Controller
     public function create_teacher_quiz($TeacherId){
         return view('teacher.create_quiz',['TeacherId'=>$TeacherId]);
 }
+    public function show_results($TeacherId){
+    return view('teacher.show_results',['TeacherId'=>$TeacherId]);
+    }
 
     // تسجيل الخروج لكل من الطالب و المدرس
 
