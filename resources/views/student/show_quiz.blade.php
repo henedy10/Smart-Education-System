@@ -16,7 +16,7 @@
         @if (is_null($quiz))
                 <h2 class="text-lg text-red-700">  * لا يوجد اختبارات حاليا  </h2>
         @else
-            @if ($currentTime <= $startTime->copy()->addMinutes(1) && $currentTime >= $startTime)
+            @if ($currentTime <= $startTime->copy()->addMinutes(0.5) && $currentTime >= $startTime)
                 <ul class="space-y-4">
                     <li class="bg-gray-50 p-4 rounded shadow flex justify-between items-center">
                         <div>
@@ -34,6 +34,11 @@
             @endif
         @endif
     </div>
+    <script>
+        setTimeout(function() {
+            location.reload();
+        }, 3000);
+    </script>
 </body>
 
 @endsection

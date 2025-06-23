@@ -104,6 +104,7 @@ class SystemController extends Controller
         -> where('subject',$subject)->first();
         $quiz=Quiz::where('teacher_id',$teacher->id)->first();
         $question=Question::where('quiz_id',$quiz->id)->get();
+        $timer=$quiz->duration;
         $options=[];
 
         foreach($question as $q){
@@ -112,7 +113,8 @@ class SystemController extends Controller
         return view('student.show_content_quiz',['question'=>$question,
                                                 'options'=>$options,
                                                 'class'=>$class,
-                                                'subject'=>$subject]);
+                                                'subject'=>$subject,
+                                                'timer'=>$timer]);
     }
 
     //store of selection of student

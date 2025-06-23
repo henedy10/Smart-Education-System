@@ -11,7 +11,7 @@
   <div class="max-w-4xl mx-auto p-6 mt-10 bg-white rounded-xl shadow-md">
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-bold text-blue-600">الأسئلة - اختبار: <span class="text-gray-800">الرياضيات</span></h1>
-      <span class="text-sm text-gray-600">الوقت المتبقي: <span id="timer" class="font-bold text-red-600">10:00</span></span>
+      <span class="text-sm text-gray-600">الوقت المتبقي: <span id="timer" class="font-bold text-red-600">{{$timer}}:00</span></span>
     </div>
 
     <form action="{{route('store_student_answers',[$class,$subject])}}" method="POST">
@@ -37,7 +37,7 @@
 
   <!-- عداد تنازلي بسيط -->
   <script>
-    let duration = 10 * 60; // 30 دقيقة
+    let duration = {{$timer}} * 60; // 30 دقيقة
     const timerDisplay = document.getElementById('timer');
 
     setInterval(() => {
