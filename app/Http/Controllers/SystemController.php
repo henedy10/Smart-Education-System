@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 use Ramsey\Uuid\Codec\TimestampLastCombCodec;
 use Illuminate\Support\Facades\Hash;
 
+use function PHPUnit\Framework\isEmpty;
+
 class SystemController extends Controller
 {
     public function login(){
@@ -77,9 +79,9 @@ class SystemController extends Controller
         $quiz=Quiz::where('teacher_id',$teacher->id)
         ->orderBy('start_time','desc')
         ->first();
-        $startTime = Carbon::parse($quiz->start_time,'africa/cairo');
-        $currentTime = Carbon::now('africa/cairo');
         if(!is_null($quiz)){
+            $startTime = Carbon::parse($quiz->start_time,'africa/cairo');
+            $currentTime = Carbon::now('africa/cairo');
             $num_questions=Question::where('quiz_id',$quiz->id)->count();
             return view('student.show_quiz',['subject'=>$subject,
                                             'class'=>$class,
@@ -125,7 +127,7 @@ class SystemController extends Controller
         $question=Question::where('quiz_id',$quiz->id)->get();
         foreach($question as $Q){
             $options=request()->answer;
-            if($Q->correct_option==$options[$Q->id]){
+            if(isset($options[$Q->id])&&$Q->correct_option==$options[$Q->id]){
                 $check_selection[$Q->id]=true;
             }else{
                 $check_selection[$Q->id]=false;
@@ -134,7 +136,7 @@ class SystemController extends Controller
                     'student_id'=> $student->id,
                     'quiz_id'=> $quiz->id,
                     'question_id'=>$Q->id,
-                    'select_option'=>$options[$Q->id],
+                    'select_option'=>$options[$Q->id]??null,
                     'status_option'=> $check_selection[$Q->id],
             ]);
         }
