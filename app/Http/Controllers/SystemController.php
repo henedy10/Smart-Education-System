@@ -270,13 +270,16 @@ class SystemController extends Controller
         $lessons=Lesson::where('teacher_id',$TeacherId)->get();
         return view('teacher.show_lesson',['TeacherId'=>$TeacherId,'lessons'=>$lessons]);
     }
-    public function show_teacher_homeworks($TeacherId){
+    public function create_teacher_homeworks($TeacherId){
         $homeworks=Homework::where('teacher_id',$TeacherId)->get();
-        return view('teacher.show_homework',['TeacherId'=>$TeacherId,'homeworks'=>$homeworks]);
+        return view('teacher.create_homework',['TeacherId'=>$TeacherId,'homeworks'=>$homeworks]);
+    }
+    public function choose_action_homework($TeacherId){
+        return view('teacher.choose_action_homework',['TeacherId'=>$TeacherId]);
     }
     public function create_teacher_quiz($TeacherId){
         return view('teacher.create_quiz',['TeacherId'=>$TeacherId]);
-}
+    }
     public function show_results($TeacherId){
     return view('teacher.show_results',['TeacherId'=>$TeacherId]);
     }

@@ -28,10 +28,10 @@
             </div>
         <p class="text-sm text-gray-700 mb-4">{{$homework->content_homework}}</p>
         <p class="text-xs text-gray-500 mb-3">تاريخ التسليم: {{$homework->deadline}}</p>
-        <a href="{{asset('storage/'.$homework->file_homework)}}" download class="bg-gray-300 text-white px-3 py-1 rounded hover:bg-gray-400 text-sm">تحميل</a>
-        <a href="{{asset('storage/'.$homework->file_homework)}}" target="_blank" class="bg-green-300 text-white px-3 py-1 rounded hover:bg-green-400 text-sm">مشاهده</a>
+        <a href="{{asset('storage/'.$homework->file_homework)}}" download class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-500 text-sm">تحميل</a>
+        <a href="{{asset('storage/'.$homework->file_homework)}}" target="_blank" class="bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-500 text-sm">مشاهده</a>
         @if ($time<=$homework->deadline)
-        <a href="{{route('upload_student_homework',[$class,$subject])}}" class="bg-yellow-600 text-white px-4 py-1 rounded hover:bg-yellow-500 text-sm">رفع الواجب</a>
+        <a href="{{route('upload_student_homework',[$class,$subject])}}" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-500 text-sm">رفع الواجب</a>
         @endif
         </div>
         @endforeach

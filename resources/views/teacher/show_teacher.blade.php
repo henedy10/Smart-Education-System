@@ -24,7 +24,7 @@
 
             <nav class="space-y-2">
                 <a href="{{route('show_teacher_lessons',$TeacherId)}}" class="block py-2 px-4 rounded hover:bg-blue-100 text-gray-700"><i class="fas fa-chalkboard-teacher mr-2"></i> محاضراتي</a>
-                <a href="{{route('show_teacher_homeworks',$TeacherId)}}" class="block py-2 px-4 rounded hover:bg-green-100 text-gray-700"><i class="fas fa-tasks mr-2"></i> الواجبات</a>
+                <a href="{{route('choose_action_homework',$TeacherId)}}" class="block py-2 px-4 rounded hover:bg-green-100 text-gray-700"><i class="fas fa-tasks mr-2"></i> الواجبات</a>
                 <a href="{{route('create_teacher_quiz',$TeacherId)}}" class="block py-2 px-4 rounded hover:bg-yellow-100 text-gray-700"><i class="fas fa-file-alt mr-2"></i> الامتحانات</a>
                 <a href="{{route('show_results',$TeacherId)}}" class="block py-2 px-4 rounded hover:bg-red-200 text-gray-700"><i class="fas fa-chart-line mr-2"></i> النتائج</a>
             </nav>
@@ -36,7 +36,10 @@
                 <i class="fas fa-bars"></i> القائمة
             </button>
             <div class="flex justify-between bg-white shadow rounded-lg p-4 mb-6">
-                <span class="text-lg font-semibold text-gray-800">👋 مرحبًا، <span id="studentName">{{$teacher->user->name}}</span></span>
+                <div class="flex items-center gap-3">
+                    <i data-lucide="user" class="w-6 h-6 text-blue-600"></i>
+                    <span class="text-lg font-semibold text-gray-800">👋 مرحبًا، <span id="studentName">{{$teacher->user->name}}</span></span>
+                </div>
                 <form action="{{route("log_out_student")}}" method="GET">
                     @csrf
                     <button type="submit" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700"> تسجيل الخروج</button>
