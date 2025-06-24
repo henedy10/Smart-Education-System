@@ -3,11 +3,11 @@
 @section('title')  الحصص @endsection
 
 @section('content')
-<body class="bg-gray-100 min-h-screen">
-    <div class="max-w-5xl mx-auto py-10 px-4">
-        <div style="display: flex; justify-content:space-between">
-            <h1 class="text-2xl font-bold text-blue-600 mb-6">إدارة المحاضرات</h1>
-            <a href="{{route('show_teacher')}}" class="text-2xl font-medium text-red-600 mb-6">السابق -></a>
+<body class=" min-h-screen">
+    <div class="max-w-5xl bg-gray-200  mx-auto py-10 px-4">
+        <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
+            <h1 class="text-lg font-bold">إدارة المحاضرات</h1>
+            <a href="{{route('show_teacher')}}" class="text-white bg-green-600 rounded px-6 py-2 hover:bg-green-700">الصفحة السابقة</a>
         </div>
 
         <!-- رفع محاضرة جديدة -->
@@ -61,7 +61,7 @@
                         <tr>
                         <td class="border p-2">{{$lesson->title_lesson}}</td>
                         <td class="border p-2">{{$lesson->date_lesson}}</td>
-                        <td class="border p-2 text-blue-600"><a href="{{asset('storage/'.$lesson->file_lesson)}}"  download class="hover:underline">تحميل</a></td>
+                        <td class="border p-2 text-blue-600"><a href="{{asset('storage/'.$lesson->file_lesson)}}"  download class="bg-red-500 rounded text-white font-bold py-1 px-4 no-underline ">تحميل</a></td>
                         </tr>
                     @endforeach
                 </tbody>

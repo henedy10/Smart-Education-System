@@ -4,9 +4,9 @@
 @section('title') الواجبات @endsection
 
 @section('content')
-<body class="bg-gray-100 p-6 font-sans">
+<body class=" min-h-screen ">
 
-    <div class="max-w-4xl mx-auto bg-white shadow-md rounded-xl p-6">
+    <div class="max-w-5xl bg-gray-200  mx-auto py-10 px-4">
                 @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -21,10 +21,11 @@
                 {{ session('success') }}
             </div>
         @endif
-    <div style="display: flex; justify-content:space-between">
+    <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
 
-        <h1 class="text-2xl font-bold text-blue-600 mb-6">إدارة الواجبات</h1>
-        <a href="{{route('show_teacher')}}" class="text-2xl font-medium text-red-600 mb-6">السابق -></a>
+        <h1 class="text-lg font-bold text-gray-800">إدارة الواجبات</h1>
+        <a href="{{route('show_teacher')}}" class="text-white bg-green-600 rounded px-6 py-2 hover:bg-green-700">الصفحة السابقة</a>
+
     </div>
 
         <!-- فورم رفع واجب جديد -->
@@ -62,7 +63,6 @@
         <table class="w-full text-sm text-right table-auto border-collapse">
             <thead class="bg-gray-200 text-gray-700">
                 <tr>
-                    <th class="p-3 border">#</th>
                     <th class="p-3 border">العنوان</th>
                     <th class="p-3 border">المطلوب</th>
                     <th class="p-3 border">تاريخ الرفع</th>
@@ -72,13 +72,12 @@
             <tbody class="bg-white">
                 @foreach ( $homeworks as $homework )
                 <tr>
-                    <td class="p-3 border">{{$homework->id}}</td>
                     <td class="p-3 border">{{$homework->title_homework}}</td>
                     <td class="p-3 border">{{$homework->content_homework}}</td>
                     <td class="p-3 border">{{$homework->updated_at}}</td>
-                    <td class="p-3 border text-blue-600 underline">
-                        <a href="{{asset('storage/'.$homework->file_homework)}}" download>تحميل</a>
-                        <a href="{{asset('storage/'.$homework->file_homework)}}" target="_blank" class="mr-2">مشاهدة</a>
+                    <td class="p-3 border text-blue-600 ">
+                        <a href="{{asset('storage/'.$homework->file_homework)}}" class="bg-red-500 rounded text-white font-bold py-2 px-4  " download>تحميل</a>
+                        <a href="{{asset('storage/'.$homework->file_homework)}}" target="_blank" class="mr-2 bg-green-500 text-white font-bold py-2 px-4 rounded  ">مشاهدة</a>
                     </td>
                 </tr>
                 @endforeach

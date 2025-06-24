@@ -3,7 +3,7 @@
 @section('title') الاختبارات @endsection
 
 @section('content')
-<body class="bg-gray-100 font-sans">
+<body class="min-h-screen">
                     @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -18,11 +18,11 @@
                 {{ session('success') }}
             </div>
         @endif
-  <div class="max-w-4xl mx-auto p-6">
+  <div class="max-w-5xl bg-gray-200  mx-auto py-10 px-4">
     <div class="bg-white p-6 rounded-2xl shadow-md">
-        <div style="display: flex; justify-content:space-between">
-            <h1 class="text-2xl font-bold text-blue-600 mb-6">إنشاء اختبار جديد</h1>
-            <a href="{{route('show_teacher')}}" class="text-2xl font-medium text-red-600 mb-6">السابق -></a>
+        <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
+            <h1 class="text-lg font-bold text-gray-800">إنشاء اختبار جديد</h1>
+            <a href="{{route('show_teacher')}}" class="text-white bg-green-600 rounded px-6 py-2 hover:bg-green-700">الصفحة السابقة</a>
         </div>
 
       <form method="POST" action="{{route('store_teacher',$TeacherId)}}">
@@ -96,7 +96,7 @@
             </div>
 
               <!-- زر حذف السؤال -->
-              <button type="button" onclick="removeQuestion(this)" class="mt-4 px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600">
+              <button type="button" onclick="removeQuestion(this)" class="mt-4 px-3 py-2 bg-red-500 text-white  rounded hover:bg-red-600">
                  حذف السؤال
               </button>
             </div>

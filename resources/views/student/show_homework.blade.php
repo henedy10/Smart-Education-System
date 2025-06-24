@@ -11,7 +11,7 @@
       <i data-lucide="file-text" class="w-6 h-6 text-red-600"></i>
       <span class="text-lg font-semibold text-gray-800">📚 الواجبات الدراسية</span>
     </div>
-    <a href="{{route('show_student_content',[$class,$subject])}}" class="text-sm text-blue-600 hover:underline">السابق -></a>
+    <a href="{{route('show_student_content',[$class,$subject])}}" class="text-white bg-green-600 rounded px-6 py-2 hover:bg-green-700">الصفحة السابقة</a>
   </div>
 
   <!-- ✅ قائمة الواجبات -->

@@ -4,19 +4,18 @@
 
 @section('content')
 
-<body class="bg-gray-100 font-sans">
+<body class="min-h-screen">
 
-  <div class="container mx-auto p-6">
+  <div class="container mx-auto p-6 bg-gray-100">
     <div class="bg-white rounded-xl shadow-md p-6">
 
-    <div style="display: flex;justify-content:space-between" class="mb-5 mt-1.5" >
-      <h2 class="text-2xl font-bold text-blue-600 mb-6 text-center">نتائج الطلاب</h2>
-      <a href="{{route('show_teacher')}}" class="text-2xl font-medium text-red-600 mb-6">السابق -></a>
+    <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
+      <h2 class="text-lg font-bold text-gray-800">نتائج الطلاب</h2>
+      <a href="{{route('show_teacher')}}" class="text-white bg-green-600 rounded px-6 py-2 hover:bg-green-700">الصفحة السابقة</a>
     </div>
       <!-- ✅ فلتر حسب الاختبار -->
-      <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+      <div class="flex flex-col sm:flex-row  items-center gap-4 mb-6">
         <div>
-          <label for="quizFilter" class="block text-sm font-medium text-gray-700 mb-1">اختيار الاختبار:</label>
           <select id="quizFilter" class="border border-gray-300 rounded p-2 w-full sm:w-64">
             <option value="all">كل الاختبارات</option>
             <option value="امتحان الفصل الأول">امتحان الفصل الأول</option>
