@@ -9,7 +9,7 @@
     <div class="flex items-center gap-3">
       <span class="text-lg font-semibold text-gray-800"> لوحة التحكم</span>
     </div>
-    <a href="{{route('show_student')}}" class="text-white bg-green-600 rounded px-6 py-2 hover:bg-green-700">الصفحة السابقة</a>
+    <a href="{{route('show_student')}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
   </div>
   <!-- ✅ Dashboard Content -->
   <div class="max-w-6xl mx-auto">
@@ -37,13 +37,13 @@
       </div>
 
       <!-- 📝 الامتحانات -->
-      <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition border-t-4 border-red-500">
-        <div class="flex items-center gap-3 mb-4 text-red-600">
+      <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition border-t-4 border-green-500">
+        <div class="flex items-center gap-3 mb-4 text-green-600">
           <i data-lucide="edit" class="w-6 h-6"></i>
           <h2 class="text-xl font-semibold">الامتحانات</h2>
         </div>
         <p class="text-sm text-gray-600 mb-4">قم بحل الاختبارات الإلكترونية وتابع تقييمك.</p>
-        <a href="{{route('show_student_quizzes',[$class,$subject])}}" class="inline-block bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-sm">عرض الامتحانات</a>
+        <a href="{{route('show_student_quizzes',[$class,$subject])}}" class="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm">عرض الامتحانات</a>
       </div>
 
     </div>

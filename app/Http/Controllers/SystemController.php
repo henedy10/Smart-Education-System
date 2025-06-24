@@ -104,7 +104,8 @@ class SystemController extends Controller
         -> where('subject',$subject)->first();
         $quiz=Quiz::where('teacher_id',$teacher->id)->first();
         $question=Question::where('quiz_id',$quiz->id)->get();
-        $timer=$quiz->duration;
+        $duration=$quiz->duration;
+        $start_time=$quiz->start_time;
         $options=[];
 
         foreach($question as $q){
@@ -114,7 +115,8 @@ class SystemController extends Controller
                                                 'options'=>$options,
                                                 'class'=>$class,
                                                 'subject'=>$subject,
-                                                'timer'=>$timer]);
+                                                'duration'=>$duration,
+                                                'start_time'=>$start_time]);
     }
 
     //store of selection of student

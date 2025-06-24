@@ -11,10 +11,10 @@
   <div class="max-w-4xl mx-auto p-6 mt-10 bg-white rounded-xl shadow-md">
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-bold text-blue-600">الأسئلة - اختبار: <span class="text-gray-800">الرياضيات</span></h1>
-      <span class="text-sm text-gray-600">الوقت المتبقي: <span id="timer" class="font-bold text-red-600">{{$timer}}:00</span></span>
+      <span class="text-sm text-gray-600">الوقت المتبقي: <span id="timer" class="font-bold text-red-600">{{$duration}}:00</span></span>
     </div>
 
-    <form action="{{route('store_student_answers',[$class,$subject])}}" method="POST">
+    <form action="{{route('store_student_answers',[$class,$subject])}}" method="POST" id="quizForm">
         @csrf
         @foreach ($question as $Q)
             <div class="mb-6">
@@ -37,15 +37,28 @@
 
   <!-- عداد تنازلي بسيط -->
   <script>
-    let duration = {{$timer}} * 60; // 30 دقيقة
-    const timerDisplay = document.getElementById('timer');
+    const startTime = new Date("{{ $start_time }}"); // من Laravel
+    const duration = {{ $duration }}; // بالدقايق
+    const endTime = new Date(startTime.getTime() + duration * 60000);
 
-    setInterval(() => {
-      const minutes = Math.floor(duration / 60);
-      const seconds = duration % 60;
-      timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-      if (duration > 0) duration--;
-    }, 1000);
-  </script>
+    function updateTimer() {
+        const now = new Date();
+        const remaining = Math.max(0, Math.floor((endTime - now) / 1000)); // بالثواني
+
+        const minutes = Math.floor(remaining / 60);
+        const seconds = remaining % 60;
+
+        document.getElementById("timer").innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+        if (remaining <= 0) {
+            clearInterval(timerInterval);
+            alert("انتهى الوقت!");
+            document.getElementById("quizForm").submit(); // يرسل الإجابات
+        }
+    }
+
+    const timerInterval = setInterval(updateTimer, 1000);
+    updateTimer();
+</script>
 </body>
 </html>

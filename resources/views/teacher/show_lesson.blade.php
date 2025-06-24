@@ -7,7 +7,7 @@
     <div class="max-w-5xl bg-gray-200  mx-auto py-10 px-4">
         <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
             <h1 class="text-lg font-bold">إدارة المحاضرات</h1>
-            <a href="{{route('show_teacher')}}" class="text-white bg-green-600 rounded px-6 py-2 hover:bg-green-700">الصفحة السابقة</a>
+            <a href="{{route('show_teacher')}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
         </div>
 
         <!-- رفع محاضرة جديدة -->
@@ -61,7 +61,7 @@
                         <tr>
                         <td class="border p-2">{{$lesson->title_lesson}}</td>
                         <td class="border p-2">{{$lesson->date_lesson}}</td>
-                        <td class="border p-2 text-blue-600"><a href="{{asset('storage/'.$lesson->file_lesson)}}"  download class="bg-red-500 rounded text-white font-bold py-1 px-4 no-underline ">تحميل</a></td>
+                        <td class="border p-2 text-blue-600 text-center"><a href="{{asset('storage/'.$lesson->file_lesson)}}"  download class="bg-green-500 rounded text-white font-bold py-1 px-4 hover:bg-green-600 ">تحميل</a></td>
                         </tr>
                     @endforeach
                 </tbody>

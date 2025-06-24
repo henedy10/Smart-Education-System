@@ -24,7 +24,7 @@
     <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
 
         <h1 class="text-lg font-bold text-gray-800">إدارة الواجبات</h1>
-        <a href="{{route('show_teacher')}}" class="text-white bg-green-600 rounded px-6 py-2 hover:bg-green-700">الصفحة السابقة</a>
+        <a href="{{route('show_teacher')}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
 
     </div>
 
@@ -75,7 +75,7 @@
                     <td class="p-3 border">{{$homework->title_homework}}</td>
                     <td class="p-3 border">{{$homework->content_homework}}</td>
                     <td class="p-3 border">{{$homework->updated_at}}</td>
-                    <td class="p-3 border text-blue-600 ">
+                    <td class="p-3 border text-blue-600  ">
                         <a href="{{asset('storage/'.$homework->file_homework)}}" class="bg-red-500 rounded text-white font-bold py-2 px-4  " download>تحميل</a>
                         <a href="{{asset('storage/'.$homework->file_homework)}}" target="_blank" class="mr-2 bg-green-500 text-white font-bold py-2 px-4 rounded  ">مشاهدة</a>
                     </td>
