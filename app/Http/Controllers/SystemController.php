@@ -193,17 +193,20 @@ class SystemController extends Controller
                 'title_homework'=>'required',
                 'file_homework'=>'required|mimes:pdf,doc,docx,zip,rar,jpg,png|max:2048',
                 'deadline_homework'=>'required',
+                'homework_mark'=>'required',
             ]);
             $path=request()->file('file_homework')->store('homeworks','public');
             $content_homework=request()->content_homework;
             $title_homework=request()->title_homework;
             $deadline_homework=request()->deadline_homework;
+            $homework_mark=request()->homework_mark;
             Homework::create([
                 'teacher_id'=>$TeacherId,
                 'title_homework'=>$title_homework,
                 'file_homework'=>$path,
                 'content_homework'=>$content_homework,
                 'deadline'=>$deadline_homework,
+                'homework_mark'=>$homework_mark,
             ]);
 
             return redirect()->back()->with('success', 'تم رفع الملف بنجاح');
@@ -270,12 +273,19 @@ class SystemController extends Controller
         $lessons=Lesson::where('teacher_id',$TeacherId)->get();
         return view('teacher.show_lesson',['TeacherId'=>$TeacherId,'lessons'=>$lessons]);
     }
+    public function choose_action_homework($TeacherId){
+        return view('teacher.choose_action_homework',['TeacherId'=>$TeacherId]);
+    }
     public function create_teacher_homeworks($TeacherId){
         $homeworks=Homework::where('teacher_id',$TeacherId)->get();
         return view('teacher.create_homework',['TeacherId'=>$TeacherId,'homeworks'=>$homeworks]);
     }
-    public function choose_action_homework($TeacherId){
-        return view('teacher.choose_action_homework',['TeacherId'=>$TeacherId]);
+    public function correct_teacher_homework($TeacherId){
+        $homeworks=Homework::where('teacher_id',$TeacherId)->get();
+        return view('teacher.correcting_homework',['TeacherId'=>$TeacherId,'homeworks'=>$homeworks]);
+    }
+    public function homework_solutions_of_students($TeacherId){
+        return view('teacher.show_solutions_homework',['TeacherId'=>$TeacherId]);
     }
     public function create_teacher_quiz($TeacherId){
         return view('teacher.create_quiz',['TeacherId'=>$TeacherId]);

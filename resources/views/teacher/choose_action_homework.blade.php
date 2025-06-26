@@ -26,7 +26,7 @@
         </a>
 
         <!-- ✅ تصحيح الواجبات -->
-        <a href="#"
+        <a href="{{route('correct_teacher_homework',$TeacherId)}}"
            class="block p-6 bg-green-50 border border-green-200 rounded-xl shadow hover:shadow-md hover:bg-green-100 transition group">
           <div class="text-green-700 text-4xl mb-2 group-hover:scale-110 transition">✅</div>
           <h2 class="text-lg font-semibold text-green-800">تصحيح حلول الطلاب</h2>

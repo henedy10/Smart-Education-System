@@ -13,6 +13,7 @@ class Homework extends Model
     'content_homework',
     'title_homework',
     'deadline',
+    'homework_mark',
     ];
 
     public function teacher(){
