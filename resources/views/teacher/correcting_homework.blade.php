@@ -42,7 +42,7 @@
               <td class="px-4 py-2 border text-blue-600 underline cursor-pointer">
                 <form action="{{route('homework_solutions_of_students',$TeacherId)}}" method="get">
                     @csrf
-                    <button type="submit" value="{{$homework->id}}">اضغط هنا</button>
+                    <button type="submit" name="homework_id" value="{{$homework->id}}">اضغط هنا</button>
                 </form>
               </td>
               <td class="px-4 py-2 border text-yellow-600 font-semibold">قيد التصحيح</td>

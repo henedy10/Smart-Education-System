@@ -8,6 +8,7 @@ use App\Models\Lesson;
 use App\Models\Option;
 use App\Models\Question;
 use App\Models\Quiz;
+use App\Models\SolutionStudentForHomework;
 use App\Models\Student;
 use App\Models\StudentOption;
 use App\Models\User;
@@ -22,7 +23,7 @@ class SystemController extends Controller
 {
     public function login(){
         request()->validate([
-            'name'=>'required|alpha_dash:ascii|exists:users,name',
+            'name'=>['required','regex:/^[a-zA-Z0-9\s_]+$/'],
             'password'=>'required',
         ]);
         $user= User::where('name',request()->name)->first();
@@ -148,10 +149,27 @@ class SystemController extends Controller
         return view('student.show_content',['class'=>$class,'subject'=>$subject]);
     }
 
-    public function upload_homework($class,$subject){
-        return view('student.show_homework_uploading',['class'=>$class,'subject'=>$subject]);
+    public function to_upload_homework($class,$subject){
+        $homework_id=request()->upload_homework;
+        return view('student.show_homework_uploading',['homework_id'=>$homework_id,
+                                                        'class'=>$class,
+                                                        'subject'=>$subject]);
     }
-
+    public function store_student_solution_homework(){
+        $user= User::where('name',session('name'))->first();
+        $student=Student::where('user_id',$user->id)->first();
+        request()->validate([
+            'file'=>'required',
+        ]);
+        $file_path=request()->file('file')->store('solutions_homework','public');
+        $homework_id=request()->homework_id;
+        SolutionStudentForHomework::create([
+                'homework_solution_file'=>$file_path,
+                'student_id'=>$student->id,
+                'homework_id'=>$homework_id,
+        ]);
+        return redirect()->back()->with('تم رفع الملف بنجاح');
+    }
     /*  TEACHER */
     public function show_teacher(){
         $user= User::where('name',session('name'))->first();
@@ -285,7 +303,9 @@ class SystemController extends Controller
         return view('teacher.correcting_homework',['TeacherId'=>$TeacherId,'homeworks'=>$homeworks]);
     }
     public function homework_solutions_of_students($TeacherId){
-        return view('teacher.show_solutions_homework',['TeacherId'=>$TeacherId]);
+        $homework_id=request()->homework_id;
+        $solutions=SolutionStudentForHomework::where('homework_id',$homework_id)->get();
+        return view('teacher.show_solutions_homework',['TeacherId'=>$TeacherId,'solutions'=>$solutions]);
     }
     public function create_teacher_quiz($TeacherId){
         return view('teacher.create_quiz',['TeacherId'=>$TeacherId]);

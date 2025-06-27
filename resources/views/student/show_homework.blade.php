@@ -20,19 +20,24 @@
                 <h2 class="text-lg text-red-700">  * لا يوجد واجبات حاليا  </h2>
     @else
         @foreach ($homeworks as $homework )
-        <div class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition border-r-4 border-yellow-500">
-            <div class="flex items-center gap-2 text-yellow-600 mb-2">
-                <i data-lucide="clipboard-edit" class="w-5 h-5"></i>
-                <h2 class="text-lg font-semibold">{{$homework->title_homework}}</h2>
+            <div class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition border-r-4 border-yellow-500">
+                <div class="flex items-center gap-2 text-yellow-600 mb-2">
+                    <i data-lucide="clipboard-edit" class="w-5 h-5"></i>
+                    <h2 class="text-lg font-semibold">{{$homework->title_homework}}</h2>
 
             </div>
-        <p class="text-sm text-gray-700 mb-4">{{$homework->content_homework}}</p>
-        <p class="text-xs text-gray-500 mb-3">تاريخ التسليم: {{$homework->deadline}}</p>
-        <a href="{{asset('storage/'.$homework->file_homework)}}" download class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-500 text-sm">تحميل</a>
-        <a href="{{asset('storage/'.$homework->file_homework)}}" target="_blank" class="bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-500 text-sm">مشاهده</a>
-        @if ($time<=$homework->deadline)
-        <a href="{{route('upload_student_homework',[$class,$subject])}}" class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-500 text-sm">رفع الواجب</a>
-        @endif
+            <p class="text-sm text-gray-700 mb-4">{{$homework->content_homework}}</p>
+            <p class="text-xs text-gray-500 mb-3">تاريخ التسليم: {{$homework->deadline}}</p>
+            <div class="flex">
+                <a href="{{asset('storage/'.$homework->file_homework)}}" download class="bg-blue-600 text-white px-3 py-1 ml-2 rounded hover:bg-blue-500 text-sm">تحميل</a>
+                <a href="{{asset('storage/'.$homework->file_homework)}}" target="_blank" class="bg-red-600 text-white px-3 py-1 ml-2 rounded hover:bg-red-500 text-sm">مشاهده</a>
+                @if ($time<=$homework->deadline)
+                <form action="{{route('to_upload_student_homework',[$class,$subject])}}" method="GET">
+                    @csrf
+                    <button type="submit" value="{{$homework->id}}" name="upload_homework" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 text-sm">رفع الواجب</button>
+                </form>
+                @endif
+            </div>
         </div>
         @endforeach
     @endif
