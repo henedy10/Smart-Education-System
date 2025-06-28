@@ -12,6 +12,7 @@ class Quiz extends Model
         'description',
         'start_time',
         'duration',
+        'quiz_mark',
     ];
     public function teacher(){
         return $this->belongsTo(User::class);

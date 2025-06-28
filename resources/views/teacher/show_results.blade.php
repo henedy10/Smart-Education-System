@@ -42,10 +42,10 @@
           </thead>
           <tbody id="resultsTable">
             <tr data-quiz="امتحان الفصل الأول" class="hover:bg-gray-50 transition">
-              <td class="p-3 border">1</td>
-              <td class="p-3 border">أحمد محمد</td>
-              <td class="p-3 border">امتحان الفصل الأول</td>
-              <td class="p-3 border text-green-600 font-semibold">8</td>
+                <td class="p-3 border">امتحان الفصل الأول</td>
+              <td class="p-3 border">40</td>
+              <td class="p-3 border">4/5/2026</td>
+              <td class="p-3 border text-green-600 font-semibold">اضغط هنا</td>
             </tr>
           </tbody>
         </table>

@@ -255,21 +255,24 @@ class SystemController extends Controller
                 $question_mark=request()->question_mark;
                 $option_index=0;
 
+                $quiz_mark=0;
                 $Quiz=Quiz::create([
                         'teacher_id'=>$TeacherId,
                         'title'=>$quiz_title,
                         'description'=>$quiz_description,
                         'start_time'=>$quiz_date,
                         'duration'=>$quiz_duration,
+                        'quiz_mark'=>$quiz_mark,
                     ]);
+
                     for($i=0;$i<sizeof($question_title);$i++){
                         $index_key=0;
                     $question=Question::create([
                             'quiz_id'=>$Quiz->id,
                             'title'=>$question_title[$i],
                             'question_mark'=>$question_mark[$i],
-                            'correct_option'=>$correct_option[$i],
-                        ]);
+                            'correct_option'=>$correct_option[$i]]);
+                    $quiz_mark+=$question->question_mark;
                         for($j=$option_index;$j<=$option_index+3;$j++){
 
                             Option::create([
@@ -281,10 +284,12 @@ class SystemController extends Controller
                         }
                         $option_index+=4;
                     }
+
+                    $quiz=Quiz::find($Quiz->id);
+                    $quiz->quiz_mark=$quiz_mark;
+                    $quiz->save();
                 return redirect()->back()->with('success','تم عمل اختبار جديد بنجاح ');
         }
-
-
     }
 
     public function show_teacher_lessons($TeacherId){
