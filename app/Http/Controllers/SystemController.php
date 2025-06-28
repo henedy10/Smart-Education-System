@@ -8,6 +8,7 @@ use App\Models\Lesson;
 use App\Models\Option;
 use App\Models\Question;
 use App\Models\Quiz;
+use App\Models\QuizResult;
 use App\Models\SolutionStudentForHomework;
 use App\Models\Student;
 use App\Models\StudentOption;
@@ -123,6 +124,7 @@ class SystemController extends Controller
     //store of selection of student
 
     public function store_student_answers($class,$subject){
+        $student_mark=0;
         $check_selection=[];
         $user= User::where('name',session('name'))->first();
         $student=Student::where('user_id',$user->id)->first();
@@ -144,9 +146,22 @@ class SystemController extends Controller
                     'select_option'=>$options[$Q->id]??null,
                     'status_option'=> $check_selection[$Q->id],
             ]);
+            if($check_selection[$Q->id]){
+                $student_mark+=$Q->question_mark;
+            }
         }
-
-        return view('student.show_content',['class'=>$class,'subject'=>$subject]);
+        $student_result=QuizResult::create([
+            'student_id'=>$student->id,
+            'teacher_id'=>$teacher->id,
+            'quiz_id'=>$quiz->id,
+            'student_mark'=>$student_mark,
+            'quiz_mark'=>$quiz->quiz_mark,
+        ]);
+        return view('student.show_result',['student'=>$student,
+                                            'quiz'=>$quiz,
+                                            'student_mark'=>$student_mark,
+                                            'class'=>$class,
+                                            'subject'=>$subject]);
     }
 
     public function to_upload_homework($class,$subject){
@@ -320,7 +335,8 @@ class SystemController extends Controller
         return view('teacher.create_quiz',['TeacherId'=>$TeacherId]);
     }
     public function show_results($TeacherId){
-    return view('teacher.show_results',['TeacherId'=>$TeacherId]);
+        $quizzes=Quiz::where('teacher_id',$TeacherId)->get();
+        return view('teacher.show_results',['TeacherId'=>$TeacherId,'quizzes'=>$quizzes]);
     }
 
     // تسجيل الخروج لكل من الطالب و المدرس

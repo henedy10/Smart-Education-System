@@ -6,70 +6,75 @@
 
 <body class="min-h-screen">
 
-  <div class="container mx-auto p-6 bg-gray-100">
-    <div class="bg-white rounded-xl shadow-md p-6">
+    <div class="container mx-auto p-6 bg-gray-100">
+        <div class="bg-white rounded-xl shadow-md p-6">
 
-    <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
-      <h2 class="text-lg font-bold text-gray-800">نتائج الطلاب</h2>
-      <a href="{{route('show_teacher')}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
-    </div>
-      <!-- ✅ فلتر حسب الاختبار -->
-      <div class="flex flex-col sm:flex-row  items-center gap-4 mb-6">
-        <div>
-          <select id="quizFilter" class="border border-gray-300 rounded p-2 w-full sm:w-64">
-            <option value="all">كل الاختبارات</option>
-            <option value="امتحان الفصل الأول">امتحان الفصل الأول</option>
-            <option value="امتحان القراءة">امتحان القراءة</option>
-            <option value="امتحان النحو">امتحان النحو</option>
-          </select>
+            <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
+                <h2 class="text-lg font-bold text-gray-800">نتائج الطلاب</h2>
+                <a href="{{route('show_teacher')}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
+            </div>
+
+            <div class="flex flex-col sm:flex-row  items-center gap-4 mb-6">
+                <div>
+                    <select id="quizFilter" class="border border-gray-300 rounded p-2 w-full sm:w-64">
+                        <option value="all">كل الاختبارات</option>
+                        @foreach ( $quizzes as $quiz )
+                            <option value="{{$quiz->title}}">{{$quiz->title}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <button onclick="filterTable()"
+                        class="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition">
+                فلترة
+                </button>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-right text-gray-700 border border-gray-200 rounded">
+                    <thead class="bg-blue-100 text-blue-800">
+                        <tr>
+                            <th class="p-3 border border-gray-200">الاختبار</th>
+                            <th class="p-3 border border-gray-200">درجه الامتحان</th>
+                            <th class="p-3 border border-gray-200">تاريخ الامتحان</th>
+                            <th class="p-3 border border-gray-200">نتائج الطلاب</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsTable">
+                        @foreach ($quizzes as $quiz )
+                            <tr data-quiz="{{$quiz->title}}" class="hover:bg-gray-50 transition">
+                                <td class="p-3 border">{{$quiz->title}}</td>
+                                <td class="p-3 border">{{$quiz->quiz_mark}}</td>
+                                <td class="p-3 border">{{$quiz->start_time}}</td>
+                                <td class="p-3 border">
+                                    <form action="#" method="#">
+                                        @csrf
+                                        <button type="submit" name="quiz_id" value="{{$quiz->id}}" class="text-green-600 font-semibold">اضغط هنا</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <button onclick="filterTable()"
-                class="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition">
-          فلترة
-        </button>
-      </div>
-
-      <!-- ✅ جدول النتائج -->
-      <div class="overflow-x-auto">
-        <table class="w-full text-sm text-right text-gray-700 border border-gray-200 rounded">
-          <thead class="bg-blue-100 text-blue-800">
-            <tr>
-              <th class="p-3 border border-gray-200">الاختبار</th>
-              <th class="p-3 border border-gray-200">درجه الامتحان</th>
-              <th class="p-3 border border-gray-200">تاريخ الامتحان</th>
-              <th class="p-3 border border-gray-200">نتائج الطلاب</th>
-            </tr>
-          </thead>
-          <tbody id="resultsTable">
-            <tr data-quiz="امتحان الفصل الأول" class="hover:bg-gray-50 transition">
-                <td class="p-3 border">امتحان الفصل الأول</td>
-              <td class="p-3 border">40</td>
-              <td class="p-3 border">4/5/2026</td>
-              <td class="p-3 border text-green-600 font-semibold">اضغط هنا</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
     </div>
-  </div>
 
   <!-- ✅ JavaScript للفلترة -->
-  <script>
-    function filterTable() {
-      const selectedQuiz = document.getElementById('quizFilter').value;
-      const rows = document.querySelectorAll('#resultsTable tr');
+    <script>
+        function filterTable() {
+        const selectedQuiz = document.getElementById('quizFilter').value;
+        const rows = document.querySelectorAll('#resultsTable tr');
 
-      rows.forEach(row => {
-        const quiz = row.getAttribute('data-quiz');
-        if (selectedQuiz === 'all' || quiz === selectedQuiz) {
-          row.style.display = '';
-        } else {
-          row.style.display = 'none';
+        rows.forEach(row => {
+            const quiz = row.getAttribute('data-quiz');
+            if (selectedQuiz === 'all' || quiz === selectedQuiz) {
+            row.style.display = '';
+            } else {
+            row.style.display = 'none';
+            }
+        });
         }
-      });
-    }
-  </script>
+    </script>
 </body>
 
 @endsection
