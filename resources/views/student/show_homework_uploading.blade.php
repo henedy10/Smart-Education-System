@@ -1,7 +1,7 @@
 @extends('student.layout.app')
 
 @section('title', 'رفع الواجب')
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 @section('content')
 <div class="min-h-screen bg-gray-100 flex items-center justify-center py-10 px-4">
     <div class="bg-white w-full max-w-md rounded-xl shadow-lg p-6">

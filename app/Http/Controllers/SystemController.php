@@ -192,7 +192,7 @@ class SystemController extends Controller
         if((request()->upload)=='upload_lesson'){
             request()->validate([
                 'title_lesson'=>'required',
-                'file_lesson'=>'required|mimes:pdf,doc,docx,zip,rar,jpg,png|max:2048',
+                'file_lesson'=>'required|mimes:pdf,doc,docx,zip,rar,jpg,png|max:10240',
             ]);
             $path=request()->file('file_lesson')->store('lessons','public');
             $title_lesson=request()->title_lesson;
@@ -299,13 +299,17 @@ class SystemController extends Controller
         return view('teacher.create_homework',['TeacherId'=>$TeacherId,'homeworks'=>$homeworks]);
     }
     public function correct_teacher_homework($TeacherId){
+        $time=Carbon::now('africa/cairo');
         $homeworks=Homework::where('teacher_id',$TeacherId)->get();
-        return view('teacher.correcting_homework',['TeacherId'=>$TeacherId,'homeworks'=>$homeworks]);
+        return view('teacher.correcting_homework',['TeacherId'=>$TeacherId,
+                                                    'homeworks'=>$homeworks,
+                                                    'time'=>$time]);
     }
     public function homework_solutions_of_students($TeacherId){
         $homework_id=request()->homework_id;
         $solutions=SolutionStudentForHomework::where('homework_id',$homework_id)->get();
-        return view('teacher.show_solutions_homework',['TeacherId'=>$TeacherId,'solutions'=>$solutions]);
+        return view('teacher.show_solutions_homework',['TeacherId'=>$TeacherId,
+                                                        'solutions'=>$solutions]);
     }
     public function create_teacher_quiz($TeacherId){
         return view('teacher.create_quiz',['TeacherId'=>$TeacherId]);

@@ -34,12 +34,10 @@
         <table class="w-full text-sm text-right text-gray-700 border border-gray-200 rounded">
           <thead class="bg-blue-100 text-blue-800">
             <tr>
-              <th class="p-3 border border-gray-200">#</th>
-              <th class="p-3 border border-gray-200">اسم الطالب</th>
               <th class="p-3 border border-gray-200">الاختبار</th>
-              <th class="p-3 border border-gray-200">الدرجة</th>
-              <th class="p-3 border border-gray-200">من</th>
-              <th class="p-3 border border-gray-200">تاريخ التقديم</th>
+              <th class="p-3 border border-gray-200">درجه الامتحان</th>
+              <th class="p-3 border border-gray-200">تاريخ الامتحان</th>
+              <th class="p-3 border border-gray-200">نتائج الطلاب</th>
             </tr>
           </thead>
           <tbody id="resultsTable">
@@ -48,24 +46,6 @@
               <td class="p-3 border">أحمد محمد</td>
               <td class="p-3 border">امتحان الفصل الأول</td>
               <td class="p-3 border text-green-600 font-semibold">8</td>
-              <td class="p-3 border">10</td>
-              <td class="p-3 border">2025-06-01 10:30</td>
-            </tr>
-            <tr data-quiz="امتحان القراءة" class="hover:bg-gray-50 transition">
-              <td class="p-3 border">2</td>
-              <td class="p-3 border">سارة علي</td>
-              <td class="p-3 border">امتحان القراءة</td>
-              <td class="p-3 border text-green-600 font-semibold">9</td>
-              <td class="p-3 border">10</td>
-              <td class="p-3 border">2025-06-03 14:00</td>
-            </tr>
-            <tr data-quiz="امتحان النحو" class="hover:bg-gray-50 transition">
-              <td class="p-3 border">3</td>
-              <td class="p-3 border">محمود يوسف</td>
-              <td class="p-3 border">امتحان النحو</td>
-              <td class="p-3 border text-green-600 font-semibold">7</td>
-              <td class="p-3 border">10</td>
-              <td class="p-3 border">2025-06-04 09:00</td>
             </tr>
           </tbody>
         </table>

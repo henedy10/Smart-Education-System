@@ -7,7 +7,7 @@
 </head>
 <body class="bg-gray-100">
 
-    <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between  ">
+    <div class="bg-white shadow rounded-lg p-4 m-6  flex items-center justify-between  ">
         <h1 class="text-2xl font-semibold mb-8">إدارة الواجبات</h1>
         <a href="{{route('show_teacher')}}" class="text-white bg-red-600 rounded px-3 py-3 hover:bg-red-700">الصفحة السابقة</a>
     </div>
