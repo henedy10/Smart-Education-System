@@ -335,8 +335,14 @@ class SystemController extends Controller
         return view('teacher.create_quiz',['TeacherId'=>$TeacherId]);
     }
     public function show_results($TeacherId){
+        $time=Carbon::now('africa/cairo');
         $quizzes=Quiz::where('teacher_id',$TeacherId)->get();
-        return view('teacher.show_results',['TeacherId'=>$TeacherId,'quizzes'=>$quizzes]);
+        return view('teacher.show_results',['TeacherId'=>$TeacherId,'quizzes'=>$quizzes,'time'=>$time]);
+    }
+    public function show_content_results($TeacherId){
+        $quiz_id=request()->quiz_id;
+        $results=QuizResult::where('quiz_id',$quiz_id)->get();
+        return view('teacher.show_content_results',['TeacherId'=>$TeacherId,'results'=>$results]);
     }
 
     // تسجيل الخروج لكل من الطالب و المدرس

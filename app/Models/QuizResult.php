@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class QuizResult extends Model
 {
@@ -13,4 +14,8 @@ class QuizResult extends Model
         'student_mark',
         'quiz_mark',
     ];
+
+    public function student(){
+        return $this->belongsTo(Student::class);
+    }
 }

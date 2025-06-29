@@ -32,5 +32,6 @@ Route::controller(SystemController::class)->group(function (){
     Route::get('/show/teacher/{teacher}/homeworks/solutions_of_students','homework_solutions_of_students')->name('homework_solutions_of_students');
     Route::get('/create/teacher/{teacher}/quiz','create_teacher_quiz')->name('create_teacher_quiz');
     Route::get('/show/teacher/{teacher}/quiz/results','show_results')->name('show_results');
+    Route::get('/show/teacher/{teacher}/quiz/results/content','show_content_results')->name('show_content_results');
 
 });

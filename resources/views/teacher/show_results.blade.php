@@ -10,7 +10,7 @@
         <div class="bg-white rounded-xl shadow-md p-6">
 
             <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
-                <h2 class="text-lg font-bold text-gray-800">نتائج الطلاب</h2>
+                <h2 class="text-lg font-bold text-gray-800">قائمة الإمتحانات</h2>
                 <a href="{{route('show_teacher')}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
             </div>
 
@@ -41,17 +41,26 @@
                     </thead>
                     <tbody id="resultsTable">
                         @foreach ($quizzes as $quiz )
+
+                            @php
+                                    $start = \Carbon\Carbon::parse($quiz->start_time);
+                            @endphp
                             <tr data-quiz="{{$quiz->title}}" class="hover:bg-gray-50 transition">
                                 <td class="p-3 border">{{$quiz->title}}</td>
                                 <td class="p-3 border">{{$quiz->quiz_mark}}</td>
                                 <td class="p-3 border">{{$quiz->start_time}}</td>
                                 <td class="p-3 border">
-                                    <form action="#" method="#">
-                                        @csrf
-                                        <button type="submit" name="quiz_id" value="{{$quiz->id}}" class="text-green-600 font-semibold">اضغط هنا</button>
-                                    </form>
+                                    @if ($time<$start->copy()->addMinutes($quiz->duration))
+                                        <button type="submit" onclick="alert('لا يمكن رؤيه النتائج الا بعد انتهاء وقت الامتحان')"  class="text-green-600 font-semibold">اضغط هنا</button>
+                                    @else
+                                        <form action="{{route('show_content_results',$TeacherId)}}" method="GET">
+                                            @csrf
+                                            <button type="submit" name="quiz_id" value="{{$quiz->id}}" class="text-green-600 font-semibold">اضغط هنا</button>
+                                        </form>
+                                    @endif
                                 </td>
                             </tr>
+
                         @endforeach
                     </tbody>
                 </table>
