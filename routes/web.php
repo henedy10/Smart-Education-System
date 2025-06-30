@@ -19,6 +19,7 @@ Route::controller(SystemController::class)->group(function (){
     Route::get('/show/quiz/{class}/{subject}','show_student_quizzes')->name('show_student_quizzes');
     Route::get('/show/{class}/{subject}/content/quiz','show_content_quiz')->name('show_content_quiz');
     Route::post('/store/{class}/{subject}/student/answers','store_student_answers')->name('store_student_answers');
+    Route::get('/show/grades/{class}/{subject}/homeworks','show_student_homework_grade')->name('show_student_homework_grade');
     Route::get('/log_out','log_out_student')->name('log_out_student');
 
     //Routes of Teacher

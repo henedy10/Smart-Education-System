@@ -32,16 +32,17 @@
                 <a href="{{asset('storage/'.$homework->file_homework)}}" download class="bg-blue-600 text-white px-3 py-1 ml-2 rounded hover:bg-blue-500 text-sm">تحميل</a>
                 <a href="{{asset('storage/'.$homework->file_homework)}}" target="_blank" class="bg-red-600 text-white px-3 py-1 ml-2 rounded hover:bg-red-500 text-sm">مشاهده</a>
                 @if ($time<=$homework->deadline)
-                <form action="{{route('to_upload_student_homework',[$class,$subject])}}" method="GET">
-                    @csrf
-                    <button type="submit" value="{{$homework->id}}" name="upload_homework" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 text-sm">رفع الواجب</button>
-                </form>
+                    <form action="{{route('to_upload_student_homework',[$class,$subject])}}" method="GET">
+                        @csrf
+                        <button type="submit" value="{{$homework->id}}" name="upload_homework" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 text-sm">رفع الواجب</button>
+                    </form>
+                @else
+                    <a href="{{route('show_student_homework_grade',[$class,$subject])}}" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 text-sm">تقييمك</a>
                 @endif
             </div>
         </div>
         @endforeach
     @endif
-
   </div>
 @endsection
 

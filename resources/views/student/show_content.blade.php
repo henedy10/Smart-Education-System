@@ -32,7 +32,7 @@
           <i data-lucide="file-text" class="w-6 h-6"></i>
           <h2 class="text-xl font-semibold">الواجبات</h2>
         </div>
-        <p class="text-sm text-gray-600 mb-4">راجع الواجبات المطلوبة منك وسلّمها في الموعد.</p>
+        <p class="text-sm text-gray-600 mb-4">راجع الواجبات المطلوبة منك وسلّمها في الموعد و تابع تقييمك.</p>
         <a href="{{route('show_student_homework',[$class,$subject])}}" class="inline-block bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 text-sm">عرض الواجبات</a>
       </div>
 

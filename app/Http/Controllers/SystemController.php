@@ -61,8 +61,8 @@ class SystemController extends Controller
         -> where('subject',$subject)->first();
         $lessons=Lesson::where('teacher_id',$teacher->id)->get();
         return view('student.show_lesson',['subject'=>$subject,
-                                            'class'=>$class,
-                                            'lessons'=>$lessons]);
+        'class'=>$class,
+        'lessons'=>$lessons]);
     }
 
     public function show_student_homework($class,$subject){
@@ -74,6 +74,9 @@ class SystemController extends Controller
         'class'=>$class,
         'homeworks'=>$homeworks,
         'time'=>$time]);
+    }
+    public function show_student_homework_grade($class,$subject){
+        return view('student.show_homework_grade',['class'=>$class,'subject'=>$subject]);
     }
     public function show_student_quizzes($class,$subject){
         $teacher=Teacher::where('class',$class)

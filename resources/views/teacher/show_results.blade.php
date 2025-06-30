@@ -50,7 +50,7 @@
                                 <td class="p-3 border">{{$quiz->quiz_mark}}</td>
                                 <td class="p-3 border">{{$quiz->start_time}}</td>
                                 <td class="p-3 border">
-                                    @if ($time<$start->copy()->addMinutes($quiz->duration))
+                                    @if ($time<$start->copy()->addMinutes($quiz->duration)->format('Y-m-d H:i:s'))
                                         <button type="submit" onclick="alert('لا يمكن رؤيه النتائج الا بعد انتهاء وقت الامتحان')"  class="text-green-600 font-semibold">اضغط هنا</button>
                                     @else
                                         <form action="{{route('show_content_results',$TeacherId)}}" method="GET">
