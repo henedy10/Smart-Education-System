@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>الأسئلة - الاختبار</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
+@extends('student.layout.app')
+
+@section('title')  الأسئلة - الاختبار @endsection
+
+@section('content')
 <body class="bg-gray-100 text-gray-800">
 
   <div class="max-w-4xl mx-auto p-6 mt-10 bg-white rounded-xl shadow-md">
@@ -60,5 +57,4 @@
     const timerInterval = setInterval(updateTimer, 1000);
     updateTimer();
 </script>
-</body>
-</html>
+@endsection

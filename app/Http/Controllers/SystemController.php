@@ -75,9 +75,32 @@ class SystemController extends Controller
         'homeworks'=>$homeworks,
         'time'=>$time]);
     }
+    public function to_upload_homework($class,$subject){
+        $homework_id=request()->upload_homework;
+        return view('student.show_homework_uploading',['homework_id'=>$homework_id,
+                                                        'class'=>$class,
+                                                        'subject'=>$subject]);
+    }
+    public function store_student_solution_homework(){
+        $user= User::where('name',session('name'))->first();
+        $student=Student::where('user_id',$user->id)->first();
+        request()->validate([
+            'file'=>'required',
+        ]);
+        $file_path=request()->file('file')->store('solutions_homework','public');
+        $homework_id=request()->homework_id;
+        SolutionStudentForHomework::create([
+                'homework_solution_file'=>$file_path,
+                'student_id'=>$student->id,
+                'homework_id'=>$homework_id,
+        ]);
+        return redirect()->back()->with('تم رفع الملف بنجاح');
+    }
     public function show_student_homework_grade($class,$subject){
+
         return view('student.show_homework_grade',['class'=>$class,'subject'=>$subject]);
     }
+
     public function show_student_quizzes($class,$subject){
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
@@ -101,6 +124,12 @@ class SystemController extends Controller
                                             'quiz'=>$quiz,
                                         ]);
         }
+    }
+    public function show_student_quiz_action($class,$subject){
+        return view('student.show_action_content_quiz',['class'=>$class,'subject'=>$subject]);
+    }
+    public function show_student_quiz_result($class,$subject){
+        return view('student.show_quiz_results',['class'=>$class,'subject'=>$subject]);
     }
 
         public function show_content_quiz($class,$subject){
@@ -165,28 +194,6 @@ class SystemController extends Controller
                                             'student_mark'=>$student_mark,
                                             'class'=>$class,
                                             'subject'=>$subject]);
-    }
-
-    public function to_upload_homework($class,$subject){
-        $homework_id=request()->upload_homework;
-        return view('student.show_homework_uploading',['homework_id'=>$homework_id,
-                                                        'class'=>$class,
-                                                        'subject'=>$subject]);
-    }
-    public function store_student_solution_homework(){
-        $user= User::where('name',session('name'))->first();
-        $student=Student::where('user_id',$user->id)->first();
-        request()->validate([
-            'file'=>'required',
-        ]);
-        $file_path=request()->file('file')->store('solutions_homework','public');
-        $homework_id=request()->homework_id;
-        SolutionStudentForHomework::create([
-                'homework_solution_file'=>$file_path,
-                'student_id'=>$student->id,
-                'homework_id'=>$homework_id,
-        ]);
-        return redirect()->back()->with('تم رفع الملف بنجاح');
     }
     /*  TEACHER */
     public function show_teacher(){

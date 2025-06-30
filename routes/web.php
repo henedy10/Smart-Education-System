@@ -16,9 +16,11 @@ Route::controller(SystemController::class)->group(function (){
     Route::get('/show/content/{class}/{subject}/homeworks','show_student_homework')->name('show_student_homework');
     Route::get('/show/content/{class}/{subject}/homeworks/upload','to_upload_homework')->name('to_upload_student_homework');
     Route::post('/show/content/homeworks/store','store_student_solution_homework')->name('store_student_solution_homework');
+    Route::get('/show/{class}/{subject}/quiz/action','show_student_quiz_action')->name('show_student_quiz_action');
     Route::get('/show/quiz/{class}/{subject}','show_student_quizzes')->name('show_student_quizzes');
     Route::get('/show/{class}/{subject}/content/quiz','show_content_quiz')->name('show_content_quiz');
     Route::post('/store/{class}/{subject}/student/answers','store_student_answers')->name('store_student_answers');
+    Route::get('/show/{class}/{subject}/quiz/results','show_student_quiz_result')->name('show_student_quiz_result');
     Route::get('/show/grades/{class}/{subject}/homeworks','show_student_homework_grade')->name('show_student_homework_grade');
     Route::get('/log_out','log_out_student')->name('log_out_student');
 
