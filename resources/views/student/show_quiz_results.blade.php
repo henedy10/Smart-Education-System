@@ -17,37 +17,19 @@
         <thead class="bg-gray-100 text-right text-sm">
           <tr>
             <th class="py-3 px-4 border-b">عنوان الاختبار</th>
-            <th class="py-3 px-4 border-b">التاريخ</th>
             <th class="py-3 px-4 border-b">الدرجة</th>
             <th class="py-3 px-4 border-b">الدرجة النهائية</th>
-            <th class="py-3 px-4 border-b">الحالة</th>
           </tr>
         </thead>
         <tbody>
           <!-- مثال لصف واحد -->
+          @foreach (  $results as $result)
           <tr class="hover:bg-gray-50">
-            <td class="py-3 px-4 border-b">امتحان الفصل الأول - لغة عربية</td>
-            <td class="py-3 px-4 border-b">2025-06-10</td>
-            <td class="py-3 px-4 border-b font-semibold text-green-700">18</td>
-            <td class="py-3 px-4 border-b">20</td>
-            <td class="py-3 px-4 border-b text-green-600 font-semibold">ناجح</td>
+            <td class="py-3 px-4 border-b">{{$result->quiz->title}}</td>
+            <td class="py-3 px-4 border-b font-semibold text-green-700">{{$result->student_mark}}</td>
+            <td class="py-3 px-4 border-b">{{$result->quiz_mark}}</td>
           </tr>
-
-          <tr class="hover:bg-gray-50">
-            <td class="py-3 px-4 border-b">امتحان الفصل الأول - رياضيات</td>
-            <td class="py-3 px-4 border-b">2025-06-15</td>
-            <td class="py-3 px-4 border-b font-semibold text-red-600">9</td>
-            <td class="py-3 px-4 border-b">20</td>
-            <td class="py-3 px-4 border-b text-red-600 font-semibold">راسب</td>
-          </tr>
-
-          <tr class="hover:bg-gray-50">
-            <td class="py-3 px-4 border-b">امتحان الفصل الأول - فيزياء</td>
-            <td class="py-3 px-4 border-b">2025-06-20</td>
-            <td class="py-3 px-4 border-b font-semibold text-yellow-600">12</td>
-            <td class="py-3 px-4 border-b">20</td>
-            <td class="py-3 px-4 border-b text-yellow-600 font-semibold">إعادة</td>
-          </tr>
+          @endforeach
         </tbody>
       </table>
     </div>

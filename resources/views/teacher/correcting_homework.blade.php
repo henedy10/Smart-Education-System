@@ -39,18 +39,18 @@
                             <td class="px-4 py-2 border">{{$homework->homework_mark}}</td>
                             <td class="px-4 py-2 border text-blue-600 underline cursor-pointer">
                                 @if ($time<$homework->deadline)
-                                <button type="button" onclick="alert('يمكنك رؤية حلول الطلاب بعد انتهاء وقت التسليم')">
-                        اضغط هنا
-                    </button>
-                @else
-                    <form action="{{route('homework_solutions_of_students',$TeacherId)}}" method="get">
-                        @csrf
-                        <button type="submit" name="homework_id" value="{{$homework->id}}">اضغط هنا</button>
-                    </form>
-                @endif
-              </td>
-              <td class="px-4 py-2 border text-yellow-600 font-semibold">قيد التصحيح</td>
-              <td class="px-4 py-2 border">
+                                    <button type="button" onclick="alert('يمكنك رؤية حلول الطلاب بعد انتهاء وقت التسليم')">
+                                        اضغط هنا
+                                    </button>
+                                @else
+                                    <form action="{{route('homework_solutions_of_students',$TeacherId)}}" method="get">
+                                        @csrf
+                                        <button type="submit" name="homework_id" value="{{$homework->id}}">اضغط هنا</button>
+                                    </form>
+                                @endif
+                            </td>
+                            <td class="px-4 py-2 border text-yellow-600 font-semibold">قيد التصحيح</td>
+                            <td class="px-4 py-2 border">
                 <button onclick="markReviewed(this)" class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">
                   تم التصحيح
                 </button>

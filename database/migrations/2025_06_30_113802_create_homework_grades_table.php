@@ -13,18 +13,12 @@ return new class extends Migration
     {
         Schema::create('homework_grades', function (Blueprint $table) {
             $table->id();
-            
+
             // foreign key
             $table->unsignedBigInteger('student_id');
             $table->foreign('student_id')->references('id')->on('students');
 
-            // foreign key
-            $table->unsignedBigInteger('teacher_id');
-            $table->foreign('teacher_id')->references('id')->on('teachers');
-
-            $table->string('subject');
             $table->integer('student_mark');
-            $table->integer('homework_mark');
             $table->timestamps();
         });
     }

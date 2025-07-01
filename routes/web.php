@@ -20,7 +20,7 @@ Route::controller(SystemController::class)->group(function (){
     Route::get('/show/quiz/{class}/{subject}','show_student_quizzes')->name('show_student_quizzes');
     Route::get('/show/{class}/{subject}/content/quiz','show_content_quiz')->name('show_content_quiz');
     Route::post('/store/{class}/{subject}/student/answers','store_student_answers')->name('store_student_answers');
-    Route::get('/show/{class}/{subject}/quiz/results','show_student_quiz_result')->name('show_student_quiz_result');
+    Route::get('/show/quiz/{class}/{subject}/results','show_student_quiz_result')->name('show_student_quiz_result');
     Route::get('/show/grades/{class}/{subject}/homeworks','show_student_homework_grade')->name('show_student_homework_grade');
     Route::get('/log_out','log_out_student')->name('log_out_student');
 
@@ -33,6 +33,7 @@ Route::controller(SystemController::class)->group(function (){
     Route::get('/show/teacher/{teacher}/homeworks/create','create_teacher_homeworks')->name('create_teacher_homeworks');
     Route::get('/show/teacher/{teacher}/homeworks/correction','correct_teacher_homework')->name('correct_teacher_homework');
     Route::get('/show/teacher/{teacher}/homeworks/solutions_of_students','homework_solutions_of_students')->name('homework_solutions_of_students');
+    Route::post('/store/teacher/{student}/grades/homeworks','store_grades_homeworks')->name('store_grades_homeworks');
     Route::get('/create/teacher/{teacher}/quiz','create_teacher_quiz')->name('create_teacher_quiz');
     Route::get('/show/teacher/{teacher}/quiz/results','show_results')->name('show_results');
     Route::get('/show/teacher/{teacher}/quiz/results/content','show_content_results')->name('show_content_results');
