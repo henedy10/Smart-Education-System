@@ -47,25 +47,28 @@
         <!-- عرض المحاضرات السابقة -->
         <div class="bg-white rounded-lg shadow-md p-6">
             <h2 class="text-xl font-semibold mb-4 text-gray-700">المحاضرات التي تم رفعها</h2>
-            <table class="w-full text-right border-collapse">
-                <thead>
-                    <tr class="bg-gray-200 text-sm">
-                        <th class="p-2 border">العنوان</th>
-                        <th class="p-2 border">التاريخ</th>
-                        <th class="p-2 border">الملف</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    @foreach ($lessons as $lesson )
-                        <tr>
-                        <td class="border p-2">{{$lesson->title_lesson}}</td>
-                        <td class="border p-2">{{$lesson->date_lesson}}</td>
-                        <td class="border p-2 text-blue-600 text-center"><a href="{{asset('storage/'.$lesson->file_lesson)}}"  download class="bg-green-500 rounded text-white font-bold py-1 px-4 hover:bg-green-600 ">تحميل</a></td>
+            @if ($lessons->isEmpty())
+                    <h2 class="text-red-500 font-bold">* لا توجد محاضرات تم رفعها حاليا</h2>
+            @else
+                <table class="w-full text-right border-collapse">
+                    <thead>
+                        <tr class="bg-gray-200 text-sm">
+                            <th class="p-2 border">العنوان</th>
+                            <th class="p-2 border">التاريخ</th>
+                            <th class="p-2 border">الملف</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($lessons as $lesson )
+                            <tr>
+                            <td class="border p-2">{{$lesson->title_lesson}}</td>
+                            <td class="border p-2">{{$lesson->date_lesson}}</td>
+                            <td class="border p-2 text-blue-600 text-center"><a href="{{asset('storage/'.$lesson->file_lesson)}}"  download class="bg-green-500 rounded text-white font-bold py-1 px-4 hover:bg-green-600 ">تحميل</a></td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            @endif
         </div>
     </div>
 </body>

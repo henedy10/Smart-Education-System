@@ -11,12 +11,12 @@
         <div class="space-y-3 text-gray-700">
             <div class="flex justify-between">
                 <span class="font-semibold">الملف الذي تم رفعه :</span>
-                <span>أحمد محمد</span>
+                <span>#</span>
             </div>
 
             <div class="flex justify-between">
                 <span class="font-semibold">الدرجة:</span>
-                <span class="text-green-600 font-bold">9 / 10</span>
+                <span class="text-green-600 font-bold">{{$student_homework_grade->student_mark}} / {{$student_homework_grade->homework->homework_mark}}</span>
             </div>
         </div>
 

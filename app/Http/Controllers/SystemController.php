@@ -44,8 +44,6 @@ class SystemController extends Controller
         }
     }
 
-
-
     /* STUDENT */
 
     public function show_student(){
@@ -54,9 +52,11 @@ class SystemController extends Controller
             $teachers=Teacher::where('class',$student->class)->get();
             return view('student.show_student',['student'=>$student,'teachers'=>$teachers]);
     }
+
     public function show_student_content($class,$subject) {
         return view('student.show_content',['subject'=>$subject,'class'=>$class]);
     }
+
     public function show_student_lesson($class,$subject){
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
@@ -76,12 +76,14 @@ class SystemController extends Controller
         'homeworks'=>$homeworks,
         'time'=>$time]);
     }
+
     public function to_upload_homework($class,$subject){
         $homework_id=request()->upload_homework;
         return view('student.show_homework_uploading',['homework_id'=>$homework_id,
                                                         'class'=>$class,
                                                         'subject'=>$subject]);
     }
+
     public function store_student_solution_homework(){
         $user= User::where('name',session('name'))->first();
         $student=Student::where('user_id',$user->id)->first();
@@ -97,9 +99,17 @@ class SystemController extends Controller
         ]);
         return redirect()->back()->with('تم رفع الملف بنجاح');
     }
-    public function show_student_homework_grade($class,$subject){
 
-        return view('student.show_homework_grade',['class'=>$class,'subject'=>$subject]);
+    public function show_student_homework_grade($class,$subject){
+            $user= User::where('name',session('name'))->first();
+            $student=Student::where('user_id',$user->id)->first();
+            $homework_id=request()->homework_id;
+            $student_homework_grade=HomeworkGrade::where('homework_id',$homework_id)
+                                                    ->where('student_id',$student->id)
+                                                    ->first();
+        return view('student.show_homework_grade',['class'=>$class,
+                                                    'subject'=>$subject,
+                                                    'student_homework_grade'=>$student_homework_grade]);
     }
 
     public function show_student_quizzes($class,$subject){
@@ -108,6 +118,7 @@ class SystemController extends Controller
         $quiz=Quiz::where('teacher_id',$teacher->id)
         ->orderBy('start_time','desc')
         ->first();
+
         if(!is_null($quiz)){
             $startTime = Carbon::parse($quiz->start_time,'africa/cairo');
             $currentTime = Carbon::now('africa/cairo');
@@ -126,39 +137,31 @@ class SystemController extends Controller
                                         ]);
         }
     }
+
     public function show_student_quiz_action($class,$subject){
         return view('student.show_action_content_quiz',['class'=>$class,'subject'=>$subject]);
     }
+
     public function show_student_quiz_result($class,$subject){
-
         $user=User::where('id',session('id'))->first();
-
         $teacher=Teacher::where('class',$class)
                             ->where('subject',$subject)
                             ->first();
-
         $student=Student::where('user_id',$user->id)->first();
-
         $results=QuizResult::where('student_id',$student->id)
                                 ->where('teacher_id',$teacher->id)
                                 ->get();
-
         return view('student.show_quiz_results',['class'=>$class,'subject'=>$subject,'results'=>$results]);
     }
 
         public function show_content_quiz($class,$subject){
-
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
-
-        $quiz=Quiz::where('teacher_id',$teacher->id)->first();
-
+        $quiz=Quiz::where('teacher_id',$teacher->id)->orderBy('start_time','desc')->first();
         $question=Question::where('quiz_id',$quiz->id)->get();
-
         $duration=$quiz->duration;
         $start_time=$quiz->start_time;
         $options=[];
-
         foreach($question as $q){
             $options[$q->id]=Option::where('question_id',$q->id)->get();
         }
@@ -171,7 +174,6 @@ class SystemController extends Controller
     }
 
     //store of selection of student
-
     public function store_student_answers($class,$subject){
         $student_mark=0;
         $check_selection=[];
@@ -183,7 +185,7 @@ class SystemController extends Controller
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
 
-        $quiz=Quiz::where('teacher_id',$teacher->id)->first();
+        $quiz=Quiz::where('teacher_id',$teacher->id)->orderBy('start_time','desc')->first();
 
         $question=Question::where('quiz_id',$quiz->id)->get();
 
@@ -205,33 +207,24 @@ class SystemController extends Controller
                 $student_mark+=$Q->question_mark;
             }
         }
-        $student_result=QuizResult::create([
-            'student_id'=>$student->id,
-            'teacher_id'=>$teacher->id,
-            'quiz_id'=>$quiz->id,
-            'student_mark'=>$student_mark,
-            'quiz_mark'=>$quiz->quiz_mark,
-        ]);
+        $student_result=QuizResult::where('student_id',$student->id)->where('quiz_id',$quiz->id)->first();
+        $student_result->student_mark=$student_mark;
+        $student_result->save();
         return view('student.show_result',['student'=>$student,
                                             'quiz'=>$quiz,
                                             'student_mark'=>$student_mark,
                                             'class'=>$class,
                                             'subject'=>$subject]);
     }
+
     /*  TEACHER */
     public function show_teacher(){
             $user= User::where('name',session('name'))->first();
-
             $teacher=Teacher::where('user_id',$user->id)->first();
-
             $lessons=Lesson::where('teacher_id',$user->id)->get();
-
             $num_lessons=Lesson::where('teacher_id',$teacher->id)->count();
-
             $num_homeworks=Homework::where('teacher_id',$teacher->id)->count();
-
             $num_quizzes=Quiz::where('teacher_id',$teacher->id)->count();
-
             return view('teacher.show_teacher',['teacher'=>$teacher,
                                                 'lessons'=>$lessons,
                                                 'num_lessons'=>$num_lessons,
@@ -342,58 +335,71 @@ class SystemController extends Controller
                     $quiz=Quiz::find($Quiz->id);
                     $quiz->quiz_mark=$quiz_mark;
                     $quiz->save();
+
+                    $teacher=Teacher::find($TeacherId);
+                    $students=Student::where('class',$teacher->class)->get();
+                    foreach($students as $student){
+                        QuizResult::create([
+                            'student_id'=>$student->id,
+                            'teacher_id'=>$teacher->id,
+                            'quiz_id'=>$quiz->id,
+                            'quiz_mark'=>$quiz->quiz_mark,
+                        ]);
+                    }
                 return redirect()->back()->with('success','تم عمل اختبار جديد بنجاح ');
         }
     }
 
     public function show_teacher_lessons($TeacherId){
-
         $lessons=Lesson::where('teacher_id',$TeacherId)->get();
         return view('teacher.show_lesson',['TeacherId'=>$TeacherId,'lessons'=>$lessons]);
     }
+
     public function choose_action_homework($TeacherId){
         return view('teacher.choose_action_homework',['TeacherId'=>$TeacherId]);
     }
+
     public function create_teacher_homeworks($TeacherId){
         $homeworks=Homework::where('teacher_id',$TeacherId)->get();
         return view('teacher.create_homework',['TeacherId'=>$TeacherId,'homeworks'=>$homeworks]);
     }
+
     public function correct_teacher_homework($TeacherId){
-
         $time=Carbon::now('africa/cairo');
-
         $homeworks=Homework::where('teacher_id',$TeacherId)->get();
-
         return view('teacher.correcting_homework',['TeacherId'=>$TeacherId,
                                                     'homeworks'=>$homeworks,
                                                     'time'=>$time]);
     }
+
     public function homework_solutions_of_students($TeacherId){
-
         $homework_id=request()->homework_id;
-
         $solutions=SolutionStudentForHomework::where('homework_id',$homework_id)->get();
-
         return view('teacher.show_solutions_homework',['TeacherId'=>$TeacherId,
                                                         'solutions'=>$solutions]);
     }
+
     public function store_grades_homeworks($StudentId){
         request()->validate([
             'student_mark'=>'required',
         ]);
-            $student_mark=request()->student_mark;
-            $homework_id=request()->homework_id;
-            $homework_grade=HomeworkGrade::create([
-                'student_mark'=>$student_mark,
-                'homework_id'=>$homework_id,
-                'student_id'=>$StudentId,
-            ]);
-            $correction_status=SolutionStudentForHomework::where('student_id',$StudentId)->where('homework_id',$homework_id)->first();
+        $student_mark=request()->student_mark;
+        $homework_id=request()->homework_id;
+        $homework_grade=HomeworkGrade::create([
+            'student_mark'=>$student_mark,
+            'homework_id'=>$homework_id,
+            'student_id'=>$StudentId,
+        ]);
+        $correction_status=SolutionStudentForHomework::where('student_id',$StudentId)->where('homework_id',$homework_id)->first();
             $correction_status->correction_status=1;
             $correction_status->save();
             return redirect()->back()->with('success','تم تصحيح هذا الواجب بنجاح');
         }
+
         public function modify_grades_homeworks($StudentId){
+            request()->validate([
+                'student_mark'=>'required',
+            ]);
             $homework_id=request()->homework_id;
             $student_mark=request()->student_mark;
             $modify_homework_grade=HomeworkGrade::where('student_id',$StudentId)->where('homework_id',$homework_id)->first();
@@ -401,23 +407,20 @@ class SystemController extends Controller
             $modify_homework_grade->save();
             return redirect()->back()->with('success','تم تعديل درجه هذا الواجب بنجاح');
     }
+
     public function create_teacher_quiz($TeacherId){
         return view('teacher.create_quiz',['TeacherId'=>$TeacherId]);
     }
+
     public function show_results($TeacherId){
-
         $time=Carbon::now('africa/cairo');
-
         $quizzes=Quiz::where('teacher_id',$TeacherId)->get();
-
         return view('teacher.show_results',['TeacherId'=>$TeacherId,'quizzes'=>$quizzes,'time'=>$time]);
     }
+
     public function show_content_results($TeacherId){
-
         $quiz_id=request()->quiz_id;
-
         $results=QuizResult::where('quiz_id',$quiz_id)->get();
-
         return view('teacher.show_content_results',['TeacherId'=>$TeacherId,'results'=>$results]);
     }
 

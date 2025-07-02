@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class HomeworkGrade extends Model
 {
@@ -11,4 +12,7 @@ class HomeworkGrade extends Model
         'homework_id',
         'student_mark',
     ];
+    public function homework (){
+        return $this->belongsTo(Homework::class);
+    }
 }

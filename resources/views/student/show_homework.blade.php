@@ -17,7 +17,7 @@
   <!-- ✅ قائمة الواجبات -->
   <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
     @if ($homeworks->isempty())
-                <h2 class="text-lg text-red-700">  * لا يوجد واجبات حاليا  </h2>
+                <h2 class="text-lg text-red-700 font-bold">  * لا يوجد واجبات حاليا  </h2>
     @else
         @foreach ($homeworks as $homework )
             <div class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition border-r-4 border-yellow-500">
@@ -37,7 +37,10 @@
                         <button type="submit" value="{{$homework->id}}" name="upload_homework" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 text-sm">رفع الواجب</button>
                     </form>
                 @else
-                    <a href="{{route('show_student_homework_grade',[$class,$subject])}}" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 text-sm">تقييمك</a>
+                <form action="{{route('show_student_homework_grade',[$class,$subject])}}" method="GET">
+                    @csrf
+                    <button type="submit" name="homework_id" value="{{$homework->id}}" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 text-sm">تقييمك</button>
+                </form>
                 @endif
             </div>
         </div>

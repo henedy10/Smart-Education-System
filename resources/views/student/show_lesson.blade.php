@@ -16,8 +16,8 @@
 
   <!-- ✅ محتوى المحاضرات -->
   <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
-    @if (is_null($lessons))
-            <h2 class="text-lg text-red-700">  * لا توجد محاضرات حاليا  </h2>
+    @if ($lessons->isEmpty())
+            <h2 class="text-lg text-red-700 font-bold">  * لا توجد محاضرات حاليا  </h2>
     @else
         @foreach ($lessons as $lesson )
             <!-- 🧪 محاضرة واحدة -->

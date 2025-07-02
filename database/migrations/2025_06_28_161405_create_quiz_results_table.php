@@ -26,7 +26,7 @@ return new class extends Migration
             $table->unsignedBigInteger('quiz_id');
             $table->foreign('quiz_id')->references('id')->on('quizzes');
 
-            $table->integer('student_mark');
+            $table->integer('student_mark')->default(0);
             $table->integer('quiz_mark');
             $table->timestamps();
         });

@@ -19,7 +19,7 @@
         @endif
             <div class="overflow-x-auto">
                 @if ($solutions->isEmpty())
-                        <p class="text-lg text-red-700">* لايوجد حلول للطلاب حاليا</p>
+                        <p class="text-lg text-red-700 font-bold">* لايوجد حلول للطلاب حاليا</p>
                 @else
                 <table class="min-w-full bg-white border border-gray-200 text-right text-sm">
                     <thead class="bg-blue-100 text-blue-800">
@@ -44,7 +44,7 @@
                                             <form action="{{route('modify_grades_homeworks',$solution->student_id)}}" method="POST">
                                                 @csrf
                                                 <div class="flex">
-                                                    <input type="number" name="student_mark" placeholder="درجه الطالب " class="border border-amber-600 w-full p-2 ml-1.5" min="0" max="{{$solution->homework->homework_mark}}">
+                                                    <input type="number" name="student_mark" placeholder="  درجه الطالب " class="border border-amber-600 w-full p-2 ml-1.5" min="0" max="{{$solution->homework->homework_mark}}">
                                                     <button type="submit" name="homework_id" value="{{$solution->homework_id}}" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 p-2">تعديل</button>
                                                 </div>
                                             </form>

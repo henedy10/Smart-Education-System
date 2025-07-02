@@ -14,7 +14,7 @@
     <div class="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
         <h1 class="text-2xl font-bold mb-6 text-center">الكويزات المتاحة</h1>
         @if (is_null($quiz))
-                <h2 class="text-lg text-red-700">  * لا يوجد اختبارات حاليا  </h2>
+                <h2 class="text-lg text-red-500 font-bold">  * لا يوجد اختبارات حاليا  </h2>
         @else
             @if ($currentTime <= $startTime->copy()->addMinutes(0.5) && $currentTime >= $startTime)
                 <ul class="space-y-4">

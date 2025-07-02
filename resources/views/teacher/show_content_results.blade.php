@@ -15,6 +15,9 @@
             </div>
 
             <div class="overflow-x-auto">
+                @if ($results->isEmpty())
+                <p class="text-red-500">* لا يوجد نتائج للامتحانات حاليا</p>
+                @else
                 <table class="w-full text-sm text-right text-gray-700 border border-gray-200 rounded">
                     <thead class="bg-blue-100 text-blue-800">
                         <tr>
@@ -23,16 +26,17 @@
                             <th class="p-3 border border-gray-200">النسبة المئوية</th>
                         </tr>
                     </thead>
-                    <tbody id="resultsTable">
+                    <tbody>
                         @foreach ( $results as $result )
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="p-3 border">{{$result->student->user->name}}</td>
-                            <td class="p-3 border">{{$result->student_mark}}</td>
-                            <td class="p-3 border">{{($result->student_mark/$result->quiz_mark)*100}}%</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="p-3 border">{{$result->student->user->name}}</td>
+                                    <td class="p-3 border">{{$result->student_mark}}</td>
+                                    <td class="p-3 border">{{($result->student_mark/$result->quiz_mark)*100}}%</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @endif
             </div>
         </div>
     </div>

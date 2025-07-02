@@ -15,6 +15,9 @@
             </div>
 
             <div class="flex flex-col sm:flex-row  items-center gap-4 mb-6">
+                @if ($quizzes->isEmpty())
+                    <h2 class="text-red-500 font-bold">* لا يوجد نتائج حاليا</h2>
+                @else
                 <div>
                     <select id="quizFilter" class="border border-gray-300 rounded p-2 w-full sm:w-64">
                         <option value="all">كل الاختبارات</option>
@@ -41,14 +44,13 @@
                     </thead>
                     <tbody id="resultsTable">
                         @foreach ($quizzes as $quiz )
-
                             @php
                                     $start = \Carbon\Carbon::parse($quiz->start_time);
                             @endphp
                             <tr data-quiz="{{$quiz->title}}" class="hover:bg-gray-50 transition">
                                 <td class="p-3 border">{{$quiz->title}}</td>
                                 <td class="p-3 border">{{$quiz->quiz_mark}}</td>
-                                <td class="p-3 border">{{$quiz->start_time}}</td>
+                                <td class="p-3 border"><span class="text-green-500">{{$start}}</span> -> <span class="text-red-500">{{$start->copy()->addMinutes($quiz->duration)}}</span></td>
                                 <td class="p-3 border">
                                     @if ($time<$start->copy()->addMinutes($quiz->duration)->format('Y-m-d H:i:s'))
                                         <button type="submit" onclick="alert('لا يمكن رؤيه النتائج الا بعد انتهاء وقت الامتحان')"  class="text-green-600 font-semibold">اضغط هنا</button>
@@ -64,6 +66,8 @@
                         @endforeach
                     </tbody>
                 </table>
+
+                @endif
             </div>
         </div>
     </div>
