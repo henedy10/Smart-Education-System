@@ -34,6 +34,7 @@ Route::controller(SystemController::class)->group(function (){
     Route::get('/show/teacher/{teacher}/homeworks/correction','correct_teacher_homework')->name('correct_teacher_homework');
     Route::get('/show/teacher/{teacher}/homeworks/solutions_of_students','homework_solutions_of_students')->name('homework_solutions_of_students');
     Route::post('/store/teacher/{student}/grades/homeworks','store_grades_homeworks')->name('store_grades_homeworks');
+    Route::post('/modify/teacher/{student}/grades/homeworks','modify_grades_homeworks')->name('modify_grades_homeworks');
     Route::get('/create/teacher/{teacher}/quiz','create_teacher_quiz')->name('create_teacher_quiz');
     Route::get('/show/teacher/{teacher}/quiz/results','show_results')->name('show_results');
     Route::get('/show/teacher/{teacher}/quiz/results/content','show_content_results')->name('show_content_results');

@@ -388,7 +388,18 @@ class SystemController extends Controller
                 'homework_id'=>$homework_id,
                 'student_id'=>$StudentId,
             ]);
+            $correction_status=SolutionStudentForHomework::where('student_id',$StudentId)->where('homework_id',$homework_id)->first();
+            $correction_status->correction_status=1;
+            $correction_status->save();
             return redirect()->back()->with('success','تم تصحيح هذا الواجب بنجاح');
+        }
+        public function modify_grades_homeworks($StudentId){
+            $homework_id=request()->homework_id;
+            $student_mark=request()->student_mark;
+            $modify_homework_grade=HomeworkGrade::where('student_id',$StudentId)->where('homework_id',$homework_id)->first();
+            $modify_homework_grade->student_mark=$student_mark;
+            $modify_homework_grade->save();
+            return redirect()->back()->with('success','تم تعديل درجه هذا الواجب بنجاح');
     }
     public function create_teacher_quiz($TeacherId){
         return view('teacher.create_quiz',['TeacherId'=>$TeacherId]);

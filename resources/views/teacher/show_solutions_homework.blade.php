@@ -30,21 +30,35 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($solutions as $solution )
-                        <form action="{{route('store_grades_homeworks',$solution->student_id)}}" method="POST">
-                                @csrf
-                                    <tr class="hover:bg-gray-50 transition">
-                                        <td class="px-4 py-2 border">{{$solution->student->user->name}}</td>
-                                        <td class="px-4 py-2 border">
-                                            <a href="{{asset('storage/'.$solution->homework_solution_file)}}" target="_blank"
-                                                class="bg-red-600 text-white px-3 py-1 ml-2 rounded hover:bg-red-500 text-sm">مشاهدة</a>
-                                            <a href="{{asset('storage/'.$solution->homework_solution_file)}}" download target="_blank"
-                                                class="bg-blue-600 text-white px-3 py-1 ml-2 rounded hover:bg-blue-500 text-sm">تحميل</a>
-                                            <button type="submit" name="homework_id" value="{{$solution->homework_id}}" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 p-2">تصحيح</button>
+                        @foreach ($solutions as $solution)
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="px-4 py-2 border">{{$solution->student->user->name}}</td>
+                            <td class="px-4 py-2 border">
+                                <a href="{{asset('storage/'.$solution->homework_solution_file)}}" target="_blank"
+                                    class="bg-red-600 text-white px-3 py-1 ml-2 rounded hover:bg-red-500 text-sm">مشاهدة</a>
+                                    <a href="{{asset('storage/'.$solution->homework_solution_file)}}" download target="_blank"
+                                        class="bg-blue-600 text-white px-3 py-1 ml-2 rounded hover:bg-blue-500 text-sm">تحميل</a>
+                                    </td>
+                                    <td class="px-4 py-2 border">
+                                        @if ($solution->correction_status)
+                                            <form action="{{route('modify_grades_homeworks',$solution->student_id)}}" method="POST">
+                                                @csrf
+                                                <div class="flex">
+                                                    <input type="number" name="student_mark" placeholder="درجه الطالب " class="border border-amber-600 w-full p-2 ml-1.5" min="0" max="{{$solution->homework->homework_mark}}">
+                                                    <button type="submit" name="homework_id" value="{{$solution->homework_id}}" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 p-2">تعديل</button>
+                                                </div>
+                                            </form>
+                                        @else
+                                            <form action="{{route('store_grades_homeworks',$solution->student_id)}}" method="POST">
+                                                @csrf
+                                                <div class="flex">
+                                                    <input type="number" name="student_mark" placeholder="درجه الطالب " class="border border-amber-600 w-full p-2 ml-1.5" min="0" max="{{$solution->homework->homework_mark}}">
+                                                    <button type="submit" name="homework_id" value="{{$solution->homework_id}}" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 p-2">تصحيح</button>
+                                                </div>
+                                            </form>
+                                        @endif
                                         </td>
-                                        <td class="px-4 py-2 border"><input type="number" name="student_mark" placeholder="درجه الطالب " class="border border-amber-600 w-full p-2" min="0" max="{{$solution->homework->homework_mark}}"></td>
                                     </tr>
-                                </form>
                                 @endforeach
                             </tbody>
                         </table>
