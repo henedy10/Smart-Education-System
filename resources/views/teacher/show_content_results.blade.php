@@ -31,7 +31,7 @@
                                 <tr class="hover:bg-gray-50 transition">
                                     <td class="p-3 border">{{$result->student->user->name}}</td>
                                     <td class="p-3 border">{{$result->student_mark}}</td>
-                                    <td class="p-3 border">{{($result->student_mark/$result->quiz_mark)*100}}%</td>
+                                    <td class="p-3 border">{{round(($result->student_mark/$result->quiz_mark)*100,2)}}%</td>
                                 </tr>
                                 @endforeach
                             </tbody>

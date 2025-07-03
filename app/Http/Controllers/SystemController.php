@@ -78,26 +78,35 @@ class SystemController extends Controller
     }
 
     public function to_upload_homework($class,$subject){
+        $user= User::where('name',session('name'))->first();
+        $student=Student::where('user_id',$user->id)->first();
         $homework_id=request()->upload_homework;
+        $check_status_student_solution=SolutionStudentForHomework::where('student_id',$student->id)->where('homework_id',$homework_id)->first();
         return view('student.show_homework_uploading',['homework_id'=>$homework_id,
-                                                        'class'=>$class,
-                                                        'subject'=>$subject]);
+        'class'=>$class,
+        'subject'=>$subject,
+        'check'=>$check_status_student_solution]);
     }
 
     public function store_student_solution_homework(){
         $user= User::where('name',session('name'))->first();
         $student=Student::where('user_id',$user->id)->first();
-        request()->validate([
-            'file'=>'required',
-        ]);
-        $file_path=request()->file('file')->store('solutions_homework','public');
         $homework_id=request()->homework_id;
-        SolutionStudentForHomework::create([
-                'homework_solution_file'=>$file_path,
-                'student_id'=>$student->id,
-                'homework_id'=>$homework_id,
-        ]);
-        return redirect()->back()->with('تم رفع الملف بنجاح');
+        $check_status_student_solution=SolutionStudentForHomework::where('student_id',$student->id)->where('homework_id',$homework_id)->first();
+        if(is_null($check_status_student_solution)){
+            request()->validate([
+                'file'=>'required',
+            ]);
+            $file_path=request()->file('file')->store('solutions_homework','public');
+            SolutionStudentForHomework::create([
+                    'homework_solution_file'=>$file_path,
+                    'student_id'=>$student->id,
+                    'homework_id'=>$homework_id,
+            ]);
+            return redirect()->back()->with('success','تم رفع الملف بنجاح');
+        }else{
+            return redirect()->back()->with('danger','لا يمكن رفع اكثر من ملف ');
+        }
     }
 
     public function show_student_homework_grade($class,$subject){

@@ -15,11 +15,17 @@
                     </ul>
                 </div>
             @endif
-            @if(session('success'))
-                <div class="bg-green-100 text-green-700 p-3 rounded mb-4">
-                    {{ session('success') }}
-                </div>
-            @endif
+                @if(session('success'))
+                    <div class="bg-green-100 text-green-700 p-3 rounded mb-4">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if(session('danger'))
+                    <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
+                        {{ session('danger') }}
+                    </div>
+                @endif
+
 
         <form action="{{route('store_student_solution_homework')}}" method="POST" enctype="multipart/form-data" class="space-y-5">
             @csrf
@@ -32,13 +38,22 @@
 
             <!-- زر الإرسال -->
             <div class="text-center flex justify-between">
-                <button type="submit"
-                        value="{{$homework_id}}"
-                        name="homework_id"
-                        class="bg-green-600 text-white font-semibold px-6 py-2 rounded hover:bg-green-700 transition">
-                    رفع الواجب
-                </button>
-                <a href="{{route('show_student_homework',[$class,$subject])}}" class=" text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700 ">الصفحة السابقة</a>
+                @if (is_null($check))
+                    <button type="submit"
+                            value="{{$homework_id}}"
+                            name="homework_id"
+                            class="bg-green-600 text-white font-semibold px-6 py-2 rounded hover:bg-green-700 transition">
+                            رفع الواجب
+                        </button>
+                        @else
+                        <button type="submit"
+                                value="{{$homework_id}}"
+                                name="homework_id"
+                                class="bg-green-600 text-white font-semibold px-6 py-2 rounded hover:bg-green-700 transition">
+                        رفع الواجب
+                    </button>
+                @endif
+                    <a href="{{route('show_student_homework',[$class,$subject])}}" class=" text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700 ">الصفحة السابقة</a>
             </div>
         </form>
     </div>
