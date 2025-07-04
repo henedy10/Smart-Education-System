@@ -116,9 +116,14 @@ class SystemController extends Controller
             $student_homework_grade=HomeworkGrade::where('homework_id',$homework_id)
                                                     ->where('student_id',$student->id)
                                                     ->first();
+            $student_homework_solution=SolutionStudentForHomework::where('homework_id',$homework_id)
+                                                    ->where('student_id',$student->id)
+                                                    ->first();
         return view('student.show_homework_grade',['class'=>$class,
                                                     'subject'=>$subject,
-                                                    'student_homework_grade'=>$student_homework_grade]);
+                                                    'student_homework_grade'=>$student_homework_grade,
+                                                    'student_homework_solution'=>$student_homework_solution,
+                                                ]);
     }
 
     public function show_student_quizzes($class,$subject){
