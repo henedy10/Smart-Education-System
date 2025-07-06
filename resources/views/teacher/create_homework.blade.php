@@ -71,8 +71,8 @@
                 </label>
                 <input type="file" name="file_homework" id="file_homework"
                        class="w-full file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0
-                              file:bg-blue-50 file:text-blue-700 file:font-semibold
-                              hover:file:bg-blue-100 transition">
+                            file:bg-blue-50 file:text-blue-700 file:font-semibold
+                            hover:file:bg-blue-100 transition">
             </div>
 
             <!-- زر الإرسال -->

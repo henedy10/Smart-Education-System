@@ -19,7 +19,7 @@
         @endif
             <div class="overflow-x-auto">
                 @if ($solutions->isEmpty())
-                        <p class="text-lg text-red-700 font-bold">* لايوجد حلول للطلاب حاليا</p>
+                        <p class="text-lg text-red-700 font-bold">*لا يوجد حلول للطلاب </p>
                 @else
                 <table class="min-w-full bg-white border border-gray-200 text-right text-sm">
                     <thead class="bg-blue-100 text-blue-800">
@@ -76,3 +76,4 @@
         </div>
     </div>
 </body>
+@endsection

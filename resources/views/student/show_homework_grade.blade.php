@@ -8,7 +8,7 @@
     <div class="bg-white shadow-lg rounded-lg w-full max-w-md p-6 border-t-4 border-blue-600">
         <h2 class="text-xl font-bold text-gray-800 mb-4 text-center">تقييمك في الواجب</h2>
         @if (is_null($student_homework_solution))
-                <p class="text-red-500 text-bold">* لا يوجد حل لك لهذا الواجب</p>
+                <p class="text-red-600 text-bold">* لا يوجد تقييم لك لهذا الواجب</p>
         @else
             @if (is_null($student_homework_grade))
                 <p class="text-red-500 text-bold">لم يتم تقييمك بعد *</p>
