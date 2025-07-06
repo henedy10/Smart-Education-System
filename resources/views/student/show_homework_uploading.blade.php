@@ -38,7 +38,7 @@
 
             <!-- زر الإرسال -->
             <div class="text-center flex justify-between">
-                @if (is_null($check))
+                @if (is_null($check_status_student_solution))
                     <button type="submit"
                             value="{{$homework_id}}"
                             name="homework_id"

@@ -50,20 +50,18 @@ class SystemController extends Controller
             $user= User::where('name',session('name'))->first();
             $student=Student::where('user_id',$user->id)->first();
             $teachers=Teacher::where('class',$student->class)->get();
-            return view('student.show_student',['student'=>$student,'teachers'=>$teachers]);
+            return view('student.show_student',compact('student','teachers'));
     }
 
     public function show_student_content($class,$subject) {
-        return view('student.show_content',['subject'=>$subject,'class'=>$class]);
+        return view('student.show_content',compact('class','subject'));
     }
 
     public function show_student_lesson($class,$subject){
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
         $lessons=Lesson::where('teacher_id',$teacher->id)->get();
-        return view('student.show_lesson',['subject'=>$subject,
-        'class'=>$class,
-        'lessons'=>$lessons]);
+        return view('student.show_lesson',compact('class','subject','lessons'));
     }
 
     public function show_student_homework($class,$subject){
@@ -71,10 +69,7 @@ class SystemController extends Controller
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
         $homeworks=Homework::where('teacher_id',$teacher->id)->get();
-        return view('student.show_homework',['subject'=>$subject,
-        'class'=>$class,
-        'homeworks'=>$homeworks,
-        'time'=>$time]);
+        return view('student.show_homework',compact('subject','class','homeworks','time'));
     }
 
     public function to_upload_homework($class,$subject){
@@ -82,10 +77,7 @@ class SystemController extends Controller
         $student=Student::where('user_id',$user->id)->first();
         $homework_id=request()->upload_homework;
         $check_status_student_solution=SolutionStudentForHomework::where('student_id',$student->id)->where('homework_id',$homework_id)->first();
-        return view('student.show_homework_uploading',['homework_id'=>$homework_id,
-        'class'=>$class,
-        'subject'=>$subject,
-        'check'=>$check_status_student_solution]);
+        return view('student.show_homework_uploading',compact('homework_id','class','subject','check_status_student_solution'));
     }
 
     public function store_student_solution_homework(){
@@ -119,11 +111,7 @@ class SystemController extends Controller
             $student_homework_solution=SolutionStudentForHomework::where('homework_id',$homework_id)
                                                     ->where('student_id',$student->id)
                                                     ->first();
-        return view('student.show_homework_grade',['class'=>$class,
-                                                    'subject'=>$subject,
-                                                    'student_homework_grade'=>$student_homework_grade,
-                                                    'student_homework_solution'=>$student_homework_solution,
-                                                ]);
+        return view('student.show_homework_grade',compact('class','subject','student_homework_grade','student_homework_solution'));
     }
 
     public function show_student_quizzes($class,$subject){
@@ -137,23 +125,14 @@ class SystemController extends Controller
             $startTime = Carbon::parse($quiz->start_time,'africa/cairo');
             $currentTime = Carbon::now('africa/cairo');
             $num_questions=Question::where('quiz_id',$quiz->id)->count();
-            return view('student.show_quiz',['subject'=>$subject,
-                                            'class'=>$class,
-                                            'quiz'=>$quiz,
-                                            'num_questions'=>$num_questions,
-                                            'currentTime'=>$currentTime,
-                                            'startTime'=>$startTime,
-                                        ]);
+            return view('student.show_quiz',compact('subject','class','quiz','num_questions','currentTime','startTime'));
         }else{
-            return view('student.show_quiz',['subject'=>$subject,
-                                            'class'=>$class,
-                                            'quiz'=>$quiz,
-                                        ]);
+            return view('student.show_quiz',compact('subject','class','quiz'));
         }
     }
 
     public function show_student_quiz_action($class,$subject){
-        return view('student.show_action_content_quiz',['class'=>$class,'subject'=>$subject]);
+        return view('student.show_action_content_quiz',compact('class','subject'));
     }
 
     public function show_student_quiz_result($class,$subject){
@@ -165,7 +144,7 @@ class SystemController extends Controller
         $results=QuizResult::where('student_id',$student->id)
                                 ->where('teacher_id',$teacher->id)
                                 ->get();
-        return view('student.show_quiz_results',['class'=>$class,'subject'=>$subject,'results'=>$results]);
+        return view('student.show_quiz_results',compact('class','subject','results'));
     }
 
         public function show_content_quiz($class,$subject){
@@ -179,12 +158,7 @@ class SystemController extends Controller
         foreach($question as $q){
             $options[$q->id]=Option::where('question_id',$q->id)->get();
         }
-        return view('student.show_content_quiz',['question'=>$question,
-                                                'options'=>$options,
-                                                'class'=>$class,
-                                                'subject'=>$subject,
-                                                'duration'=>$duration,
-                                                'start_time'=>$start_time]);
+        return view('student.show_content_quiz',compact('question','options','class','subject','duration','start_time'));
     }
 
     //store of selection of student
@@ -224,11 +198,7 @@ class SystemController extends Controller
         $student_result=QuizResult::where('student_id',$student->id)->where('quiz_id',$quiz->id)->first();
         $student_result->student_mark=$student_mark;
         $student_result->save();
-        return view('student.show_result',['student'=>$student,
-                                            'quiz'=>$quiz,
-                                            'student_mark'=>$student_mark,
-                                            'class'=>$class,
-                                            'subject'=>$subject]);
+        return view('student.show_result',compact('student','quiz','student_mark','class','subject'));
     }
 
     /*  TEACHER */
@@ -239,13 +209,7 @@ class SystemController extends Controller
             $num_lessons=Lesson::where('teacher_id',$teacher->id)->count();
             $num_homeworks=Homework::where('teacher_id',$teacher->id)->count();
             $num_quizzes=Quiz::where('teacher_id',$teacher->id)->count();
-            return view('teacher.show_teacher',['teacher'=>$teacher,
-                                                'lessons'=>$lessons,
-                                                'num_lessons'=>$num_lessons,
-                                                'num_homeworks'=>$num_homeworks,
-                                                'num_quizzes'=>$num_quizzes,
-                                                'TeacherId'=>$teacher->id,
-                                                ]);
+            return view('teacher.show_teacher',compact('teacher','lessons','num_lessons','num_homeworks','num_quizzes','TeacherId'));
     }
 
     public function store_teacher($TeacherId){
@@ -366,31 +330,28 @@ class SystemController extends Controller
 
     public function show_teacher_lessons($TeacherId){
         $lessons=Lesson::where('teacher_id',$TeacherId)->get();
-        return view('teacher.show_lesson',['TeacherId'=>$TeacherId,'lessons'=>$lessons]);
+        return view('teacher.show_lesson',compact('TeacherId','lessons'));
     }
 
     public function choose_action_homework($TeacherId){
-        return view('teacher.choose_action_homework',['TeacherId'=>$TeacherId]);
+        return view('teacher.choose_action_homework',compact('TeacherId'));
     }
 
     public function create_teacher_homeworks($TeacherId){
         $homeworks=Homework::where('teacher_id',$TeacherId)->get();
-        return view('teacher.create_homework',['TeacherId'=>$TeacherId,'homeworks'=>$homeworks]);
+        return view('teacher.create_homework',compact('TeacherId','homeworks'));
     }
 
     public function correct_teacher_homework($TeacherId){
         $time=Carbon::now('africa/cairo');
         $homeworks=Homework::where('teacher_id',$TeacherId)->get();
-        return view('teacher.correcting_homework',['TeacherId'=>$TeacherId,
-                                                    'homeworks'=>$homeworks,
-                                                    'time'=>$time]);
+        return view('teacher.correcting_homework',compact('TeacherId','homeworks','time'));
     }
 
     public function homework_solutions_of_students($TeacherId){
         $homework_id=request()->homework_id;
         $solutions=SolutionStudentForHomework::where('homework_id',$homework_id)->get();
-        return view('teacher.show_solutions_homework',['TeacherId'=>$TeacherId,
-                                                        'solutions'=>$solutions]);
+        return view('teacher.show_solutions_homework',compact('TeacherId','solutions'));
     }
 
     public function store_grades_homeworks($StudentId){
@@ -423,19 +384,19 @@ class SystemController extends Controller
     }
 
     public function create_teacher_quiz($TeacherId){
-        return view('teacher.create_quiz',['TeacherId'=>$TeacherId]);
+        return view('teacher.create_quiz',compact('TeacherId'));
     }
 
     public function show_results($TeacherId){
         $time=Carbon::now('africa/cairo');
         $quizzes=Quiz::where('teacher_id',$TeacherId)->get();
-        return view('teacher.show_results',['TeacherId'=>$TeacherId,'quizzes'=>$quizzes,'time'=>$time]);
+        return view('teacher.show_results',compact('TeacherId','quizzes','time'));
     }
 
     public function show_content_results($TeacherId){
         $quiz_id=request()->quiz_id;
         $results=QuizResult::where('quiz_id',$quiz_id)->get();
-        return view('teacher.show_content_results',['TeacherId'=>$TeacherId,'results'=>$results]);
+        return view('teacher.show_content_results',compact('TeacherId','results'));
     }
 
     // تسجيل الخروج لكل من الطالب و المدرس
