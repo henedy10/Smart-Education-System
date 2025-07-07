@@ -5,7 +5,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(SystemController::class)->group(function (){
 
-    Route::view('/','index');
+    Route::view('/','index')->name('home_page');
+    Route::get('/change/password','show_change_password_page')->name('show_change_password_page');
+    Route::post('/store/new_password','store_new_password')->name('store_new_password');
 
     // Routes of Student
 

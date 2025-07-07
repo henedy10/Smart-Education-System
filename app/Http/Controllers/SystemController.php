@@ -406,5 +406,33 @@ class SystemController extends Controller
         return view('index');
     }
 
+    // تغيير كلمه المرور للمستخدم
+    public function show_change_password_page(){
+        return view('change_password');
+    }
+
+    public function store_new_password(){
+        request()->validate([
+            'name'=>'required',
+            'new_password'=>'required',
+            'confirm_password'=>'required',
+        ]);
+        $name=request()->name;
+        $new_password=request()->new_password;
+        $confirm_password=request()->confirm_password;
+        $user= User::where('name',$name)->first();
+        if(is_null($user)){
+            return redirect()->back()->with('message','هذا الحساب غير موجود');
+        }else{
+            if($new_password!=$confirm_password){
+                return redirect()->back()->with('message','هناك خطأ ف كلمه المرور الجديده ');
+            }else{
+                $user->password=$confirm_password;
+                $user->save();
+                return redirect()->route('home_page')->with('success','تم تغيير كلمة المرور بنجاح');
+            }
+        }
+    }
+
 }
 
