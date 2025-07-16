@@ -25,15 +25,15 @@ class SystemController extends Controller
 {
     public function login(){
         request()->validate([
-            'name'=>['required','regex:/^[a-zA-Z0-9\s_]+$/'],
+            'email'=>['required','email:rfc,dns'],
             'password'=>'required',
         ]);
-        $user= User::where('name',request()->name)->first();
+        $user= User::where('email',request()->email)->first();
         if(!$user|| request()->password!= $user->password){
             return back()->withErrors(['login'=>'بيانات الدخول غير صحيحه']);
         }
         session([
-            'name'=>$user->name,
+            'email'=>$user->email,
             'id'=>$user->id,
         ]);
 
@@ -47,7 +47,7 @@ class SystemController extends Controller
     /* STUDENT */
 
     public function show_student(){
-            $user= User::where('name',session('name'))->first();
+            $user= User::where('email',session('email'))->first();
             $student=Student::where('user_id',$user->id)->first();
             $teachers=Teacher::where('class',$student->class)->get();
             return view('student.show_student',compact('student','teachers'));
@@ -73,7 +73,7 @@ class SystemController extends Controller
     }
 
     public function to_upload_homework($class,$subject){
-        $user= User::where('name',session('name'))->first();
+        $user= User::where('email',session('email'))->first();
         $student=Student::where('user_id',$user->id)->first();
         $homework_id=request()->upload_homework;
         $check_status_student_solution=SolutionStudentForHomework::where('student_id',$student->id)->where('homework_id',$homework_id)->first();
@@ -81,7 +81,7 @@ class SystemController extends Controller
     }
 
     public function store_student_solution_homework(){
-        $user= User::where('name',session('name'))->first();
+        $user= User::where('email',session('email'))->first();
         $student=Student::where('user_id',$user->id)->first();
         $homework_id=request()->homework_id;
         $check_status_student_solution=SolutionStudentForHomework::where('student_id',$student->id)->where('homework_id',$homework_id)->first();
@@ -102,7 +102,7 @@ class SystemController extends Controller
     }
 
     public function show_student_homework_grade($class,$subject){
-            $user= User::where('name',session('name'))->first();
+            $user= User::where('email',session('email'))->first();
             $student=Student::where('user_id',$user->id)->first();
             $homework_id=request()->homework_id;
             $student_homework_grade=HomeworkGrade::where('homework_id',$homework_id)
@@ -166,7 +166,7 @@ class SystemController extends Controller
         $student_mark=0;
         $check_selection=[];
 
-        $user= User::where('name',session('name'))->first();
+        $user= User::where('email',session('email'))->first();
 
         $student=Student::where('user_id',$user->id)->first();
 
@@ -203,13 +203,13 @@ class SystemController extends Controller
 
     /*  TEACHER */
     public function show_teacher(){
-            $user= User::where('name',session('name'))->first();
+            $user= User::where('email',session('email'))->first();
             $teacher=Teacher::where('user_id',$user->id)->first();
             $lessons=Lesson::where('teacher_id',$user->id)->get();
             $num_lessons=Lesson::where('teacher_id',$teacher->id)->count();
             $num_homeworks=Homework::where('teacher_id',$teacher->id)->count();
             $num_quizzes=Quiz::where('teacher_id',$teacher->id)->count();
-            return view('teacher.show_teacher',compact('teacher','lessons','num_lessons','num_homeworks','num_quizzes','TeacherId'));
+            return view('teacher.show_teacher',compact('teacher','lessons','num_lessons','num_homeworks','num_quizzes'));
     }
 
     public function store_teacher($TeacherId){
@@ -417,10 +417,10 @@ class SystemController extends Controller
             'new_password'=>'required',
             'confirm_password'=>'required',
         ]);
-        $name=request()->name;
+        $email=request()->email;
         $new_password=request()->new_password;
         $confirm_password=request()->confirm_password;
-        $user= User::where('name',$name)->first();
+        $user= User::where('email',$email)->first();
         if(is_null($user)){
             return redirect()->back()->with('message','هذا الحساب غير موجود');
         }else{

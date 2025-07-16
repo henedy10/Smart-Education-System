@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Route;
 Route::controller(SystemController::class)->group(function (){
 
     Route::view('/','index')->name('home_page');
+
+    // Routes of change password
+
     Route::get('/change/password','show_change_password_page')->name('show_change_password_page');
     Route::post('/store/new_password','store_new_password')->name('store_new_password');
 
