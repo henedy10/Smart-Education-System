@@ -18,30 +18,51 @@ use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Ramsey\Uuid\Codec\TimestampLastCombCodec;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cookie;
 
 use function PHPUnit\Framework\isEmpty;
 
 class SystemController extends Controller
 {
-    public function login(){
-        request()->validate([
-            'email'=>['required','email:rfc,dns'],
-            'password'=>'required',
-        ]);
-        $user= User::where('email',request()->email)->first();
-        if(!$user|| request()->password!= $user->password){
-            return back()->withErrors(['login'=>'بيانات الدخول غير صحيحه']);
-        }
-        session([
-            'email'=>$user->email,
-            'id'=>$user->id,
-        ]);
-
-        if($user->user_as =='teacher'){
-            return redirect()->route('show_teacher');
+    public function index(){
+        $check=Cookie::get('user_email');
+        if(isset($check)){
+            $user=User::where('email',$check)->first();
+            session([
+                'email'=>$user->email,
+                'id'=>$user->id
+            ]);
+            if($user->user_as =='teacher'){
+                    return redirect()->route('show_teacher');
+            }else{
+                    return redirect()->route('show_student');
+            }
         }else{
-            return redirect()->route('show_student');
+            return view('index');
         }
+    }
+    public function login(){
+            request()->validate([
+                'email'=>['required','email:rfc,dns'],
+                'password'=>'required',
+            ]);
+            $user= User::where('email',request()->email)->first();
+            if(!$user|| request()->password!= $user->password){
+                return back()->withErrors('بيانات الدخول غير صحيحه');
+            }else{
+                    session([
+                        'email'=>$user->email,
+                        'id'=>$user->id,
+                    ]);
+                    if(isset(request()->remember_me)){
+                        Cookie::queue('user_email',request()->email,30,'/');
+                    }
+                if($user->user_as =='teacher'){
+                    return redirect()->route('show_teacher');
+                }else{
+                    return redirect()->route('show_student');
+                }
+            }
     }
 
     /* STUDENT */

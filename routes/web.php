@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(SystemController::class)->group(function (){
 
-    Route::view('/','index')->name('home_page');
+    Route::get('/','index')->name('index');
+    Route::get('/show','login')->name('login');
 
     // Routes of change password
 
@@ -14,7 +15,6 @@ Route::controller(SystemController::class)->group(function (){
 
     // Routes of Student
 
-    Route::get('/show','login')->name('login');
     Route::get('/show/student','show_student')->name('show_student');
     Route::get('/show/content/{class}/{subject}','show_student_content')->name('show_student_content');
     Route::get('/show/content/{class}/{subject}/lessons','show_student_lesson')->name('show_student_lesson');
