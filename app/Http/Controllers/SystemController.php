@@ -55,7 +55,7 @@ class SystemController extends Controller
                         'id'=>$user->id,
                     ]);
                     if(isset(request()->remember_me)){
-                        Cookie::queue('user_email',request()->email,30,'/');
+                        Cookie::queue('user_email',request()->email,60*24*30,'/'); // for 1 month
                     }
                 if($user->user_as =='teacher'){
                     return redirect()->route('show_teacher');
