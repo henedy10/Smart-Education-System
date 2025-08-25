@@ -422,9 +422,16 @@ class SystemController extends Controller
 
     // تسجيل الخروج لكل من الطالب و المدرس
 
-    public function log_out_student(){
-        session()->flush();
-        return view('index');
+    public function LogOut(){
+
+        session()->forget(['email','id']);
+        session()->invalidate();
+        session()->regenerateToken();
+
+        Cookie::queue(Cookie::forget('user_email'));
+
+        return redirect()->route('index');
+
     }
 
     // تغيير كلمه المرور للمستخدم

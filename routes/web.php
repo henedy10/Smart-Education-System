@@ -27,7 +27,7 @@ Route::controller(SystemController::class)->group(function (){
     Route::post('/store/{class}/{subject}/student/answers','store_student_answers')->name('store_student_answers');
     Route::get('/show/quiz/{class}/{subject}/results','show_student_quiz_result')->name('show_student_quiz_result');
     Route::get('/show/grades/{class}/{subject}/homeworks','show_student_homework_grade')->name('show_student_homework_grade');
-    Route::get('/log_out','log_out_student')->name('log_out_student');
+    Route::get('/log_out','LogOut')->name('log_out_student');
 
     //Routes of Teacher
 
