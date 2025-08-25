@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 Route::controller(SystemController::class)->group(function (){
 
     Route::get('/','Login')->name('Login');
-    Route::get('/show','checkUser')->name('checkUser');
+    Route::post('/show','checkUser')->name('checkUser');
     Route::get('/logout','LogOut')->name('LogOut');
 
     // Routes of change password

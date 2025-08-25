@@ -53,22 +53,28 @@ class SystemController extends Controller
                 'email'=>['required','email:rfc,dns'],
                 'password'=>'required',
             ]);
-            $user= User::where('email',request()->email)->first();
-            if(!$user|| request()->password!= $user->password){
-                return back()->withErrors('بيانات الدخول غير صحيحه');
+
+            $email=request()->email;
+            $password=request()->password;
+            $user= User::where('email',$email)
+                        ->where('password',$password)
+                        ->first();
+
+            if(!$user){
+                return back()->withErrors(['login'=>'بيانات الدخول غير صحيحه']);
             }else{
-                    session([
-                        'email'=>$user->email,
-                        'id'=>$user->id,
-                    ]);
-                    if(isset(request()->remember_me)){
-                        Cookie::queue('user_email',request()->email,60*24*30,'/'); // for 1 month
-                    }
-                if($user->user_as =='teacher'){
-                    return redirect()->route('show_teacher');
-                }else{
-                    return redirect()->route('show_student');
+                session([
+                    'email'=>$user->email,
+                    'id'=>$user->id,
+                ]);
+
+                if(request()->remember_me){
+                    Cookie::queue('user_email',$email,60*24*30,'/'); // for 1 month
                 }
+
+                return $user->user_as =='teacher'
+                        ? redirect()->route('show_teacher')
+                        : redirect()->route('show_student');
             }
     }
 
