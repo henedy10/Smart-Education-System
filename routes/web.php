@@ -7,11 +7,12 @@ Route::controller(SystemController::class)->group(function (){
 
     Route::get('/','index')->name('index');
     Route::get('/show','login')->name('login');
+    Route::get('/logout','LogOut')->name('LogOut');
 
     // Routes of change password
 
-    Route::get('/change/password','show_change_password_page')->name('show_change_password_page');
-    Route::post('/store/new_password','store_new_password')->name('store_new_password');
+    Route::get('/change/password','EditPassword')->name('EditPassword');
+    Route::post('/store/new_password','UpdatePassword')->name('UpdatePassword');
 
     // Routes of Student
 
@@ -27,7 +28,6 @@ Route::controller(SystemController::class)->group(function (){
     Route::post('/store/{class}/{subject}/student/answers','store_student_answers')->name('store_student_answers');
     Route::get('/show/quiz/{class}/{subject}/results','show_student_quiz_result')->name('show_student_quiz_result');
     Route::get('/show/grades/{class}/{subject}/homeworks','show_student_homework_grade')->name('show_student_homework_grade');
-    Route::get('/log_out','LogOut')->name('log_out_student');
 
     //Routes of Teacher
 

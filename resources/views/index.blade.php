@@ -44,7 +44,7 @@
                 <input type="checkbox" name="remember_me" class="form-checkbox text-blue-600">
                 <span class="ml-2 text-sm text-gray-600">تذكرني </span>
                 </label>
-                <a href="{{route('show_change_password_page')}}"> نسيت كلمة المرور ؟</a>
+                <a href="{{route('EditPassword')}}"> نسيت كلمة المرور ؟</a>
             </div>
 
             <button type="submit"

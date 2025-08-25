@@ -435,30 +435,27 @@ class SystemController extends Controller
     }
 
     // تغيير كلمه المرور للمستخدم
-    public function show_change_password_page(){
+    public function EditPassword(){
         return view('change_password');
     }
 
-    public function store_new_password(){
+    public function UpdatePassword(){
         request()->validate([
-            'name'=>'required',
-            'new_password'=>'required',
-            'confirm_password'=>'required',
+            'email'=>'required|email',
+            'NewPassword'=>'required|min:8',
+            'ConfirmPassword'=>'required|same:NewPassword',
         ]);
+
         $email=request()->email;
-        $new_password=request()->new_password;
-        $confirm_password=request()->confirm_password;
+        $NewPassword=request()->NewPassword;
         $user= User::where('email',$email)->first();
+
         if(is_null($user)){
-            return redirect()->back()->with('message','هذا الحساب غير موجود');
+            return redirect()->back()->withErrors(['email'=>'هذا الحساب غير موجود']);
         }else{
-            if($new_password!=$confirm_password){
-                return redirect()->back()->with('message','هناك خطأ ف كلمه المرور الجديده ');
-            }else{
-                $user->password=$confirm_password;
+                $user->password=$NewPassword;
                 $user->save();
-                return redirect()->route('home_page')->with('success','تم تغيير كلمة المرور بنجاح');
-            }
+                return redirect()->route('index')->with('success','تم تغيير كلمة المرور بنجاح');
         }
     }
 

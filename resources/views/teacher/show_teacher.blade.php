@@ -40,7 +40,7 @@
                     <i data-lucide="user" class="w-6 h-6 text-blue-600"></i>
                     <span class="text-lg font-semibold text-gray-800">👋 مرحبًا، <span id="studentName">{{$teacher->user->name}}</span></span>
                 </div>
-                <form action="{{route("log_out_student")}}" method="GET">
+                <form action="{{route("LogOut")}}" method="GET">
                     @csrf
                     <button type="submit" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700"> تسجيل الخروج</button>
                 </form>
