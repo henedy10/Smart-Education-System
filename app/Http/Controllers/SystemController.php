@@ -24,24 +24,31 @@ use function PHPUnit\Framework\isEmpty;
 
 class SystemController extends Controller
 {
-    public function index(){
-        $check=Cookie::get('user_email');
-        if(isset($check)){
-            $user=User::where('email',$check)->first();
+    public function Login(){
+        $email=Cookie::get('user_email');
+
+        if($email){
+            $user=User::where('email',$email)->first();
+
+            if(!$user){
+                Cookie::queue(Cookie::forget('user_email'));
+                return redirect()->view('index')->withErrors(['login' => 'هذا الحساب غير موجود']);
+            }
+
             session([
                 'email'=>$user->email,
                 'id'=>$user->id
             ]);
-            if($user->user_as =='teacher'){
-                    return redirect()->route('show_teacher');
-            }else{
-                    return redirect()->route('show_student');
-            }
+
+            return $user->user_as =='teacher'
+                ? redirect()->route('show_teacher')
+                : redirect()->route('show_student');
+
         }else{
             return view('index');
         }
     }
-    public function login(){
+    public function checkUser(){
             request()->validate([
                 'email'=>['required','email:rfc,dns'],
                 'password'=>'required',
@@ -430,7 +437,7 @@ class SystemController extends Controller
 
         Cookie::queue(Cookie::forget('user_email'));
 
-        return redirect()->route('index');
+        return redirect()->route('Login');
 
     }
 
@@ -455,7 +462,7 @@ class SystemController extends Controller
         }else{
                 $user->password=$NewPassword;
                 $user->save();
-                return redirect()->route('index')->with('success','تم تغيير كلمة المرور بنجاح');
+                return redirect()->route('Login')->with('success','تم تغيير كلمة المرور بنجاح');
         }
     }
 
