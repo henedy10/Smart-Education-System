@@ -74,17 +74,25 @@ class SystemController extends Controller
 
                 return $user->user_as =='teacher'
                         ? redirect()->route('show_teacher')
-                        : redirect()->route('show_student');
+                        : redirect()->route('student.show');
             }
     }
 
     /* STUDENT */
 
-    public function show_student(){
-            $user= User::where('email',session('email'))->first();
-            $student=Student::where('user_id',$user->id)->first();
-            $teachers=Teacher::where('class',$student->class)->get();
-            return view('student.show_student',compact('student','teachers'));
+    public function showStudent(){
+        $userId=session('id');
+        if(!$userId){
+            return redirect()->route('Login')->withErrors(['login'=>'يجب تسجيل الدخول أولا']);
+        }
+
+        $student=Student::with('user')->where('user_id',$userId)->first();
+
+        if(!$student){
+            return redirect()->back()->withErrors(['student'=>'هذا الحساب غير موجود']);
+        }
+        $teachers=Teacher::where('class',$student->class)->get();
+        return view('student.show_student',compact('student','teachers'));
     }
 
     public function show_student_content($class,$subject) {
