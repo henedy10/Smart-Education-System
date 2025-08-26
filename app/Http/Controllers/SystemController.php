@@ -123,11 +123,25 @@ class SystemController extends Controller
         return view('student.show_homework',compact('subject','class','homeworks','currentTime'));
     }
 
-    public function to_upload_homework($class,$subject){
-        $user= User::where('email',session('email'))->first();
-        $student=Student::where('user_id',$user->id)->first();
+    public function showHomeworkUploadForm($class,$subject){
+        $userId=session('id');
+        if(!$userId){
+            return redirect()->route('Login')->withErrors(['login'=>'يجب تسجيل الدخول أولا']);
+        }
+
+        $student=Student::with('user')->where('user_id',$userId)->first();
+        if(!$student){
+            return redirect()->route('Login')->withErrors(['student'=>'الطالب غير موجود']);
+        }
+
+        request()->validate([
+            'upload_homework'=>'required|exists:homeworks,id'
+        ]);
+
         $homework_id=request()->upload_homework;
-        $check_status_student_solution=SolutionStudentForHomework::where('student_id',$student->id)->where('homework_id',$homework_id)->first();
+        $check_status_student_solution=SolutionStudentForHomework::where('student_id',$student->id)
+        ->where('homework_id',$homework_id)
+        ->first();
         return view('student.show_homework_uploading',compact('homework_id','class','subject','check_status_student_solution'));
     }
 
