@@ -17,7 +17,7 @@ Route::controller(SystemController::class)->group(function (){
     // Routes of Student
 
     Route::get('/show/student','showStudent')->name('student.show');
-    Route::get('/show/content/{class}/{subject}','show_student_content')->name('show_student_content');
+    Route::get('/show/content/{class}/{subject}','showStudentcontent')->name('show_student_content');
     Route::get('/show/content/{class}/{subject}/lessons','show_student_lesson')->name('show_student_lesson');
     Route::get('/show/content/{class}/{subject}/homeworks','show_student_homework')->name('show_student_homework');
     Route::get('/show/content/{class}/{subject}/homeworks/upload','to_upload_homework')->name('to_upload_student_homework');

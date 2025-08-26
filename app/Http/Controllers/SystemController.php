@@ -95,7 +95,7 @@ class SystemController extends Controller
         return view('student.show_student',compact('student','teachers'));
     }
 
-    public function show_student_content($class,$subject) {
+    public function showStudentcontent($class,$subject) {
         return view('student.show_content',compact('class','subject'));
     }
 

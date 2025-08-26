@@ -9,7 +9,7 @@
     <div class="flex items-center gap-3">
       <span class="text-lg font-semibold text-gray-800"> لوحة التحكم</span>
     </div>
-    <a href="{{route('show_student')}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
+    <a href="{{route('student.show')}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
   </div>
   <!-- ✅ Dashboard Content -->
   <div class="max-w-6xl mx-auto">
