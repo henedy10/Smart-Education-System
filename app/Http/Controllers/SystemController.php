@@ -95,11 +95,11 @@ class SystemController extends Controller
         return view('student.show_student',compact('student','teachers'));
     }
 
-    public function showStudentcontent($class,$subject) {
+    public function showStudentContent($class,$subject) {
         return view('student.show_content',compact('class','subject'));
     }
 
-    public function showStudentlesson($class,$subject){
+    public function showStudentLesson($class,$subject){
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
         if(!$teacher){
@@ -110,12 +110,17 @@ class SystemController extends Controller
         return view('student.show_lesson',compact('class','subject','lessons'));
     }
 
-    public function show_student_homework($class,$subject){
-        $time=Carbon::now('africa/cairo');
+    public function showStudentHomework($class,$subject){
+        $currentTime=now('africa/cairo');
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
+
+        if(!$teacher){
+            return redirect()->back()->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
+        }
+
         $homeworks=Homework::where('teacher_id',$teacher->id)->get();
-        return view('student.show_homework',compact('subject','class','homeworks','time'));
+        return view('student.show_homework',compact('subject','class','homeworks','currentTime'));
     }
 
     public function to_upload_homework($class,$subject){
