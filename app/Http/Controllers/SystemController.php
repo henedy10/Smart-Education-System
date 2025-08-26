@@ -99,10 +99,14 @@ class SystemController extends Controller
         return view('student.show_content',compact('class','subject'));
     }
 
-    public function show_student_lesson($class,$subject){
+    public function showStudentlesson($class,$subject){
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
+        if(!$teacher){
+            return redirect()->back()->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
+        }
         $lessons=Lesson::where('teacher_id',$teacher->id)->get();
+
         return view('student.show_lesson',compact('class','subject','lessons'));
     }
 
