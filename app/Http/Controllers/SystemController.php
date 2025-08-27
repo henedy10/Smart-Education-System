@@ -145,24 +145,38 @@ class SystemController extends Controller
         return view('student.show_homework_uploading',compact('homework_id','class','subject','check_status_student_solution'));
     }
 
-    public function store_student_solution_homework(){
-        $user= User::where('email',session('email'))->first();
-        $student=Student::where('user_id',$user->id)->first();
+    public function storeHomeworkSolution(){
+        $userId=session('id');
+        if(!$userId){
+            return redirect()->route('Login')->withErrors(['login'=>'يجب تسجيل الدخول أولا']);
+        }
+
+        $student=Student::with('user')->where('user_id',$userId)->first();
+        if(!$student){
+            return redirect()->route('Login')->withErrors(['student'=>'الطالب غير موجود']);
+        }
+
+        request()->validate([
+            'file'=>'required|mimes:pdf,doc,docx,jpg,png|max:2048',
+            'homeword_id'=>'required|exists:homeworks,id'
+        ]);
+
         $homework_id=request()->homework_id;
-        $check_status_student_solution=SolutionStudentForHomework::where('student_id',$student->id)->where('homework_id',$homework_id)->first();
-        if(is_null($check_status_student_solution)){
-            request()->validate([
-                'file'=>'required',
-            ]);
-            $file_path=request()->file('file')->store('solutions_homework','public');
+        $alreadyUploaded=SolutionStudentForHomework::where('student_id',$student->id)
+        ->where('homework_id',$homework_id)
+        ->exists();
+
+        if($alreadyUploaded){
+            $fileName=time().'_'.$student->id.'.'.request()->file('file')->getClientOriginalExtension();
+            $filePath=request()->file('file')->storeAs('solutions_homework',$fileName,'public');
             SolutionStudentForHomework::create([
-                    'homework_solution_file'=>$file_path,
+                    'homework_solution_file'=>$filePath,
                     'student_id'=>$student->id,
                     'homework_id'=>$homework_id,
             ]);
             return redirect()->back()->with('success','تم رفع الملف بنجاح');
         }else{
-            return redirect()->back()->with('danger','لا يمكن رفع اكثر من ملف ');
+            return redirect()->back()->with('danger',' لا يمكن رفع اكثر من ملف لهذا الواجب');
         }
     }
 
