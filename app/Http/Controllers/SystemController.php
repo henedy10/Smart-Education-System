@@ -211,24 +211,28 @@ class SystemController extends Controller
             ,'studentHomeworkSolution'
         ));
     }
-/*********************************************************************** */
-    public function show_student_quizzes($class,$subject){
+
+    public function showAvailableQuiz($class,$subject){
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
+        if(!$teacher){
+            return redirect()->route('show_student_content')->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
+        }
+
         $quiz=Quiz::where('teacher_id',$teacher->id)
         ->orderBy('start_time','desc')
         ->first();
 
-        if(!is_null($quiz)){
+        if($quiz){
             $startTime = Carbon::parse($quiz->start_time,'africa/cairo');
-            $currentTime = Carbon::now('africa/cairo');
+            $currentTime = now('africa/cairo');
             $num_questions=Question::where('quiz_id',$quiz->id)->count();
             return view('student.show_quiz',compact('subject','class','quiz','num_questions','currentTime','startTime'));
         }else{
             return view('student.show_quiz',compact('subject','class','quiz'));
         }
     }
-/************************************************************************* */
+
     public function show_student_quiz_action($class,$subject){
         return view('student.show_action_content_quiz',compact('class','subject'));
     }
