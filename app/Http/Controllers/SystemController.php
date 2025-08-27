@@ -261,18 +261,38 @@ class SystemController extends Controller
         return view('student.show_quiz_results',compact('class','subject','results'));
     }
 
-        public function show_content_quiz($class,$subject){
+    public function showQuizContent($class,$subject){
+
         $teacher=Teacher::where('class',$class)
-        -> where('subject',$subject)->first();
-        $quiz=Quiz::where('teacher_id',$teacher->id)->orderBy('start_time','desc')->first();
-        $question=Question::where('quiz_id',$quiz->id)->get();
+                            -> where('subject',$subject)
+                            ->first();
+        if(!$teacher){
+            return redirect()->route('show_student_content')->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
+        }
+
+        $quiz=Quiz::where('teacher_id',$teacher->id)
+                            ->orderBy('start_time','desc')
+                            ->first();
+        if(!$quiz){
+            return redirect()->back()->withErrors(['quiz' => 'لا يوجد اختبار متاح حاليا']);
+        }
+
+        $questions=Question::where('quiz_id',$quiz->id)->get();
+
         $duration=$quiz->duration;
         $start_time=$quiz->start_time;
         $options=[];
-        foreach($question as $q){
+        foreach($questions as $q){
             $options[$q->id]=Option::where('question_id',$q->id)->get();
         }
-        return view('student.show_content_quiz',compact('question','options','class','subject','duration','start_time'));
+        return view('student.show_content_quiz',compact(
+            'questions',
+            'options',
+            'class',
+            'subject',
+            'duration',
+            'start_time'
+        ));
     }
 
     //store of selection of student

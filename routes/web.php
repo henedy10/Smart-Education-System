@@ -24,7 +24,7 @@ Route::controller(SystemController::class)->group(function (){
     Route::post('/show/content/homeworks/store','storeHomeworkSolution')->name('store_student_solution_homework');
     Route::get('/show/{class}/{subject}/quiz/action','showChooseAction')->name('show_student_quiz_action');
     Route::get('/show/quiz/{class}/{subject}','showAvailableQuiz')->name('show_student_quizzes');
-    Route::get('/show/{class}/{subject}/content/quiz','show_content_quiz')->name('show_content_quiz');
+    Route::get('/show/{class}/{subject}/content/quiz','showQuizContent')->name('show_content_quiz');
     Route::post('/store/{class}/{subject}/student/answers','store_student_answers')->name('store_student_answers');
     Route::get('/show/quiz/{class}/{subject}/results','showQuizResults')->name('show_student_quiz_result');
     Route::get('/show/grades/{class}/{subject}/homeworks','showHomeworkDetails')->name('show_student_homework_grade');
