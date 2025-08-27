@@ -78,7 +78,7 @@ class SystemController extends Controller
             }
     }
 
-    /* STUDENT */
+    /************** STUDENT **************/
 
     public function showStudent(){
         $userId=session('id');
@@ -157,8 +157,8 @@ class SystemController extends Controller
         }
 
         request()->validate([
-            'file'=>'required|mimes:pdf,doc,docx,jpg,png|max:2048',
-            'homeword_id'=>'required|exists:homeworks,id'
+            'file'=>'required|mimes:pdf,doc,docx,jpg,png',
+            'homework_id'=>'required|exists:homeworks,id'
         ]);
 
         $homework_id=request()->homework_id;
@@ -166,7 +166,7 @@ class SystemController extends Controller
         ->where('homework_id',$homework_id)
         ->exists();
 
-        if($alreadyUploaded){
+        if(!$alreadyUploaded){
             $fileName=time().'_'.$student->id.'.'.request()->file('file')->getClientOriginalExtension();
             $filePath=request()->file('file')->storeAs('solutions_homework',$fileName,'public');
             SolutionStudentForHomework::create([
@@ -180,19 +180,38 @@ class SystemController extends Controller
         }
     }
 
-    public function show_student_homework_grade($class,$subject){
-            $user= User::where('email',session('email'))->first();
-            $student=Student::where('user_id',$user->id)->first();
-            $homework_id=request()->homework_id;
-            $student_homework_grade=HomeworkGrade::where('homework_id',$homework_id)
-                                                    ->where('student_id',$student->id)
-                                                    ->first();
-            $student_homework_solution=SolutionStudentForHomework::where('homework_id',$homework_id)
-                                                    ->where('student_id',$student->id)
-                                                    ->first();
-        return view('student.show_homework_grade',compact('class','subject','student_homework_grade','student_homework_solution'));
-    }
+    public function showHomeworkDetails($class,$subject){
+        $userId=session('id');
+        if(!$userId){
+            return redirect()->route('Login')->withErrors(['login'=>'يجب تسجيل الدخول أولا']);
+        }
 
+        $student=Student::with('user')->where('user_id',$userId)->first();
+        if(!$student){
+            return redirect()->route('Login')->withErrors(['student'=>'الطالب غير موجود']);
+        }
+
+        request()->validate([
+            'homework_id'=>'required|exists:homeworks,id'
+        ]);
+        $homework_id=request()->homework_id;
+
+        $studentHomeworkGrade=HomeworkGrade::where('homework_id',$homework_id)
+                                                ->where('student_id',$student->id)
+                                                ->first();
+
+        $studentHomeworkSolution=SolutionStudentForHomework::where('homework_id',$homework_id)
+                                                ->where('student_id',$student->id)
+                                                ->first();
+
+        return view('student.show_homework_grade',compact(
+            'class'
+            ,'subject'
+            ,'studentHomeworkGrade'
+            ,'studentHomeworkSolution'
+        ));
+    }
+/*********************************************************************** */
     public function show_student_quizzes($class,$subject){
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
@@ -209,7 +228,7 @@ class SystemController extends Controller
             return view('student.show_quiz',compact('subject','class','quiz'));
         }
     }
-
+/************************************************************************* */
     public function show_student_quiz_action($class,$subject){
         return view('student.show_action_content_quiz',compact('class','subject'));
     }
