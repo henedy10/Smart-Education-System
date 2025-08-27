@@ -22,7 +22,7 @@ Route::controller(SystemController::class)->group(function (){
     Route::get('/show/content/{class}/{subject}/homeworks','showStudentHomework')->name('show_student_homework');
     Route::get('/show/content/{class}/{subject}/homeworks/upload','showHomeworkUploadForm')->name('to_upload_student_homework');
     Route::post('/show/content/homeworks/store','storeHomeworkSolution')->name('store_student_solution_homework');
-    Route::get('/show/{class}/{subject}/quiz/action','show_student_quiz_action')->name('show_student_quiz_action');
+    Route::get('/show/{class}/{subject}/quiz/action','showChooseAction')->name('show_student_quiz_action');
     Route::get('/show/quiz/{class}/{subject}','showAvailableQuiz')->name('show_student_quizzes');
     Route::get('/show/{class}/{subject}/content/quiz','show_content_quiz')->name('show_content_quiz');
     Route::post('/store/{class}/{subject}/student/answers','store_student_answers')->name('store_student_answers');

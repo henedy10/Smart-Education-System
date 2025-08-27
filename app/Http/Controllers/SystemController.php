@@ -232,8 +232,8 @@ class SystemController extends Controller
             return view('student.show_quiz',compact('subject','class','quiz'));
         }
     }
-
-    public function show_student_quiz_action($class,$subject){
+/************************************************************************************* */
+    public function showChooseAction($class,$subject){
         return view('student.show_action_content_quiz',compact('class','subject'));
     }
 
@@ -248,7 +248,7 @@ class SystemController extends Controller
                                 ->get();
         return view('student.show_quiz_results',compact('class','subject','results'));
     }
-
+/********************************************************************************************* */
         public function show_content_quiz($class,$subject){
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
