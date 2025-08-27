@@ -16,7 +16,7 @@
         </div>
 
         <div class="bg-blue-100 text-blue-800 text-center py-4 rounded-lg mb-4">
-            <p class="text-xl font-bold">الدرجة: {{$student_mark}} / {{$quiz->quiz_mark}}</p>
+            <p class="text-xl font-bold">الدرجة: {{$studentMark}} / {{$quiz->quiz_mark}}</p>
         </div>
 
         <div class="text-sm text-gray-600 text-center">

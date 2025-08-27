@@ -295,29 +295,36 @@ class SystemController extends Controller
         ));
     }
 
-    //store of selection of student
-    public function store_student_answers($class,$subject){
-        $student_mark=0;
+    public function storeQuizAnswers($class,$subject){
+        $studentMark=0;
         $check_selection=[];
 
-        $user= User::where('email',session('email'))->first();
+        $userId=session('id');
+        if(!$userId){
+            return redirect()->route('Login')->withErrors(['login'=>'يجب تسجيل الدخول أولا']);
+        }
 
-        $student=Student::where('user_id',$user->id)->first();
+        $student=Student::where('user_id',$userId)->first();
+        if(!$student){
+            return redirect()->route('Login')->withErrors(['student'=>'الطالب غير موجود']);
+        }
 
         $teacher=Teacher::where('class',$class)
-        -> where('subject',$subject)->first();
+                            -> where('subject',$subject)
+                            ->first();
+        if(!$teacher){
+            return redirect()->route('show_student_content')->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
+        }
 
         $quiz=Quiz::where('teacher_id',$teacher->id)->orderBy('start_time','desc')->first();
 
-        $question=Question::where('quiz_id',$quiz->id)->get();
+        $questions=Question::where('quiz_id',$quiz->id)->get();
 
-        foreach($question as $Q){
+        foreach($questions as $Q){
+
             $options=request()->answer;
-            if(isset($options[$Q->id])&&$Q->correct_option==$options[$Q->id]){
-                $check_selection[$Q->id]=true;
-            }else{
-                $check_selection[$Q->id]=false;
-            }
+            $check_selection[$Q->id]= (isset($options[$Q->id]) && $Q->correct_option==$options[$Q->id]) ? true : false;
+
             $store_student_option=StudentOption::create([
                     'student_id'=> $student->id,
                     'quiz_id'=> $quiz->id,
@@ -325,14 +332,20 @@ class SystemController extends Controller
                     'select_option'=>$options[$Q->id]??null,
                     'status_option'=> $check_selection[$Q->id],
             ]);
+
             if($check_selection[$Q->id]){
-                $student_mark+=$Q->question_mark;
+                $studentMark+=$Q->question_mark;
             }
         }
-        $student_result=QuizResult::where('student_id',$student->id)->where('quiz_id',$quiz->id)->first();
-        $student_result->student_mark=$student_mark;
+
+        $student_result=QuizResult::where('student_id',$student->id)
+                            ->where('quiz_id',$quiz->id)
+                            ->first();
+
+        $student_result->student_mark=$studentMark;
         $student_result->save();
-        return view('student.show_result',compact('student','quiz','student_mark','class','subject'));
+
+        return view('student.show_result',compact('student','quiz','studentMark','class','subject'));
     }
 
     /*  TEACHER */
