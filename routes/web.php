@@ -26,7 +26,7 @@ Route::controller(SystemController::class)->group(function (){
     Route::get('/show/quiz/{class}/{subject}','showAvailableQuiz')->name('show_student_quizzes');
     Route::get('/show/{class}/{subject}/content/quiz','show_content_quiz')->name('show_content_quiz');
     Route::post('/store/{class}/{subject}/student/answers','store_student_answers')->name('store_student_answers');
-    Route::get('/show/quiz/{class}/{subject}/results','show_student_quiz_result')->name('show_student_quiz_result');
+    Route::get('/show/quiz/{class}/{subject}/results','showQuizResults')->name('show_student_quiz_result');
     Route::get('/show/grades/{class}/{subject}/homeworks','showHomeworkDetails')->name('show_student_homework_grade');
 
     //Routes of Teacher

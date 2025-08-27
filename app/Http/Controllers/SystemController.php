@@ -232,23 +232,35 @@ class SystemController extends Controller
             return view('student.show_quiz',compact('subject','class','quiz'));
         }
     }
-/************************************************************************************* */
     public function showChooseAction($class,$subject){
         return view('student.show_action_content_quiz',compact('class','subject'));
     }
 
-    public function show_student_quiz_result($class,$subject){
-        $user=User::where('id',session('id'))->first();
+    public function showQuizResults($class,$subject){
+        $userId=session('id');
+        if(!$userId){
+            return redirect()->route('Login')->withErrors(['login'=>'يجب تسجيل الدخول أولا']);
+        }
+
+        $student=Student::where('user_id',$userId)->first();
+        if(!$student){
+            return redirect()->route('Login')->withErrors(['student'=>'الطالب غير موجود']);
+        }
+
         $teacher=Teacher::where('class',$class)
                             ->where('subject',$subject)
                             ->first();
-        $student=Student::where('user_id',$user->id)->first();
+        if(!$teacher){
+            return redirect()->route('show_student_content')->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
+        }
         $results=QuizResult::where('student_id',$student->id)
                                 ->where('teacher_id',$teacher->id)
+                                ->orderBy('created_at','desc')
                                 ->get();
+
         return view('student.show_quiz_results',compact('class','subject','results'));
     }
-/********************************************************************************************* */
+
         public function show_content_quiz($class,$subject){
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
