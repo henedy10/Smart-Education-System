@@ -31,7 +31,7 @@ Route::controller(SystemController::class)->group(function (){
 
     //Routes of Teacher
 
-    Route::get('/show/teacher','show_teacher')->name('show_teacher');
+    Route::get('/show/teacher','showTeacher')->name('show_teacher');
     Route::post('/store/teacher/{teacher}','store_teacher')->name('store_teacher');
     Route::get('/show/teacher/{teacher}/lessons','show_teacher_lessons')->name('show_teacher_lessons');
     Route::get('/show/teacher/{teacher}/homeworks','choose_action_homework')->name('choose_action_homework');

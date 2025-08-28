@@ -349,16 +349,25 @@ class SystemController extends Controller
     }
 
     /*  TEACHER */
-    public function show_teacher(){
-            $user= User::where('email',session('email'))->first();
-            $teacher=Teacher::where('user_id',$user->id)->first();
-            $lessons=Lesson::where('teacher_id',$user->id)->get();
+
+    public function showTeacher(){
+        $userId=session('id');
+        if(!$userId){
+            return redirect()->route('Login')->withErrors(['login'=>'يجب تسجيل الدخول أولا']);
+        }
+
+        $teacher=Teacher::where('user_id',$userId)->first();
+        if(!$teacher){
+            return redirect()->route('Login')->withErrors(['teacher'=>'المدرس غير موجود']);
+        }
+
+            $lessons=Lesson::where('teacher_id',$teacher->id)->get();
             $num_lessons=Lesson::where('teacher_id',$teacher->id)->count();
             $num_homeworks=Homework::where('teacher_id',$teacher->id)->count();
             $num_quizzes=Quiz::where('teacher_id',$teacher->id)->count();
             return view('teacher.show_teacher',compact('teacher','lessons','num_lessons','num_homeworks','num_quizzes'));
     }
-
+/********************************************************* */
     public function store_teacher($TeacherId){
         // نشر الحصه
         if((request()->upload)=='upload_lesson'){
@@ -474,7 +483,7 @@ class SystemController extends Controller
                 return redirect()->back()->with('success','تم عمل اختبار جديد بنجاح ');
         }
     }
-
+/************************************************************************************************* */
     public function show_teacher_lessons($TeacherId){
         $lessons=Lesson::where('teacher_id',$TeacherId)->get();
         return view('teacher.show_lesson',compact('TeacherId','lessons'));
