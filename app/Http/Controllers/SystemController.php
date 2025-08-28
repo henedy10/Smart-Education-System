@@ -361,10 +361,10 @@ class SystemController extends Controller
             return redirect()->route('Login')->withErrors(['teacher'=>'المدرس غير موجود']);
         }
 
-            $num_lessons=Lesson::where('teacher_id',$teacher->id)->count();
-            $num_homeworks=Homework::where('teacher_id',$teacher->id)->count();
-            $num_quizzes=Quiz::where('teacher_id',$teacher->id)->count();
-            return view('teacher.show_teacher',compact('teacher','num_lessons','num_homeworks','num_quizzes'));
+            $numLessons=Lesson::where('teacher_id',$teacher->id)->count();
+            $numHomeworks=Homework::where('teacher_id',$teacher->id)->count();
+            $numQuizzes=Quiz::where('teacher_id',$teacher->id)->count();
+            return view('teacher.show_teacher',compact('teacher','numHomeworks','numQuizzes'));
     }
 /********************************************************* */
     public function store_teacher($TeacherId){
