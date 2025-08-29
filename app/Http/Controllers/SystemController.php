@@ -488,74 +488,82 @@ class SystemController extends Controller
         }
     }
 
-    public function show_teacher_lessons($TeacherId){
+    public function showTeacherLessons($TeacherId){
         $lessons=Lesson::where('teacher_id',$TeacherId)->get();
         return view('teacher.show_lesson',compact('TeacherId','lessons'));
     }
 
-    public function choose_action_homework($TeacherId){
+    public function showActionHomework($TeacherId){
         return view('teacher.choose_action_homework',compact('TeacherId'));
     }
 
-    public function create_teacher_homeworks($TeacherId){
+    public function createHomework($TeacherId){
         $homeworks=Homework::where('teacher_id',$TeacherId)->get();
         return view('teacher.create_homework',compact('TeacherId','homeworks'));
     }
 
-    public function correct_teacher_homework($TeacherId){
-        $time=Carbon::now('africa/cairo');
+    public function correctHomework($TeacherId){
+        $time=now('africa/cairo');
         $homeworks=Homework::where('teacher_id',$TeacherId)->get();
         return view('teacher.correcting_homework',compact('TeacherId','homeworks','time'));
     }
 
-    public function homework_solutions_of_students($TeacherId){
-        $homework_id=request()->homework_id;
-        $solutions=SolutionStudentForHomework::where('homework_id',$homework_id)->get();
+    public function solutionHomeworkOfStudent($TeacherId){
+        $solutions=SolutionStudentForHomework::where('homework_id',request()->homework_id)->get();
         return view('teacher.show_solutions_homework',compact('TeacherId','solutions'));
     }
 
-    public function store_grades_homeworks($StudentId){
+    public function storeHomeworkGrades($StudentId){
         request()->validate([
-            'student_mark'=>'required',
+            'student_mark' => 'required|integer',
         ]);
+
         $student_mark=request()->student_mark;
         $homework_id=request()->homework_id;
-        $homework_grade=HomeworkGrade::create([
-            'student_mark'=>$student_mark,
-            'homework_id'=>$homework_id,
-            'student_id'=>$StudentId,
-        ]);
-        $correction_status=SolutionStudentForHomework::where('student_id',$StudentId)->where('homework_id',$homework_id)->first();
-            $correction_status->correction_status=1;
-            $correction_status->save();
-            return redirect()->back()->with('success','تم تصحيح هذا الواجب بنجاح');
-        }
 
-        public function modify_grades_homeworks($StudentId){
-            request()->validate([
-                'student_mark'=>'required',
-            ]);
-            $homework_id=request()->homework_id;
-            $student_mark=request()->student_mark;
-            $modify_homework_grade=HomeworkGrade::where('student_id',$StudentId)->where('homework_id',$homework_id)->first();
-            $modify_homework_grade->student_mark=$student_mark;
-            $modify_homework_grade->save();
-            return redirect()->back()->with('success','تم تعديل درجه هذا الواجب بنجاح');
+        HomeworkGrade::create([
+            'student_mark' => $student_mark,
+            'homework_id'  => $homework_id,
+            'student_id'   => $StudentId,
+        ]);
+
+        $correction_status=SolutionStudentForHomework::where('student_id',$StudentId)
+        ->where('homework_id',$homework_id)
+        ->first();
+        $correction_status->update(['correction_status'=>1]);
+
+        return redirect()->back()->with('success','تم تصحيح هذا الواجب بنجاح');
     }
 
-    public function create_teacher_quiz($TeacherId){
+    public function updateHomeworkGrade($StudentId){
+        request()->validate([
+            'student_mark' => 'required|integer',
+        ]);
+
+        $homework_id=request()->homework_id;
+        $student_mark=request()->student_mark;
+
+        $modify_homework_grade=HomeworkGrade::where('student_id',$StudentId)
+        ->where('homework_id',$homework_id)
+        ->first();
+
+        $modify_homework_grade->update(['student_mark' => $student_mark]);
+
+        return redirect()->back()->with('success','تم تعديل درجه هذا الواجب بنجاح');
+    }
+
+    public function createQuiz($TeacherId){
         return view('teacher.create_quiz',compact('TeacherId'));
     }
 
-    public function show_results($TeacherId){
-        $time=Carbon::now('africa/cairo');
+    public function showQuizzes($TeacherId){
+        $time=now('africa/cairo');
         $quizzes=Quiz::where('teacher_id',$TeacherId)->get();
         return view('teacher.show_results',compact('TeacherId','quizzes','time'));
     }
 
-    public function show_content_results($TeacherId){
-        $quiz_id=request()->quiz_id;
-        $results=QuizResult::where('quiz_id',$quiz_id)->get();
+    public function showResults($TeacherId){
+        $results=QuizResult::where('quiz_id',request()->quiz_id)->get();
         return view('teacher.show_content_results',compact('TeacherId','results'));
     }
 

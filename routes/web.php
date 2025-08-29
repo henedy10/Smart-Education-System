@@ -33,15 +33,15 @@ Route::controller(SystemController::class)->group(function (){
 
     Route::get('/show/teacher','showTeacher')->name('show_teacher');
     Route::post('/store/teacher/{teacher}','storeTeacherResource')->name('store_teacher');
-    Route::get('/show/teacher/{teacher}/lessons','show_teacher_lessons')->name('show_teacher_lessons');
-    Route::get('/show/teacher/{teacher}/homeworks','choose_action_homework')->name('choose_action_homework');
-    Route::get('/show/teacher/{teacher}/homeworks/create','create_teacher_homeworks')->name('create_teacher_homeworks');
-    Route::get('/show/teacher/{teacher}/homeworks/correction','correct_teacher_homework')->name('correct_teacher_homework');
-    Route::get('/show/teacher/{teacher}/homeworks/solutions_of_students','homework_solutions_of_students')->name('homework_solutions_of_students');
-    Route::post('/store/teacher/{student}/grades/homeworks','store_grades_homeworks')->name('store_grades_homeworks');
-    Route::post('/modify/teacher/{student}/grades/homeworks','modify_grades_homeworks')->name('modify_grades_homeworks');
-    Route::get('/create/teacher/{teacher}/quiz','create_teacher_quiz')->name('create_teacher_quiz');
-    Route::get('/show/teacher/{teacher}/quiz/results','show_results')->name('show_results');
-    Route::get('/show/teacher/{teacher}/quiz/results/content','show_content_results')->name('show_content_results');
+    Route::get('/show/teacher/{teacher}/lessons','showTeacherLessons')->name('show_teacher_lessons');
+    Route::get('/show/teacher/{teacher}/homeworks','showActionHomework')->name('choose_action_homework');
+    Route::get('/show/teacher/{teacher}/homeworks/create','createHomework')->name('create_teacher_homeworks');
+    Route::get('/show/teacher/{teacher}/homeworks/correction','correctHomework')->name('correct_teacher_homework');
+    Route::get('/show/teacher/{teacher}/homeworks/solutions_of_students','solutionHomeworkOfStudent')->name('homework_solutions_of_students');
+    Route::post('/store/teacher/{student}/grades/homeworks','storeHomeworkGrades')->name('store_grades_homeworks');
+    Route::post('/modify/teacher/{student}/grades/homeworks','updateHomeworkGrade')->name('modify_grades_homeworks');
+    Route::get('/create/teacher/{teacher}/quiz','createQuiz')->name('create_teacher_quiz');
+    Route::get('/show/teacher/{teacher}/quiz/results','showQuizzes')->name('show_results');
+    Route::get('/show/teacher/{teacher}/quiz/results/content','showResults')->name('show_content_results');
 
 });
