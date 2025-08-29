@@ -367,12 +367,12 @@ class SystemController extends Controller
             return view('teacher.show_teacher',compact('teacher','numLessons','numHomeworks','numQuizzes'));
     }
 
-    public function store_teacher($TeacherId){
+    public function storeTeacherResource($TeacherId){
         // نشر الحصه
         if((request()->upload)=='upload_lesson'){
             request()->validate([
-                'title_lesson'=>'required|max:255',
-                'file_lesson'=>'required|mimes:pdf,doc,docx,zip,rar,jpg,png|max:10240',
+                'title_lesson'  => 'required|max:255',
+                'file_lesson'   => 'required|mimes:pdf,doc,docx,zip,rar,jpg,png|max:10240',
             ]);
 
             $fileName=time() . '.' . request()->title_lesson . '.' . request()->file('file_lesson')->getClientOriginalExtension();
@@ -380,9 +380,9 @@ class SystemController extends Controller
             $title_lesson=request()->title_lesson;
 
             Lesson::create([
-                'teacher_id'=>$TeacherId,
-                'file_lesson'=>$filePath,
-                'title_lesson'=> $title_lesson,
+                'teacher_id'   => $TeacherId,
+                'file_lesson'  => $filePath,
+                'title_lesson' => $title_lesson,
             ]);
 
             return redirect()->back()->with('success', 'تم رفع الملف بنجاح');
@@ -412,80 +412,82 @@ class SystemController extends Controller
 
             return redirect()->back()->with('success', 'تم رفع الملف بنجاح');
         }
-/********************************************************************************** */
+
         // عمل اختبار
         else if (request()->upload=='create_quiz'){
-                request()->validate([
-                    'quiz_title'=>'required',
-                    'quiz_date'=>'required',
-                    'quiz_duration'=>'required',
-                    'question_title'=>'required|array',
-                    'question_title.*'=>'required|string',
-                    'option_title'=>'required|array',
-                    'option_title.*'=>'required|string',
-                    'correct_option'=>'required|array',
-                    'correct_option.*'=>'required',
-                    'question_mark'=>'required|array',
-                    'question_mark.*'=>'required|integer',
+
+            request()->validate([
+                'quiz_title'        => 'required|max:255',
+                'quiz_date'         => 'required',
+                'quiz_duration'     => 'required|integer|min:1',
+                'question_title'    => 'required|array|max:255',
+                'question_title.*'  => 'required|string',
+                'option_title'      => 'required|array|max:255',
+                'option_title.*'    => 'required|string',
+                'correct_option'    => 'required|array',
+                'correct_option.*'  => 'required',
+                'question_mark'     => 'required|array',
+                'question_mark.*'   => 'required|integer',
+            ]);
+
+            $quiz_title       =  request()->quiz_title;
+            $quiz_date        =  request()->quiz_date;
+            $quiz_duration    =  request()->quiz_duration;
+            $quiz_description =  request()->quiz_description;
+            $question_title   =  request()->question_title;
+            $correct_option   =  request()->correct_option;
+            $option_title     =  request()->option_title;
+            $question_mark    =  request()->question_mark;
+            $option_index=0;
+
+            $quiz_mark=0;
+
+            $Quiz=Quiz::create([
+                    'teacher_id'  => $TeacherId,
+                    'title'       => $quiz_title,
+                    'description' => $quiz_description,
+                    'start_time'  => $quiz_date,
+                    'duration'    => $quiz_duration,
+                    'quiz_mark'   => $quiz_mark,
                 ]);
-                $quiz_title=request()->quiz_title;
-                $quiz_date=request()->quiz_date;
-                $quiz_duration=request()->quiz_duration;
-                $quiz_description=request()->quiz_description;
-                $question_title=request()->question_title;
-                $correct_option=request()->correct_option;
-                $option_title=request()->option_title;
-                $question_mark=request()->question_mark;
-                $option_index=0;
 
-                $quiz_mark=0;
-                $Quiz=Quiz::create([
-                        'teacher_id'=>$TeacherId,
-                        'title'=>$quiz_title,
-                        'description'=>$quiz_description,
-                        'start_time'=>$quiz_date,
-                        'duration'=>$quiz_duration,
-                        'quiz_mark'=>$quiz_mark,
-                    ]);
+            for($i=0 ; $i<sizeof($question_title) ; $i++){
+                    $index_key=0;
+                $question=Question::create([
+                    'quiz_id'        => $Quiz->id,
+                    'title'          => $question_title[$i],
+                    'question_mark'  => $question_mark[$i],
+                    'correct_option' => $correct_option[$i]
+                ]);
 
-                    for($i=0;$i<sizeof($question_title);$i++){
-                        $index_key=0;
-                    $question=Question::create([
-                            'quiz_id'=>$Quiz->id,
-                            'title'=>$question_title[$i],
-                            'question_mark'=>$question_mark[$i],
-                            'correct_option'=>$correct_option[$i]]);
-                    $quiz_mark+=$question->question_mark;
-                        for($j=$option_index;$j<=$option_index+3;$j++){
+                $quiz_mark+=$question->question_mark;
 
-                            Option::create([
-                                'question_id'=>$question->id,
-                                'option_title'=>$option_title[$j],
-                                'option_key'=>'الإجابة '.($index_key+1),
-                            ]);
-                            $index_key++;
-                        }
-                        $option_index+=4;
-                    }
-
-                    $quiz=Quiz::find($Quiz->id);
-                    $quiz->quiz_mark=$quiz_mark;
-                    $quiz->save();
-
-                    $teacher=Teacher::find($TeacherId);
-                    $students=Student::where('class',$teacher->class)->get();
-                    foreach($students as $student){
-                        QuizResult::create([
-                            'student_id'=>$student->id,
-                            'teacher_id'=>$teacher->id,
-                            'quiz_id'=>$quiz->id,
-                            'quiz_mark'=>$quiz->quiz_mark,
+                    for($j=$option_index ; $j <= $option_index+3 ; $j++){
+                        Option::create([
+                            'question_id'  => $question->id,
+                            'option_title' => $option_title[$j],
+                            'option_key'   => 'الإجابة '.($index_key+1),
                         ]);
+                        $index_key++;
                     }
-                return redirect()->back()->with('success','تم عمل اختبار جديد بنجاح ');
+                    $option_index+=4;
+            }
+                $Quiz->update(["quiz_mark"=>$quiz_mark]);
+
+                $teacher=Teacher::find($TeacherId);
+                $students=Student::where('class',$teacher->class)->get();
+                foreach($students as $student){
+                    QuizResult::create([
+                        'student_id'  => $student->id,
+                        'teacher_id'  => $teacher->id,
+                        'quiz_id'     => $Quiz->id,
+                        'quiz_mark'   => $Quiz->quiz_mark,
+                    ]);
+                }
+            return redirect()->back()->with('success','تم عمل اختبار جديد بنجاح ');
         }
     }
-//**************************************************************************************** */
+
     public function show_teacher_lessons($TeacherId){
         $lessons=Lesson::where('teacher_id',$TeacherId)->get();
         return view('teacher.show_lesson',compact('TeacherId','lessons'));
