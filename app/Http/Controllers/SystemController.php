@@ -366,7 +366,7 @@ class SystemController extends Controller
             $numQuizzes=Quiz::where('teacher_id',$teacher->id)->count();
             return view('teacher.show_teacher',compact('teacher','numLessons','numHomeworks','numQuizzes'));
     }
-/********************************************************* */
+
     public function store_teacher($TeacherId){
         // نشر الحصه
         if((request()->upload)=='upload_lesson'){
@@ -387,32 +387,32 @@ class SystemController extends Controller
 
             return redirect()->back()->with('success', 'تم رفع الملف بنجاح');
         }
+
         // نشر الواجب
         else if(request()->upload=='upload_homework'){
             request()->validate([
-                'content_homework'=>'required',
-                'title_homework'=>'required',
-                'file_homework'=>'required|mimes:pdf,doc,docx,zip,rar,jpg,png|max:2048',
-                'deadline_homework'=>'required',
-                'homework_mark'=>'required',
+                'content_homework'   => 'required',
+                'title_homework'     => 'required|max:255',
+                'file_homework'      => 'required|mimes:pdf,doc,docx,zip,rar,jpg,png|max:2048',
+                'deadline_homework'  => 'required',
+                'homework_mark'      => 'required|integer',
             ]);
-            $path=request()->file('file_homework')->store('homeworks','public');
-            $content_homework=request()->content_homework;
-            $title_homework=request()->title_homework;
-            $deadline_homework=request()->deadline_homework;
-            $homework_mark=request()->homework_mark;
+
+            $fileName=time().'.'.request()->title_homework.'.'.request()->file('file_homework')->getClientOriginalExtension();
+            $filePath=request()->file('file_homework')->storeAs('homeworks',$fileName,'public');
+
             Homework::create([
-                'teacher_id'=>$TeacherId,
-                'title_homework'=>$title_homework,
-                'file_homework'=>$path,
-                'content_homework'=>$content_homework,
-                'deadline'=>$deadline_homework,
-                'homework_mark'=>$homework_mark,
+                'teacher_id'        => $TeacherId,
+                'title_homework'    => request()->title_homework,
+                'file_homework'     => $filePath,
+                'content_homework'  => request()->content_homework,
+                'deadline'          => request()->deadline_homework,
+                'homework_mark'     => request()->homework_mark,
             ]);
 
             return redirect()->back()->with('success', 'تم رفع الملف بنجاح');
         }
-
+/********************************************************************************** */
         // عمل اختبار
         else if (request()->upload=='create_quiz'){
                 request()->validate([
@@ -485,7 +485,7 @@ class SystemController extends Controller
                 return redirect()->back()->with('success','تم عمل اختبار جديد بنجاح ');
         }
     }
-/************************************************************************************************* */
+//**************************************************************************************** */
     public function show_teacher_lessons($TeacherId){
         $lessons=Lesson::where('teacher_id',$TeacherId)->get();
         return view('teacher.show_lesson',compact('TeacherId','lessons'));
