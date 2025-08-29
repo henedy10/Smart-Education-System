@@ -371,14 +371,17 @@ class SystemController extends Controller
         // نشر الحصه
         if((request()->upload)=='upload_lesson'){
             request()->validate([
-                'title_lesson'=>'required',
+                'title_lesson'=>'required|max:255',
                 'file_lesson'=>'required|mimes:pdf,doc,docx,zip,rar,jpg,png|max:10240',
             ]);
-            $path=request()->file('file_lesson')->store('lessons','public');
+
+            $fileName=time() . '.' . request()->title_lesson . '.' . request()->file('file_lesson')->getClientOriginalExtension();
+            $filePath=request()->file('file_lesson')->storeAs('lessons',$fileName,'public');
             $title_lesson=request()->title_lesson;
+
             Lesson::create([
                 'teacher_id'=>$TeacherId,
-                'file_lesson'=>$path,
+                'file_lesson'=>$filePath,
                 'title_lesson'=> $title_lesson,
             ]);
 
