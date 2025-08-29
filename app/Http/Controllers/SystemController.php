@@ -364,7 +364,7 @@ class SystemController extends Controller
             $numLessons=Lesson::where('teacher_id',$teacher->id)->count();
             $numHomeworks=Homework::where('teacher_id',$teacher->id)->count();
             $numQuizzes=Quiz::where('teacher_id',$teacher->id)->count();
-            return view('teacher.show_teacher',compact('teacher','numHomeworks','numQuizzes'));
+            return view('teacher.show_teacher',compact('teacher','numLessons','numHomeworks','numQuizzes'));
     }
 /********************************************************* */
     public function store_teacher($TeacherId){
