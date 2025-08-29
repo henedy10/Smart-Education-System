@@ -474,7 +474,7 @@ class SystemController extends Controller
             }
                 $Quiz->update(["quiz_mark"=>$quiz_mark]);
 
-                $teacher=Teacher::find($TeacherId);
+                $teacher=Teacher::findOrFail($TeacherId);
                 $students=Student::where('class',$teacher->class)->get();
                 foreach($students as $student){
                     QuizResult::create([
