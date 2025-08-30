@@ -28,13 +28,13 @@
         <!-- رأس الصفحة -->
         <div class="bg-white shadow-md rounded-lg px-6 py-4 mb-6 flex items-center justify-between">
             <h1 class="text-xl font-semibold text-gray-800">رفع واجب جديد</h1>
-            <a href="{{route('choose_action_homework', $TeacherId)}}" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition">
+            <a href="{{route('teacher.homeworkAction.show', $TeacherId)}}" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition">
                 الصفحة السابقة
             </a>
         </div>
 
         <!-- نموذج رفع الواجب -->
-        <form action="{{route('store_teacher', $TeacherId)}}" method="POST" enctype="multipart/form-data" class="bg-white rounded-lg shadow-md px-6 py-8 space-y-6">
+        <form action="{{route('teacherResources.store', $TeacherId)}}" method="POST" enctype="multipart/form-data" class="bg-white rounded-lg shadow-md px-6 py-8 space-y-6">
             @csrf
 
             <!-- عنوان الواجب -->

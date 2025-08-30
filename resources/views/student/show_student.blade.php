@@ -32,7 +32,7 @@
                             <h2 class="text-xl font-semibold">{{$teacher->subject}}</h2>
                         </div>
                         <p class="text-sm text-gray-600 mb-4">Teacher : {{$teacher->user->name}}</p>
-                        <a href="{{route('show_student_content',[$teacher->class, $teacher->subject])}}"  class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm transition">
+                        <a href="{{route('content.show',[$teacher->class, $teacher->subject])}}"  class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm transition">
                             عرض المحتوي
                         </a>
                     </div>

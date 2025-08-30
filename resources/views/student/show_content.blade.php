@@ -23,7 +23,7 @@
           <h2 class="text-xl font-semibold">المحاضرات</h2>
         </div>
         <p class="text-sm text-gray-600 mb-4">تابع الدروس والمحاضرات الخاصة بك لكل مادة.</p>
-        <a href="{{route('show_student_lesson',[$class,$subject])}}" class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm" >عرض المحاضرات</a>
+        <a href="{{route('student.lesson.show',[$class,$subject])}}" class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm" >عرض المحاضرات</a>
       </div>
 
       <!-- 📄 الواجبات -->
@@ -33,7 +33,7 @@
           <h2 class="text-xl font-semibold">الواجبات</h2>
         </div>
         <p class="text-sm text-gray-600 mb-4">راجع الواجبات المطلوبة منك وسلّمها في الموعد و تابع تقييمك.</p>
-        <a href="{{route('show_student_homework',[$class,$subject])}}" class="inline-block bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 text-sm">عرض الواجبات</a>
+        <a href="{{route('student.homework.show',[$class,$subject])}}" class="inline-block bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 text-sm">عرض الواجبات</a>
       </div>
 
       <!-- 📝 الامتحانات -->
@@ -43,7 +43,7 @@
           <h2 class="text-xl font-semibold">الامتحانات</h2>
         </div>
         <p class="text-sm text-gray-600 mb-4">قم بحل الاختبارات الإلكترونية وتابع تقييمك.</p>
-        <a href="{{route('show_student_quiz_action',[$class,$subject])}}" class="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm">عرض الامتحانات</a>
+        <a href="{{route('student.quizAction.show',[$class,$subject])}}" class="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm">عرض الامتحانات</a>
       </div>
 
     </div>

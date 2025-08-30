@@ -8,7 +8,7 @@
   <div class="w-full max-w-4xl bg-white shadow-xl rounded-lg p-6">
     <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
         <p class="text-center text-gray-600 font-bold">نتائج الامتحانات السابقه</p>
-        <a href="{{route('show_student_quiz_action',[$class,$subject])}}"  class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
+        <a href="{{route('student.quizAction.show',[$class,$subject])}}"  class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
     </div>
 
     <!-- جدول النتائج -->

@@ -9,7 +9,7 @@
         <div class="flex items-center gap-3">
             <span class="text-lg font-bold text-gray-800"> الإمتحانات الدراسيه</span>
         </div>
-        <a href="{{route('show_student_quiz_action',[$class,$subject])}}"  class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
+        <a href="{{route('student.quizAction.show',[$class,$subject])}}"  class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
     </div>
     <div class="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
         <h1 class="text-2xl font-bold mb-6 text-center">الكويزات المتاحة</h1>
@@ -24,7 +24,7 @@
                             <p class="text-sm text-gray-600">عدد الأسئلة :{{$num_questions}} </p>
                             <p class="text-sm text-gray-600">الوقت : {{$quiz->duration}}</p>
                         </div>
-                        <a href="{{route('show_content_quiz',[$class,$subject])}}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+                        <a href="{{route('quizContent.show',[$class,$subject])}}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
                         ابدأ الاختبار
                         </a>
                     </li>

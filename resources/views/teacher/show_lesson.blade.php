@@ -7,7 +7,7 @@
     <div class="max-w-5xl bg-gray-200  mx-auto py-10 px-4">
         <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
             <h1 class="text-lg font-bold">إدارة المحاضرات</h1>
-            <a href="{{route('show_teacher')}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
+            <a href="{{route('teacher.show')}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
         </div>
 
         <!-- رفع محاضرة جديدة -->
@@ -28,7 +28,7 @@
             @endif
 
             <h2 class="text-xl font-semibold mb-4 text-gray-700">رفع محاضرة جديدة</h2>
-            <form action="{{route('store_teacher',$TeacherId)}}" method="POST" enctype="multipart/form-data" class="space-y-4">
+            <form action="{{route('teacherResources.store',$TeacherId)}}" method="POST" enctype="multipart/form-data" class="space-y-4">
                     @csrf
                     <div>
                         <label class="block mb-1 text-sm font-medium">عنوان المحاضرة</label>

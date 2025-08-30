@@ -8,7 +8,7 @@
         <div class="bg-white p-6 rounded-xl shadow-md">
             <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
                 <h1 class="text-lg font-bold text-gray-800">الواجبات التي تم رفعها</h1>
-                <a href="{{route('choose_action_homework',$TeacherId)}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
+                <a href="{{route('teacher.homeworkAction.show',$TeacherId)}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
             </div>
             @if ($homeworks->isEmpty())
                 <h2 class="text-red-500 font-bold">* لا يوجد واجبات حتي الأن</h2>
@@ -39,7 +39,7 @@
                                                 اضغط هنا
                                             </button>
                                         @else
-                                            <form action="{{route('homework_solutions_of_students',$TeacherId)}}" method="get">
+                                            <form action="{{route('teacher.homeworkSolutions.show',$TeacherId)}}" method="get">
                                                 @csrf
                                                 <button type="submit" name="homework_id" value="{{$homework->id}}">اضغط هنا</button>
                                             </form>

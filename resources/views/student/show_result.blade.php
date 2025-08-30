@@ -24,7 +24,7 @@
         </div>
 
         <div class="mt-6 text-center">
-            <a href="{{route('show_student_content',[$class,$subject])}}" class=" bg-green-500 p-2 rounded hover:text-white">العودة إلى الصفحة الرئيسية</a>
+            <a href="{{route('content.show',[$class,$subject])}}" class=" bg-green-500 p-2 rounded hover:text-white">العودة إلى الصفحة الرئيسية</a>
         </div>
     </div>
 

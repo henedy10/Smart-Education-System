@@ -40,7 +40,7 @@
                                     </td>
                                     <td class="px-4 py-2 border">
                                         @if ($solution->correction_status)
-                                            <form action="{{route('modify_grades_homeworks',$solution->student_id)}}" method="POST">
+                                            <form action="{{route('teacher.homeworkGrades.update',$solution->student_id)}}" method="POST">
                                                 @csrf
                                                 <div class="flex">
                                                     <input type="number" name="student_mark" placeholder="  درجه الطالب " class="border border-amber-600 w-full p-2 ml-1.5" min="0" max="{{$solution->homework->homework_mark}}">
@@ -48,7 +48,7 @@
                                                 </div>
                                             </form>
                                         @else
-                                            <form action="{{route('store_grades_homeworks',$solution->student_id)}}" method="POST">
+                                            <form action="{{route('teacher.homeworkGrades.store',$solution->student_id)}}" method="POST">
                                                 @csrf
                                                 <div class="flex">
                                                     <input type="number" name="student_mark" placeholder="درجه الطالب " class="border border-amber-600 w-full p-2 ml-1.5" min="0" max="{{$solution->homework->homework_mark}}">

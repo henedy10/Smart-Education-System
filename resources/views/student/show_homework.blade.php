@@ -11,7 +11,7 @@
                 <i data-lucide="file-text" class="w-6 h-6 text-red-600"></i>
                 <span class="text-lg font-semibold text-gray-800">📚 الواجبات الدراسية</span>
             </div>
-            <a href="{{route('show_student_content',[$class,$subject])}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
+            <a href="{{route('content.show',[$class,$subject])}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
         </div>
 
         <!-- ✅ قائمة الواجبات -->
@@ -30,12 +30,12 @@
                         <a href="{{asset('storage/'.$homework->file_homework)}}" download class="bg-blue-600 text-white px-3 py-1 ml-2 rounded hover:bg-blue-500 text-sm">تحميل</a>
                         <a href="{{asset('storage/'.$homework->file_homework)}}" target="_blank" class="bg-red-600 text-white px-3 py-1 ml-2 rounded hover:bg-red-500 text-sm">مشاهده</a>
                         @if ($currentTime<=$homework->deadline)
-                            <form action="{{route('to_upload_student_homework',[$class,$subject])}}" method="GET">
+                            <form action="{{route('student.homeworkUpload.show',[$class,$subject])}}" method="GET">
                                 @csrf
                                 <button type="submit" value="{{$homework->id}}" name="upload_homework" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 text-sm">رفع الواجب</button>
                             </form>
                         @else
-                            <form action="{{route('show_student_homework_grade',[$class,$subject])}}" method="GET">
+                            <form action="{{route('student.homeworkDetails.show',[$class,$subject])}}" method="GET">
                                 @csrf
                                 <button type="submit" name="homework_id" value="{{$homework->id}}" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 text-sm">تقييمك</button>
                             </form>

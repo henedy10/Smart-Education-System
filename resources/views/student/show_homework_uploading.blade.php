@@ -27,7 +27,7 @@
                 @endif
 
 
-        <form action="{{route('store_student_solution_homework')}}" method="POST" enctype="multipart/form-data" class="space-y-5">
+        <form action="{{route('student.homeworkSolution.store')}}" method="POST" enctype="multipart/form-data" class="space-y-5">
             @csrf
             <!-- ملف الواجب -->
             <div>
@@ -53,7 +53,7 @@
                         رفع الواجب
                     </button>
                 @endif
-                    <a href="{{route('show_student_homework',[$class,$subject])}}" class=" text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700 ">الصفحة السابقة</a>
+                    <a href="{{route('student.homework.show',[$class,$subject])}}" class=" text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700 ">الصفحة السابقة</a>
             </div>
         </form>
     </div>

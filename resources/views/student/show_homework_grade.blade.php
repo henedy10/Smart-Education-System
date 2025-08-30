@@ -32,7 +32,7 @@
             @endif
         @endif
                 <div class="mt-6 text-center">
-                    <a href="{{route('show_student_homework',[$class,$subject])}}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded">
+                    <a href="{{route('student.homework.show',[$class,$subject])}}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded">
                         العودة إلى قائمة الواجبات
                     </a>
                 </div>

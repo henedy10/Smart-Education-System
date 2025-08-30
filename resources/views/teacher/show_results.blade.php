@@ -11,7 +11,7 @@
 
             <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
                 <h2 class="text-lg font-bold text-gray-800">قائمة الإمتحانات</h2>
-                <a href="{{route('show_teacher')}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
+                <a href="{{route('teacher.show')}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
             </div>
 
             <div class="flex flex-col sm:flex-row  items-center gap-4 mb-6">
@@ -55,7 +55,7 @@
                                     @if ($time<$start->copy()->addMinutes($quiz->duration)->format('Y-m-d H:i:s'))
                                         <button type="submit" onclick="alert('لا يمكن رؤيه النتائج الا بعد انتهاء وقت الامتحان')"  class="text-green-600 font-semibold">اضغط هنا</button>
                                     @else
-                                        <form action="{{route('show_content_results',$TeacherId)}}" method="GET">
+                                        <form action="{{route('quizResults.show',$TeacherId)}}" method="GET">
                                             @csrf
                                             <button type="submit" name="quiz_id" value="{{$quiz->id}}" class="text-green-600 font-semibold">اضغط هنا</button>
                                         </form>

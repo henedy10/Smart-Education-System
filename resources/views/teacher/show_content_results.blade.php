@@ -11,7 +11,7 @@
 
             <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
                 <h2 class="text-lg font-bold text-gray-800">نتائج الطلاب</h2>
-                <a href="{{route('show_results',$TeacherId)}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
+                <a href="{{route('quizzes.show',$TeacherId)}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
             </div>
 
             <div class="overflow-x-auto">

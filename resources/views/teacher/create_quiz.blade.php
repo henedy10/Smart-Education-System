@@ -22,10 +22,10 @@
     <div class="bg-white p-6 rounded-2xl shadow-md">
         <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
             <h1 class="text-lg font-bold text-gray-800">إنشاء اختبار جديد</h1>
-            <a href="{{route('show_teacher')}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
+            <a href="{{route('teacher.show')}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
         </div>
 
-      <form method="POST" action="{{route('store_teacher',$TeacherId)}}">
+      <form method="POST" action="{{route('teacherResources.store',$TeacherId)}}">
         @csrf
         <!-- عنوان الاختبار -->
         <div class="mb-4">

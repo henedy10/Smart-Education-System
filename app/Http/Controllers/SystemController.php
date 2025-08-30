@@ -41,8 +41,8 @@ class SystemController extends Controller
             ]);
 
             return $user->user_as =='teacher'
-                ? redirect()->route('show_teacher')
-                : redirect()->route('show_student');
+                ? redirect()->route('teacher.show')
+                : redirect()->route('student.show');
 
         }else{
             return view('index');
@@ -73,7 +73,7 @@ class SystemController extends Controller
                 }
 
                 return $user->user_as =='teacher'
-                        ? redirect()->route('show_teacher')
+                        ? redirect()->route('teacher.show')
                         : redirect()->route('student.show');
             }
     }
@@ -216,7 +216,7 @@ class SystemController extends Controller
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
         if(!$teacher){
-            return redirect()->route('show_student_content',compact('class','subject'))->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
+            return redirect()->route('content.show',compact('class','subject'))->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
         }
 
         $quiz=Quiz::where('teacher_id',$teacher->id)
@@ -251,7 +251,7 @@ class SystemController extends Controller
                             ->where('subject',$subject)
                             ->first();
         if(!$teacher){
-            return redirect()->route('show_student_content')->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
+            return redirect()->route('content.show')->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
         }
         $results=QuizResult::where('student_id',$student->id)
                                 ->where('teacher_id',$teacher->id)
@@ -267,7 +267,7 @@ class SystemController extends Controller
                             -> where('subject',$subject)
                             ->first();
         if(!$teacher){
-            return redirect()->route('show_student_content')->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
+            return redirect()->route('content.show')->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
         }
 
         $quiz=Quiz::where('teacher_id',$teacher->id)
@@ -313,7 +313,7 @@ class SystemController extends Controller
                             -> where('subject',$subject)
                             ->first();
         if(!$teacher){
-            return redirect()->route('show_student_content')->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
+            return redirect()->route('content.show')->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
         }
 
         $quiz=Quiz::where('teacher_id',$teacher->id)->orderBy('start_time','desc')->first();
