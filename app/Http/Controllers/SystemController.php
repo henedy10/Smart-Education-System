@@ -216,7 +216,7 @@ class SystemController extends Controller
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
         if(!$teacher){
-            return redirect()->route('show_student_content')->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
+            return redirect()->route('show_student_content',compact('class','subject'))->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
         }
 
         $quiz=Quiz::where('teacher_id',$teacher->id)

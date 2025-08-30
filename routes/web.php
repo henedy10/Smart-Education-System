@@ -5,43 +5,43 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(SystemController::class)->group(function (){
 
-    Route::get('/','Login')->name('Login');
-    Route::post('/show','checkUser')->name('checkUser');
-    Route::get('/logout','LogOut')->name('LogOut');
+    Route::get('/','Login')-> name('Login');
+    Route::post('/user','checkUser')-> name('checkUser');
+    Route::get('/logout','LogOut')-> name('LogOut');
 
     // Routes of change password
 
-    Route::get('/change/password','EditPassword')->name('EditPassword');
-    Route::post('/store/new_password','UpdatePassword')->name('UpdatePassword');
+    Route::get('/passwords/edit','EditPassword')-> name('EditPassword');
+    Route::post('/passwords','UpdatePassword')-> name('UpdatePassword');
 
     // Routes of Student
 
-    Route::get('/show/student','showStudent')->name('student.show');
-    Route::get('/show/content/{class}/{subject}','showStudentContent')->name('show_student_content');
-    Route::get('/show/content/{class}/{subject}/lessons','showStudentLesson')->name('show_student_lesson');
-    Route::get('/show/content/{class}/{subject}/homeworks','showStudentHomework')->name('show_student_homework');
-    Route::get('/show/content/{class}/{subject}/homeworks/upload','showHomeworkUploadForm')->name('to_upload_student_homework');
-    Route::post('/show/content/homeworks/store','storeHomeworkSolution')->name('store_student_solution_homework');
-    Route::get('/show/{class}/{subject}/quiz/action','showChooseAction')->name('show_student_quiz_action');
-    Route::get('/show/quiz/{class}/{subject}','showAvailableQuiz')->name('show_student_quizzes');
-    Route::get('/show/{class}/{subject}/content/quiz','showQuizContent')->name('show_content_quiz');
-    Route::post('/store/{class}/{subject}/student/answers','storeQuizAnswers')->name('store_student_answers');
-    Route::get('/show/quiz/{class}/{subject}/results','showQuizResults')->name('show_student_quiz_result');
-    Route::get('/show/grades/{class}/{subject}/homeworks','showHomeworkDetails')->name('show_student_homework_grade');
+    Route::get('/student','showStudent')-> name('student.show');
+    Route::get('/content/{class}/{subject}','showStudentContent')->name('show_student_content');
+    Route::get('/lessons/{class}/{subject}','showStudentLesson')->name('show_student_lesson');
+    Route::get('/homeworks/{class}/{subject}','showStudentHomework')->name('show_student_homework');
+    Route::get('/uploadHomeworks/{class}/{subject}','showHomeworkUploadForm')-> name('to_upload_student_homework');
+    Route::post('/homeworkSolutions','storeHomeworkSolution')->name('store_student_solution_homework');
+    Route::get('/action/{class}/{subject}','showChooseAction')->name('show_student_quiz_action');
+    Route::get('/quizzes/{class}/{subject}','showAvailableQuiz')->name('show_student_quizzes');
+    Route::get('/quizContent/{class}/{subject}','showQuizContent')->name('show_content_quiz');
+    Route::post('/answers/{class}/{subject}','storeQuizAnswers')->name('store_student_answers');
+    Route::get('/results/{class}/{subject}','showQuizResults')->name('show_student_quiz_result');
+    Route::get('/homeworkDetails/{class}/{subject}','showHomeworkDetails')->name('show_student_homework_grade');
 
     //Routes of Teacher
 
-    Route::get('/show/teacher','showTeacher')->name('show_teacher');
-    Route::post('/store/teacher/{teacher}','storeTeacherResource')->name('store_teacher');
-    Route::get('/show/teacher/{teacher}/lessons','showTeacherLessons')->name('show_teacher_lessons');
-    Route::get('/show/teacher/{teacher}/homeworks','showActionHomework')->name('choose_action_homework');
-    Route::get('/show/teacher/{teacher}/homeworks/create','createHomework')->name('create_teacher_homeworks');
-    Route::get('/show/teacher/{teacher}/homeworks/correction','correctHomework')->name('correct_teacher_homework');
-    Route::get('/show/teacher/{teacher}/homeworks/solutions_of_students','solutionHomeworkOfStudent')->name('homework_solutions_of_students');
-    Route::post('/store/teacher/{student}/grades/homeworks','storeHomeworkGrades')->name('store_grades_homeworks');
-    Route::post('/modify/teacher/{student}/grades/homeworks','updateHomeworkGrade')->name('modify_grades_homeworks');
-    Route::get('/create/teacher/{teacher}/quiz','createQuiz')->name('create_teacher_quiz');
-    Route::get('/show/teacher/{teacher}/quiz/results','showQuizzes')->name('show_results');
-    Route::get('/show/teacher/{teacher}/quiz/results/content','showResults')->name('show_content_results');
+    Route::get('/teacher','showTeacher')->name('show_teacher');
+    Route::post('/teacher/{teacher}','storeTeacherResource')->name('store_teacher');
+    Route::get('/lessons/{teacher}','showTeacherLessons')->name('show_teacher_lessons');
+    Route::get('/action/{teacher}','showActionHomework')->name('choose_action_homework');
+    Route::get('/homework/create/{teacher}','createHomework')->name('create_teacher_homeworks');
+    Route::get('/correctionHomeworks/{teacher}','correctHomework')->name('correct_teacher_homework');
+    Route::get('/homeworkSolutions/{teacher}','solutionHomeworkOfStudent')->name('homework_solutions_of_students');
+    Route::post('/homeworkGrades','storeHomeworkGrades')-> name('store_grades_homeworks');
+    Route::post('/homeworkGrades/{student}/edit','updateHomeworkGrade')->name('modify_grades_homeworks');
+    Route::get('/quiz/{teacher}/create','createQuiz')->name('create_teacher_quiz');
+    Route::get('/quizzes/{teacher}','showQuizzes')-> name('show_results');
+    Route::get('/results/{teacher}','showResults')-> name('show_content_results');
 
 });
