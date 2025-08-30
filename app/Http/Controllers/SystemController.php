@@ -600,8 +600,7 @@ class SystemController extends Controller
         if(is_null($user)){
             return redirect()->back()->withErrors(['email'=>'هذا الحساب غير موجود']);
         }else{
-                $user->password=$NewPassword;
-                $user->save();
+                $user->update(['password'=>$NewPassword]);
                 return redirect()->route('Login')->with('success','تم تغيير كلمة المرور بنجاح');
         }
     }
