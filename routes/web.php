@@ -11,8 +11,8 @@ Route::controller(SystemController::class)->group(function (){
 
     // Routes of change password
 
-    Route::get('/passwords/edit','EditPassword')-> name('EditPassword');
-    Route::post('/passwords','UpdatePassword')-> name('UpdatePassword');
+    Route::get('/passwords/edit','EditPassword')-> name('Password.Edit');
+    Route::post('/passwords','UpdatePassword')-> name('Password.Update');
 
     // Routes of Student
 

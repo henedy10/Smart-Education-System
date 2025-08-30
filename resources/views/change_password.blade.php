@@ -25,7 +25,7 @@
                     {{ session('message') }}
                 </div>
             @endif
-        <form action="{{route('UpdatePassword')}}" method="POST" class="space-y-4">
+        <form action="{{route('Password.Update')}}" method="POST" class="space-y-4">
                 @csrf
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">الايميل</label>
