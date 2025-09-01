@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Homework;
-use App\Models\HomeworkGrade;
-use App\Models\Teacher;
-use App\Models\Lesson;
-use App\Models\Option;
-use App\Models\Question;
-use App\Models\Quiz;
-use App\Models\QuizResult;
-use App\Models\SolutionStudentForHomework;
-use App\Models\Student;
-use App\Models\StudentOption;
-use App\Models\User;
+use App\Models\{
+    Homework,
+    HomeworkGrade,
+    Teacher,
+    Lesson,
+    Option,
+    Question,
+    Quiz,
+    QuizResult,
+    SolutionStudentForHomework,
+    Student,
+    StudentOption,
+    User,
+};
 use Illuminate\Support\Carbon;
-use Illuminate\Http\Request;
-use Ramsey\Uuid\Codec\TimestampLastCombCodec;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cookie;
-
-use function PHPUnit\Framework\isEmpty;
 
 class SystemController extends Controller
 {
@@ -37,7 +34,8 @@ class SystemController extends Controller
 
             session([
                 'email'=>$user->email,
-                'id'=>$user->id
+                'id'=>$user->id,
+                'user_as'=>$user->user_as,
             ]);
 
             return $user->user_as =='teacher'
@@ -66,6 +64,7 @@ class SystemController extends Controller
                 session([
                     'email'=>$user->email,
                     'id'=>$user->id,
+                    'user_as'=>$user->user_as,
                 ]);
 
                 if(request()->remember_me){
@@ -583,7 +582,7 @@ class SystemController extends Controller
 
     // تغيير كلمه المرور للمستخدم
     public function EditPassword(){
-        return view('change_password');
+        return view('EditPassword');
     }
 
     public function UpdatePassword(){
