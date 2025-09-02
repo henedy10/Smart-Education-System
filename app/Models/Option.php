@@ -6,9 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Option extends Model
 {
-    protected $fillable=[
-        'question_id','option_title','option_key'
-    ];
+    protected $guarded=[];
     public function  question(){
         return $this->belongsTo(Question::class);
     }

@@ -9,7 +9,7 @@
 
             <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
                 <h1 class="text-lg font-bold text-gray-800">حلول الطلاب للواجبات</h1>
-                <a href="{{route('teacher.homeworkSolutions.show',$TeacherId)}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
+                <a href="{{route('teacher.homeworkCorrection.show',$TeacherId)}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
             </div>
                     @if(session('success'))
             <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
@@ -40,14 +40,14 @@
                                     </td>
                                     <td class="px-4 py-2 border">
                                         @if ($solution->correction_status)
-                                            <form action="{{route('teacher.homeworkGrades.update',$solution->student_id)}}" method="POST">
-                                                @csrf
-                                                <div class="flex">
-                                                    <input type="number" name="student_mark" placeholder="  درجه الطالب " class="border border-amber-600 w-full p-2 ml-1.5" min="0" max="{{$solution->homework->homework_mark}}">
-                                                    <button type="submit" name="homework_id" value="{{$solution->homework_id}}" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 p-2">تعديل</button>
+                                        <form action="{{route('teacher.homeworkGrades.update',$solution->student_id)}}" method="POST">
+                                            @csrf
+                                            <div class="flex">
+                                                <input type="number" name="student_mark" placeholder="  درجه الطالب " class="border border-amber-600 w-full p-2 ml-1.5" min="0" max="{{$solution->homework->homework_mark}}">
+                                                <button type="submit" name="homework_id" value="{{$solution->homework_id}}" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 p-2">تعديل</button>
                                                 </div>
                                             </form>
-                                        @else
+                                            @else
                                             <form action="{{route('teacher.homeworkGrades.store',$solution->student_id)}}" method="POST">
                                                 @csrf
                                                 <div class="flex">

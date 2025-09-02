@@ -3,8 +3,8 @@
 @section('title','الواجبات الدراسيه ')
 
 @section('content')
-    <body class="bg-gradient-to-br from-gray-100 to-blue-50 font-cairo p-6 min-h-screen">
 
+@section('style',"bg-gradient-to-br from-gray-100 to-blue-50 font-cairo p-6 min-h-screen")
         <!-- ✅ Header -->
         <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
             <div class="flex items-center gap-3">

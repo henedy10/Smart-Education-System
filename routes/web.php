@@ -41,7 +41,7 @@ Route::controller(SystemController::class)->group(function (){
         Route::get('/homework/create/{teacher}','createHomework')->name('teacher.homework.create');
         Route::get('/correctionHomeworks/{teacher}','correctHomework')->name('teacher.homeworkCorrection.show');
         Route::get('/homeworkSolutions/{teacher}','solutionHomeworkOfStudent')->name('teacher.homeworkSolutions.show');
-        Route::post('/homeworkGrades','storeHomeworkGrades')-> name('teacher.homeworkGrades.store');
+        Route::post('/homeworkGrades/{student}','storeHomeworkGrades')-> name('teacher.homeworkGrades.store');
         Route::post('/homeworkGrades/{student}/edit','updateHomeworkGrade')->name('teacher.homeworkGrades.update');
         Route::get('/quiz/{teacher}/create','createQuiz')->name('teacher.quiz.create');
         Route::get('/quizzes/{teacher}','showQuizzes')-> name('quizzes.show');

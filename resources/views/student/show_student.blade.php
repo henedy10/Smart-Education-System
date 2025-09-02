@@ -1,20 +1,20 @@
 @extends('student.layout.app')
 
-@section('title')  المواد الدراسية @endsection
+@section('title','المواد الدراسية')
+
+@section('style',"bg-gradient-to-br from-gray-100 to-blue-50 font-cairo p-6 min-h-screen")
 
 @section('content')
-
-<body class="bg-gradient-to-br from-gray-100 to-blue-50 font-cairo p-6 min-h-screen">
 
     <!-- ✅ شريط الطالب -->
     <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
         <div class="flex items-center gap-3">
-        <i data-lucide="user" class="w-6 h-6 text-blue-600"></i>
-        <span class="text-lg font-semibold text-gray-800">👋 مرحبًا، <span id="studentName">{{$student->user->name}}</span></span>
+            <i data-lucide="user" class="w-6 h-6 text-blue-600"></i>
+            <span class="text-lg font-semibold text-gray-800">👋 مرحبًا، <span id="studentName">{{$student->user->name}}</span></span>
         </div>
         <form action="{{route("LogOut")}}" method="GET">
-        @csrf
-        <button type="submit" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">تسجيل الخروج</button>
+            @csrf
+            <button type="submit" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">تسجيل الخروج</button>
         </form>
     </div>
 

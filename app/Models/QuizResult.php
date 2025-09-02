@@ -7,13 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class QuizResult extends Model
 {
-    protected $fillable=[
-        'student_id',
-        'teacher_id',
-        'quiz_id',
-        'student_mark',
-        'quiz_mark',
-    ];
+    protected $guarded=[];
 
     public function student(){
         return $this->belongsTo(Student::class);

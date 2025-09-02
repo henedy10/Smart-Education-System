@@ -16,7 +16,6 @@ use App\Models\{
     StudentOption,
     User,
 };
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cookie;
 
 class SystemController extends Controller
@@ -222,14 +221,12 @@ class SystemController extends Controller
         ->orderBy('start_time','desc')
         ->first();
 
-        if($quiz){
-            $startTime = Carbon::parse($quiz->start_time,'africa/cairo');
-            $currentTime = now('africa/cairo');
-            $num_questions=Question::where('quiz_id',$quiz->id)->count();
-            return view('student.show_quiz',compact('subject','class','quiz','num_questions','currentTime','startTime'));
-        }else{
-            return view('student.show_quiz',compact('subject','class','quiz'));
-        }
+        return view('student.show_quiz',compact(
+            'subject',
+            'class',
+            'quiz',
+        ));
+
     }
     public function showChooseAction($class,$subject){
         return view('student.show_action_content_quiz',compact('class','subject'));
@@ -514,7 +511,7 @@ class SystemController extends Controller
 
     public function storeHomeworkGrades($StudentId){
         request()->validate([
-            'student_mark' => 'required|integer',
+            'student_mark' => 'required|integer|min:0',
         ]);
 
         $student_mark=request()->student_mark;
@@ -529,7 +526,7 @@ class SystemController extends Controller
         $correction_status=SolutionStudentForHomework::where('student_id',$StudentId)
         ->where('homework_id',$homework_id)
         ->first();
-        $correction_status->update(['correction_status'=>1]);
+        $correction_status->update(['correction_status'=>true]);
 
         return redirect()->back()->with('success','تم تصحيح هذا الواجب بنجاح');
     }

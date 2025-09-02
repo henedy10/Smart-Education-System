@@ -1,10 +1,10 @@
 @extends('student.layout.app')
 
-@section('title')  المحاضرات الدراسيه   @endsection
+@section('title','المحاضرات الدراسيه')
 
 @section('content')
-<body class="bg-gradient-to-br from-gray-100 to-blue-50 font-cairo p-6 min-h-screen">
 
+@section('style',"bg-gradient-to-br from-gray-100 to-blue-50 font-cairo p-6 min-h-screen")
     <!-- ✅ Header -->
     <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
         <div class="flex items-center gap-3">
@@ -17,7 +17,7 @@
     <!-- ✅ محتوى المحاضرات -->
     <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
         @if ($lessons->isEmpty())
-                <h2 class="text-lg text-red-700 font-bold">  * لا توجد محاضرات حاليا  </h2>
+            <h2 class="text-lg text-red-700 font-bold">  * لا توجد محاضرات حاليا  </h2>
         @else
             @foreach ($lessons as $lesson )
                 <!-- 🧪 محاضرة واحدة -->
