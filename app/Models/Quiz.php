@@ -9,7 +9,6 @@ class Quiz extends Model
     protected $guarded=[];
     protected $casts = [
         'start_time' => 'datetime',
-        'end_time'   => 'datetime',
     ];
     public function teacher(){
         return $this->belongsTo(User::class);

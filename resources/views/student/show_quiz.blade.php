@@ -15,7 +15,7 @@
     </div>
     <div class="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-6">
         <h1 class="text-2xl font-bold mb-6 text-center">الكويزات المتاحة</h1>
-        <livewire:quiz-availability :quiz="$quiz" />
+        @livewire('quiz-availability',['quiz'=>$quiz,'class'=>$class,'subject'=>$subject])
     </div>
 
 @endsection
