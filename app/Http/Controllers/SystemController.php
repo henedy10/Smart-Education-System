@@ -337,9 +337,11 @@ class SystemController extends Controller
         $student_result=QuizResult::where('student_id',$student->id)
                             ->where('quiz_id',$quiz->id)
                             ->first();
-
-        $student_result->student_mark=$studentMark;
-        $student_result->save();
+        if($student_result){
+            $student_result->student_mark=$studentMark;
+            $student_result->test=true;
+            $student_result->save();
+        }
 
         return view('student.show_result',compact('student','quiz','studentMark','class','subject'));
     }

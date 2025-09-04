@@ -15,7 +15,7 @@
 
         <form action="{{route('student.answers.store',[$class,$subject])}}" method="POST" id="quizForm">
             @csrf
-            @foreach ($question as $Q)
+            @foreach ($questions as $Q)
                 <div class="mb-6">
                     <p class="font-semibold text-lg mb-2">{{$Q->title}}</p>
                     <div class="space-y-2">

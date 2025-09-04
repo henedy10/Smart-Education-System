@@ -6,6 +6,8 @@ use Livewire\Component;
 use App\Models\{
     Quiz,
     Question,
+    QuizResult,
+    Student,
 };
 
 class QuizAvailability extends Component
@@ -17,6 +19,7 @@ class QuizAvailability extends Component
     public $class;
     public $subject;
     public $num_questions;
+    public $check_student_quiz;
 
     public function mount(Quiz $quiz,$class,$subject){
         $this->quiz=$quiz;
@@ -31,9 +34,17 @@ class QuizAvailability extends Component
 
     public function checkAvailability(){
 
+        $student=Student::where('user_id',session('id'))->first();
+        $this->check_student_quiz=QuizResult::where('quiz_id',$this->quiz->id)
+        ->where('student_id',$student->id)
+        ->where('test',1)
+        ->first();
+
         if(now()->between($this->start_time,$this->end_time)){
             $this->isAvailable=true;
-        }else{
+        }
+
+        if((!now()->between($this->start_time,$this->end_time))||isset($this->check_student_quiz)){
             $this->isAvailable=false;
         }
     }

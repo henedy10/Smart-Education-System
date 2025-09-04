@@ -27,8 +27,8 @@
                     <p class="text-xs text-gray-500 mb-3">تاريخ التسليم: {{$homework->deadline}}</p>
 
                     <div class="flex">
-                        <a href="{{asset('storage/'.$homework->file_homework)}}" download class="bg-blue-600 text-white px-3 py-1 ml-2 rounded hover:bg-blue-500 text-sm">تحميل</a>
-                        <a href="{{asset('storage/'.$homework->file_homework)}}" target="_blank" class="bg-red-600 text-white px-3 py-1 ml-2 rounded hover:bg-red-500 text-sm">مشاهده</a>
+                        <a href="{{url('storage/public/'.$homework->file_homework)}}" download class="bg-blue-600 text-white px-3 py-1 ml-2 rounded hover:bg-blue-500 text-sm">تحميل</a>
+                        <a href="{{url('storage/public/'.$homework->file_homework)}}" target="_blank" class="bg-red-600 text-white px-3 py-1 ml-2 rounded hover:bg-red-500 text-sm">مشاهده</a>
                         @if ($currentTime<=$homework->deadline)
                             <form action="{{route('student.homeworkUpload.show',[$class,$subject])}}" method="GET">
                                 @csrf
