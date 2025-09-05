@@ -4,15 +4,16 @@ use App\Http\Controllers\SystemController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(SystemController::class)->group(function (){
+Route::middleware('loginForm')->group(function(){
 
     Route::get('/','Login')-> name('Login')->middleware('loginForm');
+    Route::get('/passwords/edit','EditPassword')-> name('Password.Edit');
+
+});
+
+    Route::post('/passwords','UpdatePassword')-> name('Password.Update');
     Route::post('/user','checkUser')-> name('checkUser');
     Route::get('/logout','LogOut')-> name('LogOut');
-
-    // Routes of change password
-
-    Route::get('/passwords/edit','EditPassword')-> name('Password.Edit');
-    Route::post('/passwords','UpdatePassword')-> name('Password.Update');
 
     // Routes of Student
 
