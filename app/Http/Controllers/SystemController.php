@@ -16,8 +16,9 @@ use App\Models\{
     StudentOption,
     User,
 };
-use Illuminate\Support\Facades\Cookie;
 
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Storage;
 class SystemController extends Controller
 {
     public function Login(){
@@ -32,12 +33,12 @@ class SystemController extends Controller
             }
 
             session([
-                'email'=>$user->email,
-                'id'=>$user->id,
-                'user_as'=>$user->user_as,
+                'email'    => $user->email,
+                'id'       => $user->id,
+                'user_as'  => $user->user_as,
             ]);
 
-            return $user->user_as =='teacher'
+            return $user->user_as == 'teacher'
                 ? redirect()->route('teacher.show')
                 : redirect()->route('student.show');
 
@@ -47,8 +48,8 @@ class SystemController extends Controller
     }
     public function checkUser(){
             request()->validate([
-                'email'=>['required','email:rfc,dns'],
-                'password'=>'required',
+                'email'    => ['required','email:rfc,dns'],
+                'password' => 'required',
             ]);
 
             $email=request()->email;
@@ -58,19 +59,19 @@ class SystemController extends Controller
                         ->first();
 
             if(!$user){
-                return back()->withErrors(['login'=>'بيانات الدخول غير صحيحه']);
+                return back()->withErrors(['login' => 'بيانات الدخول غير صحيحه']);
             }else{
                 session([
-                    'email'=>$user->email,
-                    'id'=>$user->id,
-                    'user_as'=>$user->user_as,
+                    'email'     => $user->email,
+                    'id'        => $user->id,
+                    'user_as'   => $user->user_as,
                 ]);
 
                 if(request()->remember_me){
                     Cookie::queue('user_email',$email,60*24*30,'/'); // for 1 month
                 }
 
-                return $user->user_as =='teacher'
+                return $user->user_as == 'teacher'
                         ? redirect()->route('teacher.show')
                         : redirect()->route('student.show');
             }
@@ -81,13 +82,13 @@ class SystemController extends Controller
     public function showStudent(){
         $userId=session('id');
         if(!$userId){
-            return redirect()->route('Login')->withErrors(['login'=>'يجب تسجيل الدخول أولا']);
+            return redirect()->route('Login')->withErrors(['login' => 'يجب تسجيل الدخول أولا']);
         }
 
         $student=Student::with('user')->where('user_id',$userId)->first();
 
         if(!$student){
-            return redirect()->back()->withErrors(['student'=>'هذا الحساب غير موجود']);
+            return redirect()->back()->withErrors(['student' => 'هذا الحساب غير موجود']);
         }
         $teachers=Teacher::where('class',$student->class)->get();
         return view('student.show_student',compact('student','teachers'));
@@ -101,7 +102,7 @@ class SystemController extends Controller
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
         if(!$teacher){
-            return redirect()->back()->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
+            return redirect()->back()->withErrors(['teacher' => 'هذا المدرس لم يعد موجودا']);
         }
         $lessons=Lesson::where('teacher_id',$teacher->id)->get();
 
@@ -114,7 +115,7 @@ class SystemController extends Controller
         -> where('subject',$subject)->first();
 
         if(!$teacher){
-            return redirect()->back()->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
+            return redirect()->back()->withErrors(['teacher' => 'هذا المدرس لم يعد موجودا']);
         }
 
         $homeworks=Homework::where('teacher_id',$teacher->id)->get();
@@ -124,12 +125,12 @@ class SystemController extends Controller
     public function showHomeworkUploadForm($class,$subject){
         $userId=session('id');
         if(!$userId){
-            return redirect()->route('Login')->withErrors(['login'=>'يجب تسجيل الدخول أولا']);
+            return redirect()->route('Login')->withErrors(['login' => 'يجب تسجيل الدخول أولا']);
         }
 
         $student=Student::with('user')->where('user_id',$userId)->first();
         if(!$student){
-            return redirect()->route('Login')->withErrors(['student'=>'الطالب غير موجود']);
+            return redirect()->route('Login')->withErrors(['student' => 'الطالب غير موجود']);
         }
 
         request()->validate([
@@ -146,16 +147,16 @@ class SystemController extends Controller
     public function storeHomeworkSolution(){
         $userId=session('id');
         if(!$userId){
-            return redirect()->route('Login')->withErrors(['login'=>'يجب تسجيل الدخول أولا']);
+            return redirect()->route('Login')->withErrors(['login' => 'يجب تسجيل الدخول أولا']);
         }
 
         $student=Student::with('user')->where('user_id',$userId)->first();
         if(!$student){
-            return redirect()->route('Login')->withErrors(['student'=>'الطالب غير موجود']);
+            return redirect()->route('Login')->withErrors(['student' => 'الطالب غير موجود']);
         }
 
         request()->validate([
-            'file'=>'required|mimes:pdf,doc,docx,jpg,png',
+            'file'=>'required|file|mimes:pdf,doc,docx,jpg,png',
             'homework_id'=>'required|exists:homeworks,id'
         ]);
 
@@ -168,9 +169,9 @@ class SystemController extends Controller
             $fileName=time().'_'.$student->id.'.'.request()->file('file')->getClientOriginalExtension();
             $filePath=request()->file('file')->storeAs('solutions_homework',$fileName,'public');
             SolutionStudentForHomework::create([
-                    'homework_solution_file'=>$filePath,
-                    'student_id'=>$student->id,
-                    'homework_id'=>$homework_id,
+                    'homework_solution_file'  => $filePath,
+                    'student_id'              => $student->id,
+                    'homework_id'             => $homework_id,
             ]);
             return redirect()->back()->with('success','تم رفع الملف بنجاح');
         }else{
@@ -181,16 +182,16 @@ class SystemController extends Controller
     public function showHomeworkDetails($class,$subject){
         $userId=session('id');
         if(!$userId){
-            return redirect()->route('Login')->withErrors(['login'=>'يجب تسجيل الدخول أولا']);
+            return redirect()->route('Login')->withErrors(['login' => 'يجب تسجيل الدخول أولا']);
         }
 
         $student=Student::with('user')->where('user_id',$userId)->first();
         if(!$student){
-            return redirect()->route('Login')->withErrors(['student'=>'الطالب غير موجود']);
+            return redirect()->route('Login')->withErrors(['student' => 'الطالب غير موجود']);
         }
 
         request()->validate([
-            'homework_id'=>'required|exists:homeworks,id'
+            'homework_id' => 'required|exists:homeworks,id'
         ]);
         $homework_id=request()->homework_id;
 
@@ -214,7 +215,7 @@ class SystemController extends Controller
         $teacher=Teacher::where('class',$class)
         -> where('subject',$subject)->first();
         if(!$teacher){
-            return redirect()->route('content.show',compact('class','subject'))->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
+            return redirect()->route('content.show',compact('class','subject'))->withErrors(['teacher' => 'هذا المدرس لم يعد موجودا']);
         }
 
         $quiz=Quiz::where('teacher_id',$teacher->id)
@@ -235,19 +236,19 @@ class SystemController extends Controller
     public function showQuizResults($class,$subject){
         $userId=session('id');
         if(!$userId){
-            return redirect()->route('Login')->withErrors(['login'=>'يجب تسجيل الدخول أولا']);
+            return redirect()->route('Login')->withErrors(['login' => 'يجب تسجيل الدخول أولا']);
         }
 
         $student=Student::where('user_id',$userId)->first();
         if(!$student){
-            return redirect()->route('Login')->withErrors(['student'=>'الطالب غير موجود']);
+            return redirect()->route('Login')->withErrors(['student' => 'الطالب غير موجود']);
         }
 
         $teacher=Teacher::where('class',$class)
                             ->where('subject',$subject)
                             ->first();
         if(!$teacher){
-            return redirect()->route('content.show')->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
+            return redirect()->route('content.show')->withErrors(['teacher' => 'هذا المدرس لم يعد موجودا']);
         }
         $results=QuizResult::where('student_id',$student->id)
                                 ->where('teacher_id',$teacher->id)
@@ -263,7 +264,7 @@ class SystemController extends Controller
                             -> where('subject',$subject)
                             ->first();
         if(!$teacher){
-            return redirect()->route('content.show')->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
+            return redirect()->route('content.show')->withErrors(['teacher' => 'هذا المدرس لم يعد موجودا']);
         }
 
         $quiz=Quiz::where('teacher_id',$teacher->id)
@@ -297,19 +298,19 @@ class SystemController extends Controller
 
         $userId=session('id');
         if(!$userId){
-            return redirect()->route('Login')->withErrors(['login'=>'يجب تسجيل الدخول أولا']);
+            return redirect()->route('Login')->withErrors(['login' => 'يجب تسجيل الدخول أولا']);
         }
 
         $student=Student::where('user_id',$userId)->first();
         if(!$student){
-            return redirect()->route('Login')->withErrors(['student'=>'الطالب غير موجود']);
+            return redirect()->route('Login')->withErrors(['student' => 'الطالب غير موجود']);
         }
 
         $teacher=Teacher::where('class',$class)
                             -> where('subject',$subject)
                             ->first();
         if(!$teacher){
-            return redirect()->route('content.show')->withErrors(['teacher'=>'هذا المدرس لم يعد موجودا']);
+            return redirect()->route('content.show')->withErrors(['teacher' => 'هذا المدرس لم يعد موجودا']);
         }
 
         $quiz=Quiz::where('teacher_id',$teacher->id)->orderBy('start_time','desc')->first();
@@ -387,7 +388,7 @@ class SystemController extends Controller
         }
 
         // نشر الواجب
-        else if(request()->upload=='upload_homework'){
+        else if(request()->upload == 'upload_homework'){
             request()->validate([
                 'content_homework'   => 'required',
                 'title_homework'     => 'required|max:255',
@@ -396,7 +397,7 @@ class SystemController extends Controller
                 'homework_mark'      => 'required|integer',
             ]);
 
-            $fileName=time().'.'.request()->title_homework.'.'.request()->file('file_homework')->getClientOriginalExtension();
+            $fileName=request()->title_homework . '.' . request()->file('file_homework')->getClientOriginalExtension();
             $filePath=request()->file('file_homework')->storeAs('homeworks',$fileName,'public');
 
             Homework::create([
@@ -412,7 +413,7 @@ class SystemController extends Controller
         }
 
         // عمل اختبار
-        else if (request()->upload=='create_quiz'){
+        else if (request()->upload == 'create_quiz'){
 
             request()->validate([
                 'quiz_title'        => 'required|max:255',
@@ -528,7 +529,7 @@ class SystemController extends Controller
         $correction_status=SolutionStudentForHomework::where('student_id',$StudentId)
         ->where('homework_id',$homework_id)
         ->first();
-        $correction_status->update(['correction_status'=>true]);
+        $correction_status->update(['correction_status' => true]);
 
         return redirect()->back()->with('success','تم تصحيح هذا الواجب بنجاح');
     }
@@ -569,9 +570,9 @@ class SystemController extends Controller
 
     public function LogOut(){
 
-        session()->forget(['email','id']);
-        session()->invalidate();
-        session()->regenerateToken();
+        session() -> forget(['email','id']);
+        session() -> invalidate();
+        session() -> regenerateToken();
 
         Cookie::queue(Cookie::forget('user_email'));
 
@@ -586,9 +587,9 @@ class SystemController extends Controller
 
     public function UpdatePassword(){
         request()->validate([
-            'email'=>'required|email',
-            'NewPassword'=>'required|min:8',
-            'ConfirmPassword'=>'required|same:NewPassword',
+            'email'             => 'required|email',
+            'NewPassword'       => 'required|min:8',
+            'ConfirmPassword'   => 'required|same:NewPassword',
         ]);
 
         $email=request()->email;
@@ -598,7 +599,7 @@ class SystemController extends Controller
         if(is_null($user)){
             return redirect()->back()->withErrors(['email'=>'هذا الحساب غير موجود']);
         }else{
-                $user->update(['password'=>$NewPassword]);
+                $user->update(['password' => $NewPassword]);
                 return redirect()->route('Login')->with('success','تم تغيير كلمة المرور بنجاح');
         }
     }

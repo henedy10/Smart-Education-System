@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Livewire;
-use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\{
     Quiz,
