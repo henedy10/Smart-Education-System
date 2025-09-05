@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Middleware\{CheckTeacher,CheckStudent};
+use App\Http\Middleware\{CheckTeacher,CheckStudent, loginForm};
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'CheckTeacher' => CheckTeacher::class,
             'CheckStudent' => CheckStudent::class,
+            'loginForm'=> loginForm::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

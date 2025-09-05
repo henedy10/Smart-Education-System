@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(SystemController::class)->group(function (){
 
-    Route::get('/','Login')-> name('Login');
+    Route::get('/','Login')-> name('Login')->middleware('loginForm');
     Route::post('/user','checkUser')-> name('checkUser');
     Route::get('/logout','LogOut')-> name('LogOut');
 
