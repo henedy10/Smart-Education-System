@@ -20,7 +20,7 @@ class QuizAvailability extends Component
     public $num_questions;
     public $check_student_quiz;
 
-    public function mount(Quiz $quiz,$class,$subject){
+    public function mount($quiz,$class,$subject){
         $this->quiz=$quiz;
         $this->class=$class;
         $this->subject=$subject;
@@ -32,19 +32,20 @@ class QuizAvailability extends Component
     }
 
     public function checkAvailability(){
+        if($this->quiz){
+            $student=Student::where('user_id',session('id'))->first();
+            $this->check_student_quiz=QuizResult::where('quiz_id',$this->quiz->id)
+            ->where('student_id',$student->id)
+            ->where('test',1)
+            ->first();
 
-        $student=Student::where('user_id',session('id'))->first();
-        $this->check_student_quiz=QuizResult::where('quiz_id',$this->quiz->id)
-        ->where('student_id',$student->id)
-        ->where('test',1)
-        ->first();
+            if(now()->between($this->start_time,$this->end_time)){
+                $this->isAvailable=true;
+            }
 
-        if(now()->between($this->start_time,$this->end_time)){
-            $this->isAvailable=true;
-        }
-
-        if((!now()->between($this->start_time,$this->end_time))||isset($this->check_student_quiz)){
-            $this->isAvailable=false;
+            if((!now()->between($this->start_time,$this->end_time))||isset($this->check_student_quiz)){
+                $this->isAvailable=false;
+            }
         }
     }
 

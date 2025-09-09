@@ -16,10 +16,7 @@
 
     <!-- ✅ محتوى المحاضرات -->
     <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
-        @if ($lessons->isEmpty())
-            <h2 class="text-lg text-red-700 font-bold">  * لا توجد محاضرات حاليا  </h2>
-        @else
-            @foreach ($lessons as $lesson )
+        @forelse ( $lessons as $lesson )
                 <!-- 🧪 محاضرة واحدة -->
                 <div class="bg-white p-5 rounded-xl shadow hover:shadow-lg transition border-r-4 border-blue-500">
                     <div class="flex items-center gap-2 text-blue-600 mb-3">
@@ -31,8 +28,9 @@
                         <a href="{{asset('storage/'.$lesson->file_lesson)}}" download class="bg-gray-200 text-gray-800 px-3 py-1 rounded hover:bg-gray-300 text-sm">تحميل</a>
                     </div>
                 </div>
-            @endforeach
-        @endif
+        @empty
+            <h2 class="text-lg text-red-700 font-bold">  * لا توجد محاضرات حاليا  </h2>
+        @endforelse
     </div>
 @endsection
 

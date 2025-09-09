@@ -20,10 +20,10 @@ return new class extends Migration
 
             $table->string('file_lesson');
             $table->string('title_lesson');
-            $table->date('date_lesson');
             $table->timestamps();
         });
     }
+    
 
     /**
      * Reverse the migrations.

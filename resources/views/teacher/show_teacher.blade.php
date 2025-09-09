@@ -49,17 +49,17 @@
             <div class="grid md:grid-cols-3 gap-4">
                 <div class="bg-white shadow rounded-lg p-4">
                     <h3 class="text-lg font-bold text-blue-600 mb-2">عدد المحاضرات</h3>
-                    <p class="text-3xl font-semibold text-blue-800">{{$numLessons}}</p>
+                    <p class="text-3xl font-semibold text-blue-800">{{$teacher->lessons_count}}</p>
                 </div>
 
                 <div class="bg-white shadow rounded-lg p-4">
                     <h3 class="text-lg font-bold text-green-600 mb-2">عدد الواجبات</h3>
-                    <p class="text-3xl font-semibold text-green-800">{{$numHomeworks}}</p>
+                    <p class="text-3xl font-semibold text-green-800">{{$teacher->homeworks_count}}</p>
                 </div>
 
                 <div class="bg-white shadow rounded-lg p-4">
                     <h3 class="text-lg font-bold text-yellow-600 mb-2">عدد الامتحانات</h3>
-                    <p class="text-3xl font-semibold text-yellow-800">{{$numQuizzes}}</p>
+                    <p class="text-3xl font-semibold text-yellow-800">{{$teacher->quizzes_count}}</p>
                 </div>
             </div>
         </div>

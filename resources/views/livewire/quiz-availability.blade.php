@@ -1,5 +1,5 @@
 
-<div wire:poll.30s="checkAvailability">
+<div wire:poll.5s="checkAvailability">
     @if ($isAvailable)
         <ul class="space-y-4">
             <li class="bg-gray-50 p-4 rounded shadow flex justify-between items-center">

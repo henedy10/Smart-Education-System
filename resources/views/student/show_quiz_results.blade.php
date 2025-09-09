@@ -16,7 +16,7 @@
         <!-- جدول النتائج -->
         <div class="overflow-x-auto">
             @if ($results->isEmpty())
-                <p class="text-red-500 font-bold">* لا يوجد نتائج حاليا</p>
+                <h2 class="text-lg text-red-700 font-bold">* لا يوجد نتائج حاليا</h2>
             @else
                 <table class="min-w-full bg-white border border-gray-300 rounded">
                     <thead class="bg-gray-100 text-right text-sm">

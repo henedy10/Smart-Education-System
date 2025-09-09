@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Cookie;
 use App\Models\{
     Homework,
     HomeworkGrade,
@@ -17,8 +18,7 @@ use App\Models\{
     User,
 };
 
-use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Storage;
+
 class SystemController extends Controller
 {
     public function Login(){
@@ -38,7 +38,7 @@ class SystemController extends Controller
                 'user_as'  => $user->user_as,
             ]);
 
-            return $user->user_as == 'teacher'
+            return $user->user_as === 'teacher'
                 ? redirect()->route('teacher.show')
                 : redirect()->route('student.show');
 
@@ -99,27 +99,18 @@ class SystemController extends Controller
     }
 
     public function showStudentLesson($class,$subject){
-        $teacher=Teacher::where('class',$class)
-        -> where('subject',$subject)->first();
-        if(!$teacher){
-            return redirect()->back()->withErrors(['teacher' => 'هذا المدرس لم يعد موجودا']);
-        }
-        $lessons=Lesson::where('teacher_id',$teacher->id)->get();
 
+        $lessons=Lesson::whereHas('teacher',function($q) use($class,$subject){
+            $q->where('class',$class)->where('subject',$subject);
+        })->get();
         return view('student.show_lesson',compact('class','subject','lessons'));
     }
 
     public function showStudentHomework($class,$subject){
-        $currentTime=now('africa/cairo');
-        $teacher=Teacher::where('class',$class)
-        -> where('subject',$subject)->first();
-
-        if(!$teacher){
-            return redirect()->back()->withErrors(['teacher' => 'هذا المدرس لم يعد موجودا']);
-        }
-
-        $homeworks=Homework::where('teacher_id',$teacher->id)->get();
-        return view('student.show_homework',compact('subject','class','homeworks','currentTime'));
+        $homeworks=Homework::whereHas('teacher',function($q) use($class,$subject){
+            $q->where('class',$class)->where('subject',$subject);
+        })->get();
+        return view('student.show_homework',compact('subject','class','homeworks'));
     }
 
     public function showHomeworkUploadForm($class,$subject){
@@ -212,23 +203,14 @@ class SystemController extends Controller
     }
 
     public function showAvailableQuiz($class,$subject){
-        $teacher=Teacher::where('class',$class)
-        -> where('subject',$subject)->first();
-        if(!$teacher){
-            return redirect()->route('content.show',compact('class','subject'))->withErrors(['teacher' => 'هذا المدرس لم يعد موجودا']);
-        }
-
-        $quiz=Quiz::where('teacher_id',$teacher->id)
+        $quiz=Quiz::whereHas('teacher',function($q) use($class,$subject){
+            $q->where('class',$class)->where('subject',$subject);
+        })
         ->orderBy('start_time','desc')
         ->first();
-
-        return view('student.show_quiz',compact(
-            'subject',
-            'class',
-            'quiz',
-        ));
-
+        return view('student.show_quiz',['quiz'=>$quiz,'class'=>$class,'subject'=>$subject]);
     }
+
     public function showChooseAction($class,$subject){
         return view('student.show_action_content_quiz',compact('class','subject'));
     }
@@ -254,7 +236,6 @@ class SystemController extends Controller
                                 ->where('teacher_id',$teacher->id)
                                 ->orderBy('created_at','desc')
                                 ->get();
-
         return view('student.show_quiz_results',compact('class','subject','results'));
     }
 
@@ -355,15 +336,15 @@ class SystemController extends Controller
             return redirect()->route('Login')->withErrors(['login'=>'يجب تسجيل الدخول أولا']);
         }
 
-        $teacher=Teacher::where('user_id',$userId)->first();
+        $teacher=Teacher::where('user_id',$userId)
+        ->withCount('lessons','homeworks','quizzes')
+        ->first();
+
         if(!$teacher){
             return redirect()->route('Login')->withErrors(['teacher'=>'المدرس غير موجود']);
         }
 
-            $numLessons=Lesson::where('teacher_id',$teacher->id)->count();
-            $numHomeworks=Homework::where('teacher_id',$teacher->id)->count();
-            $numQuizzes=Quiz::where('teacher_id',$teacher->id)->count();
-            return view('teacher.show_teacher',compact('teacher','numLessons','numHomeworks','numQuizzes'));
+            return view('teacher.show_teacher',compact('teacher'));
     }
 
     public function storeTeacherResource($TeacherId){
@@ -570,7 +551,7 @@ class SystemController extends Controller
 
     public function LogOut(){
 
-        session() -> forget(['email','id']);
+        session() -> forget(['email','id','user_as']);
         session() -> invalidate();
         session() -> regenerateToken();
 

@@ -11,6 +11,6 @@ class Homework extends Model
     protected $guarded=[];
 
     public function teacher(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Teacher::class);
     }
 }

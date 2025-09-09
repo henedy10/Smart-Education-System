@@ -4,28 +4,25 @@ use App\Http\Controllers\SystemController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(SystemController::class)->group(function (){
-Route::middleware('loginForm')->group(function(){
-
-    Route::get('/','Login')-> name('Login')->middleware('loginForm');
-    Route::get('/passwords/edit','EditPassword')-> name('Password.Edit');
-
-});
-
-    Route::post('/passwords','UpdatePassword')-> name('Password.Update');
-    Route::post('/user','checkUser')-> name('checkUser');
-    Route::get('/logout','LogOut')-> name('LogOut');
+    Route::middleware('checkLogin')->group(function(){
+        Route::get('/','Login')-> name('Login');
+        Route::get('/passwords/edit','EditPassword')->name('Password.Edit');
+    });
+    Route::post('/passwords','UpdatePassword')->name('Password.Update');
+    Route::post('/user','checkUser')->name('checkUser');
+    Route::get('/logout','LogOut')->name('LogOut');
 
     // Routes of Student
 
     Route::middleware('CheckStudent')->group(function(){
-        Route::get('/student','showStudent')-> name('student.show');
+        Route::get('/student','showStudent')->name('student.show');
         Route::get('/content/{class}/{subject}','showStudentContent')->name('content.show');
         Route::get('/lessons/{class}/{subject}','showStudentLesson')->name('student.lesson.show');
         Route::get('/homeworks/{class}/{subject}','showStudentHomework')->name('student.homework.show');
-        Route::get('/uploadHomeworks/{class}/{subject}','showHomeworkUploadForm')-> name('student.homeworkUpload.show');
+        Route::get('/uploadHomeworks/{class}/{subject}','showHomeworkUploadForm')->name('student.homeworkUpload.show');
         Route::post('/homeworkSolutions','storeHomeworkSolution')->name('student.homeworkSolution.store');
         Route::get('/action/{class}/{subject}','showChooseAction')->name('student.quizAction.show');
-        Route::get('/quizzes/{class}/{subject}','showAvailableQuiz')->name('availableQuiz.show');
+        Route::get('/quizzes/{class}/{subject}','showAvailableQuiz')->name('student.availableQuiz.show');
         Route::get('/quizContent/{class}/{subject}','showQuizContent')->name('quizContent.show');
         Route::post('/answers/{class}/{subject}','storeQuizAnswers')->name('student.answers.store');
         Route::get('/results/{class}/{subject}','showQuizResults')->name('student.quizResult.show');

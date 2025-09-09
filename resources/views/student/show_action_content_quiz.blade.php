@@ -15,7 +15,7 @@
 
         <div class="flex flex-col gap-6">
             <!-- زر الاختبارات المتاحة -->
-            <a href="{{route('availableQuiz.show',[$class,$subject])}}"
+            <a href="{{route('student.availableQuiz.show',[$class,$subject])}}"
                 class="block w-full bg-green-500 hover:bg-green-600 text-white text-lg text-center py-4 rounded-lg shadow transition duration-300">
                 عرض الاختبارات المتاحة
             </a>

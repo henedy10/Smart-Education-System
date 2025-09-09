@@ -11,6 +11,12 @@ class Quiz extends Model
         'start_time' => 'datetime',
     ];
     public function teacher(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Teacher::class);
+    }
+    public function quizResult(){
+        return $this->belongsTo(QuizResult::class);
+    }
+    public function questions(){
+        return $this->hasMany(Question::class);
     }
 }

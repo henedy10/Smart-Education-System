@@ -56,7 +56,6 @@
                                         <button type="submit" onclick="alert('لا يمكن رؤيه النتائج الا بعد انتهاء وقت الامتحان')"  class="text-green-600 font-semibold">اضغط هنا</button>
                                     @else
                                         <form action="{{route('quizResults.show',$TeacherId)}}" method="GET">
-                                            @csrf
                                             <button type="submit" name="quiz_id" value="{{$quiz->id}}" class="text-green-600 font-semibold">اضغط هنا</button>
                                         </form>
                                     @endif
