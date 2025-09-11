@@ -21,9 +21,6 @@ use App\Models\{
 class StudentController extends Controller
 {
 
-
-
-
     public function showStudent(){
         $userId=session('id');
         if(!$userId){
@@ -52,6 +49,7 @@ class StudentController extends Controller
     }
 
     public function showStudentHomework($class,$subject){
+
         $homeworks=Homework::whereHas('teacher',function($q) use($class,$subject){
             $q->where('class',$class)->where('subject',$subject);
         })->get();
@@ -59,60 +57,42 @@ class StudentController extends Controller
     }
 
     public function showHomeworkUploadForm($class,$subject){
+
         $userId=session('id');
-        if(!$userId){
-            return redirect()->route('Login')->withErrors(['login' => 'يجب تسجيل الدخول أولا']);
-        }
-
         $student=Student::with('user')->where('user_id',$userId)->first();
-        if(!$student){
-            return redirect()->route('Login')->withErrors(['student' => 'الطالب غير موجود']);
-        }
-
-        request()->validate([
-            'upload_homework'=>'required|exists:homeworks,id'
-        ]);
 
         $homework_id=request()->upload_homework;
-        $check_status_student_solution=SolutionStudentForHomework::where('student_id',$student->id)
-        ->where('homework_id',$homework_id)
-        ->first();
-        return view('student.show_homework_uploading',compact('homework_id','class','subject','check_status_student_solution'));
-    }
-
-    public function storeHomeworkSolution(){
-        $userId=session('id');
-        if(!$userId){
-            return redirect()->route('Login')->withErrors(['login' => 'يجب تسجيل الدخول أولا']);
-        }
-
-        $student=Student::with('user')->where('user_id',$userId)->first();
-        if(!$student){
-            return redirect()->route('Login')->withErrors(['student' => 'الطالب غير موجود']);
-        }
-
         request()->validate([
-            'file'=>'required|file|mimes:pdf,doc,docx,jpg,png',
-            'homework_id'=>'required|exists:homeworks,id'
+            'upload_homework' => 'required|exists:homeworks,id'
         ]);
 
-        $homework_id=request()->homework_id;
         $alreadyUploaded=SolutionStudentForHomework::where('student_id',$student->id)
         ->where('homework_id',$homework_id)
         ->exists();
 
-        if(!$alreadyUploaded){
-            $fileName=time().'_'.$student->id.'.'.request()->file('file')->getClientOriginalExtension();
-            $filePath=request()->file('file')->storeAs('solutions_homework',$fileName,'public');
-            SolutionStudentForHomework::create([
-                    'homework_solution_file'  => $filePath,
-                    'student_id'              => $student->id,
-                    'homework_id'             => $homework_id,
-            ]);
-            return redirect()->back()->with('success','تم رفع الملف بنجاح');
-        }else{
-            return redirect()->back()->with('danger',' لا يمكن رفع اكثر من ملف لهذا الواجب');
-        }
+        return view('student.show_homework_uploading',compact('homework_id','class','subject','alreadyUploaded'));
+    }
+
+    public function storeHomeworkSolution(){
+        $userId=session('id');
+        $student=Student::with('user')->where('user_id',$userId)->first();
+        $homework_id=request()->homework_id;
+
+        request()->validate([
+            'file'        => 'required|file|mimes:pdf,doc,docx,jpg,png',
+            'homework_id' => 'required|exists:homeworks,id'
+        ]);
+
+        $fileName=time().'_'.$student->id.'.'.request()->file('file')->getClientOriginalExtension();
+        $filePath=request()->file('file')->storeAs('solutions_homework',$fileName,'public');
+
+        SolutionStudentForHomework::create([
+                'homework_solution_file'  => $filePath,
+                'student_id'              => $student->id,
+                'homework_id'             => $homework_id,
+        ]);
+
+        return redirect()->back()->with('success','تم رفع الملف بنجاح');
     }
 
     public function showHomeworkDetails($class,$subject){
@@ -272,10 +252,5 @@ class StudentController extends Controller
 
         return view('student.show_result',compact('student','quiz','studentMark','class','subject'));
     }
-
-
-
-
-
 }
 
