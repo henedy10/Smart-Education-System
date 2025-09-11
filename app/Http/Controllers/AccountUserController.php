@@ -1,0 +1,101 @@
+<?php
+
+namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Cookie;
+use App\Models\{User};
+
+class AccountUserController extends Controller
+{
+        public function Login(){
+        $email=Cookie::get('user_email');
+
+        if($email){
+            $user=User::where('email',$email)->first();
+
+            if(!$user){
+                Cookie::queue(Cookie::forget('user_email'));
+                return redirect()->view('index')->withErrors(['login' => 'هذا الحساب غير موجود']);
+            }
+
+            session([
+                'email'    => $user->email,
+                'id'       => $user->id,
+                'user_as'  => $user->user_as,
+            ]);
+
+            return $user->user_as === 'teacher'
+                ? redirect()->route('teacher.show')
+                : redirect()->route('student.show');
+
+        }else{
+            return view('index');
+        }
+    }
+    public function checkUser(){
+            request()->validate([
+                'email'    => ['required','email:rfc,dns'],
+                'password' => 'required',
+            ]);
+
+            $email=request()->email;
+            $password=request()->password;
+            $user= User::where('email',$email)
+                        ->where('password',$password)
+                        ->first();
+
+            if(!$user){
+                return back()->withErrors(['login' => 'بيانات الدخول غير صحيحه']);
+            }else{
+                session([
+                    'email'     => $user->email,
+                    'id'        => $user->id,
+                    'user_as'   => $user->user_as,
+                ]);
+
+                if(request()->remember_me){
+                    Cookie::queue('user_email',$email,60*24*30,'/'); // for 1 month
+                }
+
+                return $user->user_as == 'teacher'
+                        ? redirect()->route('teacher.show')
+                        : redirect()->route('student.show');
+            }
+    }
+        // تسجيل الخروج لكل من الطالب و المدرس
+
+    public function LogOut(){
+
+        session() -> forget(['email','id','user_as']);
+        session() -> invalidate();
+        session() -> regenerateToken();
+
+        Cookie::queue(Cookie::forget('user_email'));
+
+        return redirect()->route('Login');
+
+    }
+
+    // تغيير كلمه المرور للمستخدم
+    public function EditPassword(){
+        return view('EditPassword');
+    }
+
+    public function UpdatePassword(){
+        request()->validate([
+            'email'             => 'required|email',
+            'NewPassword'       => 'required|min:8',
+            'ConfirmPassword'   => 'required|same:NewPassword',
+        ]);
+
+        $email=request()->email;
+        $NewPassword=request()->NewPassword;
+        $user= User::where('email',$email)->first();
+
+        if(is_null($user)){
+            return redirect()->back()->withErrors(['email'=>'هذا الحساب غير موجود']);
+        }else{
+                $user->update(['password' => $NewPassword]);
+                return redirect()->route('Login')->with('success','تم تغيير كلمة المرور بنجاح');
+        }
+    }
+}

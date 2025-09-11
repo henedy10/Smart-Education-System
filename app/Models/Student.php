@@ -12,5 +12,5 @@ class Student extends Model
     public function quizResult(){
         return $this->hasMany(QuizResult::class);
     }
-    
+
 }

@@ -1,9 +1,13 @@
 <?php
 
-use App\Http\Controllers\SystemController;
+use App\Http\Controllers\{
+        AccountUserController,
+        StudentController,
+        TeacherController,
+};
 use Illuminate\Support\Facades\Route;
 
-Route::controller(SystemController::class)->group(function (){
+Route::controller(AccountUserController::class)->group(function (){
     Route::middleware('checkLogin')->group(function(){
         Route::get('/','Login')-> name('Login');
         Route::get('/passwords/edit','EditPassword')->name('Password.Edit');
@@ -11,9 +15,9 @@ Route::controller(SystemController::class)->group(function (){
     Route::post('/passwords','UpdatePassword')->name('Password.Update');
     Route::post('/user','checkUser')->name('checkUser');
     Route::get('/logout','LogOut')->name('LogOut');
+});
 
-    // Routes of Student
-
+Route::controller(StudentController::class)->group(function (){
     Route::middleware('CheckStudent')->group(function(){
         Route::get('/student','showStudent')->name('student.show');
         Route::get('/content/{class}/{subject}','showStudentContent')->name('content.show');
@@ -28,9 +32,9 @@ Route::controller(SystemController::class)->group(function (){
         Route::get('/results/{class}/{subject}','showQuizResults')->name('student.quizResult.show');
         Route::get('/homeworkDetails/{class}/{subject}','showHomeworkDetails')->name('student.homeworkDetails.show');
     });
+});
 
-    //Routes of Teacher
-
+Route::controller(TeacherController::class)->group(function (){
     Route::middleware('CheckTeacher')->group(function(){
         Route::get('/teacher','showTeacher')->name('teacher.show');
         Route::post('/teacher/{teacher}','storeTeacherResource')->name('teacherResources.store');
@@ -45,5 +49,7 @@ Route::controller(SystemController::class)->group(function (){
         Route::get('/quizzes/{teacher}','showQuizzes')-> name('quizzes.show');
         Route::get('/results/{teacher}','showResults')-> name('quizResults.show');
     });
-
 });
+
+
+
