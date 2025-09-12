@@ -15,7 +15,11 @@ return new class extends Migration
             $table->id();
             // foreign key
             $table->unsignedBigInteger('question_id');
-            $table->foreign('question_id')->references('id')->on('questions');
+            $table->foreign('question_id')
+                ->references('id')
+                ->on('questions')
+                ->onDelete('cascade');
+
             $table->string('option_title');
             $table->enum('option_key',['الإجابة 1','الإجابة 2','الإجابة 3','الإجابة 4']);
             $table->timestamps();

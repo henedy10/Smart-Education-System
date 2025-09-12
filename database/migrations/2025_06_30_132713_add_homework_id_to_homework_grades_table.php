@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::table('homework_grades', function (Blueprint $table) {
             // foreign key
             $table->unsignedBigInteger('homework_id');
-            $table->foreign('homework_id')->references('id')->on('homeworks');
+            $table->foreign('homework_id')
+                    ->references('id')
+                    ->on('homeworks')
+                    ->onDelete('cascade');
         });
     }
 

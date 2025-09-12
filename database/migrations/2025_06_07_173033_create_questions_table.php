@@ -16,7 +16,10 @@ return new class extends Migration
 
             // foreign key
             $table->unsignedBigInteger('quiz_id');
-            $table->foreign('quiz_id')->references('id')->on('quizzes');
+            $table->foreign('quiz_id')
+                ->references('id')
+                ->on('quizzes')
+                ->onDelete('cascade');
 
             $table->string('title');
             $table->enum('correct_option',['الإجابة 1','الإجابة 2','الإجابة 3','الإجابة 4']);

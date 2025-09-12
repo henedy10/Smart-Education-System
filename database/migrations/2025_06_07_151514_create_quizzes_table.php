@@ -16,7 +16,10 @@ return new class extends Migration
 
             // foreign key
             $table->unsignedBigInteger('teacher_id');
-            $table->foreign('teacher_id')->references('id')->on('teachers');
+            $table->foreign('teacher_id')
+                ->references('id')
+                ->on('teachers')
+                ->onDelete('cascade');
 
             $table->string('title');
             $table->string('description')->nullable();

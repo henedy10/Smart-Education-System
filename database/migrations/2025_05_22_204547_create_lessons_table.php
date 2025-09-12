@@ -16,14 +16,17 @@ return new class extends Migration
 
             // foreign key
             $table->unsignedBigInteger('teacher_id');
-            $table->foreign('teacher_id')->references('id')->on('teachers');
+            $table->foreign('teacher_id')
+                ->references('id')
+                ->on('teachers')
+                ->onDelete('cascade');
 
             $table->string('file_lesson');
             $table->string('title_lesson');
             $table->timestamps();
         });
     }
-    
+
 
     /**
      * Reverse the migrations.

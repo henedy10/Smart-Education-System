@@ -16,10 +16,16 @@ return new class extends Migration
 
             // foreign keys
             $table->unsignedBigInteger('student_id');
-            $table->foreign('student_id')->references('id')->on('students');
+            $table->foreign('student_id')
+                ->references('id')
+                ->on('students')
+                ->onDelete('cascade');
 
             $table->unsignedBigInteger('homework_id');
-            $table->foreign('homework_id')->references('id')->on('homeworks');
+            $table->foreign('homework_id')
+                ->references('id')
+                ->on('homeworks')
+                ->onDelete('cascade');
 
             $table->string('homework_solution_file');
             $table->timestamps();

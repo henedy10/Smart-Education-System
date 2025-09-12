@@ -16,7 +16,10 @@ return new class extends Migration
 
             // foreign key
             $table->unsignedBigInteger('student_id');
-            $table->foreign('student_id')->references('id')->on('students');
+            $table->foreign('student_id')
+                ->references('id')
+                ->on('students')
+                ->onDelete('cascade');
 
             $table->integer('student_mark');
             $table->timestamps();
