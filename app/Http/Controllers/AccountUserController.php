@@ -6,7 +6,8 @@ use App\Models\{User};
 
 class AccountUserController extends Controller
 {
-        public function Login(){
+    public function index(){
+
         $email=Cookie::get('user_email');
 
         if($email){
@@ -31,16 +32,16 @@ class AccountUserController extends Controller
             return view('index');
         }
     }
-    public function checkUser(){
+
+    public function login(){
+
             request()->validate([
-                'email'    => ['required','email:rfc,dns'],
+                'email'    => 'required | email',
                 'password' => 'required',
             ]);
 
-            $email=request()->email;
-            $password=request()->password;
-            $user= User::where('email',$email)
-                        ->where('password',$password)
+            $user= User::where('email',request()->email)
+                        ->where('password',request()->password)
                         ->first();
 
             if(!$user){
@@ -53,7 +54,7 @@ class AccountUserController extends Controller
                 ]);
 
                 if(request()->remember_me){
-                    Cookie::queue('user_email',$email,60*24*30,'/'); // for 1 month
+                    Cookie::queue('user_email', request()->email, 60*24*30, '/'); // for 1 month
                 }
 
                 return $user->user_as == 'teacher'
@@ -71,31 +72,32 @@ class AccountUserController extends Controller
 
         Cookie::queue(Cookie::forget('user_email'));
 
-        return redirect()->route('Login');
-
+        return redirect()->route('index');
     }
 
     // تغيير كلمه المرور للمستخدم
     public function EditPassword(){
+
         return view('EditPassword');
+
     }
 
     public function UpdatePassword(){
+
         request()->validate([
-            'email'             => 'required|email',
-            'NewPassword'       => 'required|min:8',
-            'ConfirmPassword'   => 'required|same:NewPassword',
+            'email'             => 'required | email',
+            'NewPassword'       => 'required | min:8',
+            'ConfirmPassword'   => 'required | same:NewPassword',
         ]);
 
-        $email=request()->email;
-        $NewPassword=request()->NewPassword;
-        $user= User::where('email',$email)->first();
+        $user= User::where('email',request()->email)->first();
 
         if(is_null($user)){
-            return redirect()->back()->withErrors(['email'=>'هذا الحساب غير موجود']);
+            return redirect()->back()->withErrors(['email' => 'هذا الحساب غير موجود']);
         }else{
-                $user->update(['password' => $NewPassword]);
-                return redirect()->route('Login')->with('success','تم تغيير كلمة المرور بنجاح');
+            $user->update(['password' => request()->NewPassword]);
+
+            return redirect()->route('index')->with('success','تم تغيير كلمة المرور بنجاح');
         }
     }
 }

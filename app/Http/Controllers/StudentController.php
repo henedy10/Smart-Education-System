@@ -16,7 +16,7 @@ use App\Models\{
     Student,
     StudentOption,
 };
-
+use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
@@ -41,23 +41,22 @@ class StudentController extends Controller
     }
 
     public function showStudentLesson($class,$subject){
-
         $lessons=Lesson::whereHas('teacher',function($q) use($class,$subject){
             $q->where('class',$class)->where('subject',$subject);
         })->get();
+
         return view('student.show_lesson',compact('class','subject','lessons'));
     }
 
     public function showStudentHomework($class,$subject){
-
         $homeworks=Homework::whereHas('teacher',function($q) use($class,$subject){
             $q->where('class',$class)->where('subject',$subject);
         })->get();
+
         return view('student.show_homework',compact('subject','class','homeworks'));
     }
 
     public function showHomeworkUploadForm($class,$subject){
-
         $userId=session('id');
         $student=Student::with('user')->where('user_id',$userId)->first();
 
@@ -87,9 +86,9 @@ class StudentController extends Controller
         $filePath=request()->file('file')->storeAs('solutions_homework',$fileName,'public');
 
         SolutionStudentForHomework::create([
-                'homework_solution_file'  => $filePath,
-                'student_id'              => $student->id,
-                'homework_id'             => $homework_id,
+            'homework_solution_file'  => $filePath,
+            'student_id'              => $student->id,
+            'homework_id'             => $homework_id,
         ]);
 
         return redirect()->back()->with('success','تم رفع الملف بنجاح');
@@ -128,12 +127,18 @@ class StudentController extends Controller
     }
 
     public function showAvailableQuiz($class,$subject){
+
         $quiz=Quiz::whereHas('teacher',function($q) use($class,$subject){
             $q->where('class',$class)->where('subject',$subject);
         })
         ->orderBy('start_time','desc')
         ->first();
-        return view('student.show_quiz',['quiz'=>$quiz,'class'=>$class,'subject'=>$subject]);
+
+        return view('student.show_quiz',[
+        'quiz'      =>  $quiz,
+        'class'     =>  $class,
+        'subject'   =>  $subject
+    ]);
     }
 
     public function showChooseAction($class,$subject){
@@ -229,11 +234,11 @@ class StudentController extends Controller
             $check_selection[$Q->id]= (isset($options[$Q->id]) && $Q->correct_option==$options[$Q->id]) ? true : false;
 
             $store_student_option=StudentOption::create([
-                    'student_id'=> $student->id,
-                    'quiz_id'=> $quiz->id,
-                    'question_id'=>$Q->id,
-                    'select_option'=>$options[$Q->id]??null,
-                    'status_option'=> $check_selection[$Q->id],
+                    'student_id'     =>  $student->id,
+                    'quiz_id'        =>  $quiz->id,
+                    'question_id'    =>  $Q->id,
+                    'select_option'  =>  $options[$Q->id]??null,
+                    'status_option'  =>  $check_selection[$Q->id],
             ]);
 
             if($check_selection[$Q->id]){

@@ -5,15 +5,16 @@ use App\Http\Controllers\{
         StudentController,
         TeacherController,
 };
+
 use Illuminate\Support\Facades\Route;
 
 Route::controller(AccountUserController::class)->group(function (){
     Route::middleware('checkLogin')->group(function(){
-        Route::get('/','Login')-> name('Login');
+        Route::get('/','index')-> name('index');
         Route::get('/passwords/edit','EditPassword')->name('Password.Edit');
     });
     Route::post('/passwords','UpdatePassword')->name('Password.Update');
-    Route::post('/user','checkUser')->name('checkUser');
+    Route::post('/login','login')->middleware('throttle:login')->name('login');
     Route::get('/logout','LogOut')->name('LogOut');
 });
 

@@ -25,7 +25,7 @@
                     {{ session('success') }}
                 </div>
             @endif
-        <form action="{{route('checkUser')}}" method="POST" class="space-y-4">
+        <form action="{{route('login')}}" method="POST" class="space-y-4">
                 @csrf
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">الايميل</label>
