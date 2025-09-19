@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class HomeworkGrade extends Model
 {
     protected $guarded=[];
+
+    public function student(){
+        return $this->belongsTo(Student::class);
+    }
+
     public function homework (){
         return $this->belongsTo(Homework::class);
     }

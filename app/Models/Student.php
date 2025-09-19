@@ -9,8 +9,16 @@ class Student extends Model
     public function user()  {
         return $this->belongsTo(User::class);
     }
-    public function quizResult(){
-        return $this->hasMany(QuizResult::class);
+
+    public function homeworkGrades(){
+        return $this->hasMany(HomeworkGrade::class);
     }
 
+    public function homeworkSolutions(){
+        return $this->hasMany(SolutionStudentForHomework::class);
+    }
+
+    public function quizResults(){
+        return $this->hasMany(QuizResult::class);
+    }
 }

@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('login', function (Request $request) {
             return Limit::perHour(5)->response(function (Request $request, array $headers) {
                 return response('<p style = color:red;>....يرجي المحاوله مره اخري بعد 1 ساعه من الأن</p>', 429, $headers);
-    });;
+    });
         });
     }
 }

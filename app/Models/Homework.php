@@ -13,4 +13,12 @@ class Homework extends Model
     public function teacher(){
         return $this->belongsTo(Teacher::class);
     }
+
+    public function homeworkGrades(){
+        return $this->hasMany(HomeworkGrade::class);
+    }
+
+    public function homeworkSolutions(){
+        return $this->hasMany(SolutionStudentForHomework::class);
+    }
 }

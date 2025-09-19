@@ -9,13 +9,16 @@ class QuizResult extends Model
 {
     protected $guarded=[];
 
+    public function teacher(){
+        return $this->belongsTo(Teacher::class);
+    }
+
     public function student(){
         return $this->belongsTo(Student::class);
     }
+
     public function quiz(){
         return $this->belongsTo(Quiz::class);
     }
-    public function teacher(){
-        return $this->hasMany(Teacher::class);
-    }
+
 }
