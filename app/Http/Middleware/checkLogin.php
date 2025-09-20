@@ -15,10 +15,9 @@ class checkLogin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(!session('email')){
-            return $next($request);
+        if(session()->has('email')){
+            return redirect()->back();
         }
-
-        return redirect()->back();
+        return $next($request);
     }
 }

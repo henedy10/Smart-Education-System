@@ -36,7 +36,7 @@ class AccountUserController extends Controller
     public function login(){
 
             request()->validate([
-                'email'    => 'required | email',
+                'email'    => 'required|email',
                 'password' => 'required',
             ]);
 

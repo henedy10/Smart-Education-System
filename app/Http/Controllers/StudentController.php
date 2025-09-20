@@ -1,11 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
-
-
 use App\Models\{
     Homework,
-    HomeworkGrade,
     Teacher,
     Lesson,
     Option,
@@ -16,19 +13,16 @@ use App\Models\{
     Student,
     StudentOption,
 };
-use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
 
     public function showStudent() {
-        $userId=session('id');
-
-        $student=Student::whereHas('user',function($q) use($userId){
+        $userId  = session('id');
+        $student = Student::whereHas('user',function($q) use($userId){
             $q->select('name')->where('id',$userId);
         })->first();
-
-        $teachers=Teacher::where('class',$student->class)->get();
+        $teachers = Teacher::where('class',$student->class)->get();
 
         return view('student.show_student',compact('student','teachers'));
     }
@@ -38,7 +32,7 @@ class StudentController extends Controller
     }
 
     public function showStudentLesson($class,$subject){
-        $lessons=Lesson::whereHas('teacher',function($q) use($class,$subject){
+        $lessons = Lesson::whereHas('teacher',function($q) use($class,$subject){
             $q->where('class',$class)->where('subject',$subject);
         })->get();
 
@@ -46,7 +40,7 @@ class StudentController extends Controller
     }
 
     public function showStudentHomework($class,$subject){
-        $homeworks=Homework::whereHas('teacher',function($q) use($class,$subject){
+        $homeworks = Homework::whereHas('teacher',function($q) use($class,$subject){
             $q->where('class',$class)->where('subject',$subject);
         })->get();
 
@@ -54,33 +48,33 @@ class StudentController extends Controller
     }
 
     public function showHomeworkUploadForm($class,$subject){
-        $userId=session('id');
-        $student=Student::select('id')->where('user_id',$userId)->first();
+        $userId     = session('id');
+        $studentId  = Student::where('user_id',$userId)->value('id');
 
         request()->validate([
             'upload_homework' => 'required|exists:homeworks,id'
         ]);
 
-        $homework_id=request()->upload_homework;
-        $alreadyUploaded=SolutionStudentForHomework::where('student_id',$student->id)
-        ->where('homework_id',$homework_id)
-        ->exists();
+        $homework_id     = request()->upload_homework;
+        $alreadyUploaded = SolutionStudentForHomework::where('student_id',$studentId)
+                                                    ->where('homework_id',$homework_id)
+                                                    ->exists();
 
         return view('student.show_homework_uploading',compact('homework_id','class','subject','alreadyUploaded'));
     }
 
     public function storeHomeworkSolution(){
-        $userId=session('id');
-        $student=Student::with('user')->where('user_id',$userId)->first();
-        $homework_id=request()->homework_id;
+        $userId      = session('id');
+        $student     = Student::with('user')->where('user_id',$userId)->first();
+        $homework_id = request()->homework_id;
 
         request()->validate([
             'file'        => 'required|file|mimes:pdf,doc,docx,jpg,png',
             'homework_id' => 'required|exists:homeworks,id'
         ]);
 
-        $fileName=$student->user->name.'.'.request()->file('file')->getClientOriginalExtension();
-        $filePath=request()->file('file')->storeAs('solutions_homework',$fileName,'public');
+        $fileName  = $student->user->name.'.'.request()->file('file')->getClientOriginalExtension();
+        $filePath  = request()->file('file')->storeAs('solutions_homework',$fileName,'public');
 
         SolutionStudentForHomework::create([
             'homework_solution_file'  => $filePath,
@@ -92,16 +86,16 @@ class StudentController extends Controller
     }
 
     public function showHomeworkDetails($class,$subject){
-        $userId=session('id');
-        $student=Student::select('id')->where('user_id',$userId)->first();
+        $userId    = session('id');
+        $studentId = Student::where('user_id',$userId)->value('id');
 
         request()->validate([
             'homework_id' => 'required|exists:homeworks,id'
         ]);
         $homework_id = request()->homework_id;
 
-        $homeworkDetails=SolutionStudentForHomework::with('homeworkGrade')
-                                                    ->where('student_id',$student->id)
+        $homeworkDetails = SolutionStudentForHomework::with('homeworkGrade')
+                                                    ->where('student_id',$studentId)
                                                     ->where('homework_id',$homework_id)
                                                     ->first();
 
@@ -132,89 +126,69 @@ class StudentController extends Controller
     }
 
     public function showQuizResults($class,$subject){
-        $userId=session('id');
+        $userId    = session('id');
+        $studentId = Student::where('user_id',$userId)->value('id');
+        $teacherId = Teacher::where('class',$class)
+                            ->where('subject',$subject)
+                            ->value('id');
 
+        $results = QuizResult::where('student_id',$studentId)
+                            ->where('teacher_id',$teacherId)
+                            ->orderBy('created_at','desc')
+                            ->get();
 
-        $student=Student::select('id')
-        ->where('user_id',$userId)
-        ->first();
-
-
-        $teacher=Teacher::select('id')
-        ->where('class',$class)
-        ->where('subject',$subject)
-        ->first();
-
-        $results=QuizResult::where('student_id',$student->id)
-        ->where('teacher_id',$teacher->id)
-        ->orderBy('created_at','desc')
-        ->get();
         return view('student.show_quiz_results',compact('class','subject','results'));
     }
 
     public function showQuizContent($class,$subject){
 
-        $teacher=Teacher::where('class',$class)
-        ->where('subject',$subject)
-        ->first();
+        $teacherId = Teacher::where('class',$class)
+                        ->where('subject',$subject)
+                        ->value('id');
 
+        $quiz = Quiz::with('questions')
+                    ->where('teacher_id',$teacherId)
+                    ->orderBy('start_time','desc')
+                    ->first();
 
-        $quiz=Quiz::where('teacher_id',$teacher->id)
-                            ->orderBy('start_time','desc')
-                            ->first();
         if(!$quiz){
             return redirect()->back()->withErrors(['quiz' => 'لا يوجد اختبار متاح حاليا']);
         }
 
-        $questions=Question::where('quiz_id',$quiz->id)->get();
-
-        $duration=$quiz->duration;
-        $start_time=$quiz->start_time;
-        $options=[];
-        foreach($questions as $q){
-            $options[$q->id]=Option::where('question_id',$q->id)->get();
+        $options    = [];
+        foreach($quiz->questions as $Q){
+            $options[$Q->id] = Option::where('question_id',$Q->id)->get();
         }
         return view('student.show_content_quiz',compact(
-            'questions',
+            'quiz',
             'options',
             'class',
             'subject',
-            'duration',
-            'start_time'
         ));
     }
 
     public function storeQuizAnswers($class,$subject){
-        $studentMark=0;
-        $check_selection=[];
+        $studentMark     = 0;
+        $check_selection = [];
+        $userId          = session('id');
 
-        $userId=session('id');
-        if(!$userId){
-            return redirect()->route('Login')->withErrors(['login' => 'يجب تسجيل الدخول أولا']);
-        }
-
-        $student=Student::where('user_id',$userId)->first();
-        if(!$student){
-            return redirect()->route('Login')->withErrors(['student' => 'الطالب غير موجود']);
-        }
-
-        $teacher=Teacher::where('class',$class)
-                            -> where('subject',$subject)
+        $student   = Student::with('user')
+                            ->where('user_id',$userId)
                             ->first();
-        if(!$teacher){
-            return redirect()->route('content.show')->withErrors(['teacher' => 'هذا المدرس لم يعد موجودا']);
-        }
 
-        $quiz=Quiz::where('teacher_id',$teacher->id)->orderBy('start_time','desc')->first();
+        $teacherId   = Teacher::where('class',$class)
+                                ->where('subject',$subject)
+                                ->value('id');
 
-        $questions=Question::where('quiz_id',$quiz->id)->get();
+        $quiz        = Quiz::with('questions')
+                            ->where('teacher_id',$teacherId)
+                            ->orderBy('start_time','desc')
+                            ->first();
 
-        foreach($questions as $Q){
-
-            $options=request()->answer;
-            $check_selection[$Q->id]= (isset($options[$Q->id]) && $Q->correct_option==$options[$Q->id]) ? true : false;
-
-            $store_student_option=StudentOption::create([
+        foreach($quiz->questions as $Q){
+            $options                 = request()->answer;
+            $check_selection[$Q->id] = (isset($options[$Q->id]) && $Q -> correct_option == $options[$Q->id]) ? true : false;
+            $store_student_option    = StudentOption::create([
                     'student_id'     =>  $student->id,
                     'quiz_id'        =>  $quiz->id,
                     'question_id'    =>  $Q->id,
@@ -223,17 +197,19 @@ class StudentController extends Controller
             ]);
 
             if($check_selection[$Q->id]){
-                $studentMark+=$Q->question_mark;
+                $studentMark += $Q->question_mark;
             }
         }
 
-        $student_result=QuizResult::where('student_id',$student->id)
-                            ->where('quiz_id',$quiz->id)
-                            ->first();
+        $student_result = QuizResult::where('student_id',$student->id)
+                                    ->where('quiz_id',$quiz->id)
+                                    ->first();
+
         if($student_result){
-            $student_result->student_mark=$studentMark;
-            $student_result->test=true;
-            $student_result->save();
+            $student_result->update([
+                'student_mark' => $studentMark,
+                'test'         => true,
+            ]);
         }
 
         return view('student.show_result',compact('student','quiz','studentMark','class','subject'));

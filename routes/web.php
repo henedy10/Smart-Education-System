@@ -9,10 +9,10 @@ use App\Http\Controllers\{
 use Illuminate\Support\Facades\Route;
 
 Route::controller(AccountUserController::class)->group(function (){
-    Route::middleware('checkLogin')->group(function(){
+    // Route::middleware('checkLogin')->group(function(){
         Route::get('/','index')->name('index');
         Route::get('/passwords/edit','EditPassword')->name('Password.Edit');
-    });
+    // });
     Route::post('/passwords','UpdatePassword')->name('Password.Update');
     Route::post('/login','login')->middleware('throttle:login')->name('login');
     Route::get('/logout','LogOut')->name('LogOut');

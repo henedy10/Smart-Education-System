@@ -10,12 +10,12 @@
     <div class="max-w-4xl mx-auto p-6 mt-10 bg-white rounded-xl shadow-md">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold text-blue-600">الأسئلة - اختبار: <span class="text-gray-800">الرياضيات</span></h1>
-            <span class="text-sm text-gray-600">الوقت المتبقي: <span id="timer" class="font-bold text-red-600">{{$duration}}:00</span></span>
+            <span class="text-sm text-gray-600">الوقت المتبقي: <span id="timer" class="font-bold text-red-600">{{$quiz->duration}}:00</span></span>
         </div>
 
         <form action="{{route('student.answers.store',[$class,$subject])}}" method="POST" id="quizForm">
             @csrf
-            @foreach ($questions as $Q)
+            @foreach ($quiz->questions as $Q)
                 <div class="mb-6">
                     <p class="font-semibold text-lg mb-2">{{$Q->title}}</p>
                     <div class="space-y-2">
@@ -36,8 +36,8 @@
 
     <!-- عداد تنازلي بسيط -->
     <script>
-        const startTime = new Date("{{ $start_time }}"); // من Laravel
-        const duration = {{ $duration }}; // بالدقايق
+        const startTime = new Date("{{ $quiz->start_time }}"); // من Laravel
+        const duration = {{ $quiz->duration }}; // بالدقايق
         const endTime = new Date(startTime.getTime() + duration * 60000);
 
         function updateTimer() {
