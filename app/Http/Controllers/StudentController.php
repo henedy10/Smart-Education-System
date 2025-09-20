@@ -21,18 +21,15 @@ use Illuminate\Http\Request;
 class StudentController extends Controller
 {
 
-    public function showStudent(){
+    public function showStudent() {
         $userId=session('id');
-        if(!$userId){
-            return redirect()->route('Login')->withErrors(['login' => 'يجب تسجيل الدخول أولا']);
-        }
 
-        $student=Student::with('user')->where('user_id',$userId)->first();
+        $student=Student::whereHas('user',function($q) use($userId){
+            $q->select('name')->where('id',$userId);
+        })->first();
 
-        if(!$student){
-            return redirect()->back()->withErrors(['student' => 'هذا الحساب غير موجود']);
-        }
         $teachers=Teacher::where('class',$student->class)->get();
+
         return view('student.show_student',compact('student','teachers'));
     }
 
@@ -58,13 +55,13 @@ class StudentController extends Controller
 
     public function showHomeworkUploadForm($class,$subject){
         $userId=session('id');
-        $student=Student::with('user')->where('user_id',$userId)->first();
+        $student=Student::select('id')->where('user_id',$userId)->first();
 
-        $homework_id=request()->upload_homework;
         request()->validate([
             'upload_homework' => 'required|exists:homeworks,id'
         ]);
 
+        $homework_id=request()->upload_homework;
         $alreadyUploaded=SolutionStudentForHomework::where('student_id',$student->id)
         ->where('homework_id',$homework_id)
         ->exists();
@@ -82,7 +79,7 @@ class StudentController extends Controller
             'homework_id' => 'required|exists:homeworks,id'
         ]);
 
-        $fileName=time().'_'.$student->id.'.'.request()->file('file')->getClientOriginalExtension();
+        $fileName=$student->user->name.'.'.request()->file('file')->getClientOriginalExtension();
         $filePath=request()->file('file')->storeAs('solutions_homework',$fileName,'public');
 
         SolutionStudentForHomework::create([
@@ -96,33 +93,22 @@ class StudentController extends Controller
 
     public function showHomeworkDetails($class,$subject){
         $userId=session('id');
-        if(!$userId){
-            return redirect()->route('Login')->withErrors(['login' => 'يجب تسجيل الدخول أولا']);
-        }
-
-        $student=Student::with('user')->where('user_id',$userId)->first();
-        if(!$student){
-            return redirect()->route('Login')->withErrors(['student' => 'الطالب غير موجود']);
-        }
+        $student=Student::select('id')->where('user_id',$userId)->first();
 
         request()->validate([
             'homework_id' => 'required|exists:homeworks,id'
         ]);
-        $homework_id=request()->homework_id;
+        $homework_id = request()->homework_id;
 
-        $studentHomeworkGrade=HomeworkGrade::where('homework_id',$homework_id)
-                                                ->where('student_id',$student->id)
-                                                ->first();
-
-        $studentHomeworkSolution=SolutionStudentForHomework::where('homework_id',$homework_id)
-                                                ->where('student_id',$student->id)
-                                                ->first();
+        $homeworkDetails=SolutionStudentForHomework::with('homeworkGrade')
+                                                    ->where('student_id',$student->id)
+                                                    ->where('homework_id',$homework_id)
+                                                    ->first();
 
         return view('student.show_homework_grade',compact(
-            'class'
-            ,'subject'
-            ,'studentHomeworkGrade'
-            ,'studentHomeworkSolution'
+            'class',
+            'subject',
+            'homeworkDetails',
         ));
     }
 
@@ -147,36 +133,31 @@ class StudentController extends Controller
 
     public function showQuizResults($class,$subject){
         $userId=session('id');
-        if(!$userId){
-            return redirect()->route('Login')->withErrors(['login' => 'يجب تسجيل الدخول أولا']);
-        }
 
-        $student=Student::where('user_id',$userId)->first();
-        if(!$student){
-            return redirect()->route('Login')->withErrors(['student' => 'الطالب غير موجود']);
-        }
 
-        $teacher=Teacher::where('class',$class)
-                            ->where('subject',$subject)
-                            ->first();
-        if(!$teacher){
-            return redirect()->route('content.show')->withErrors(['teacher' => 'هذا المدرس لم يعد موجودا']);
-        }
+        $student=Student::select('id')
+        ->where('user_id',$userId)
+        ->first();
+
+
+        $teacher=Teacher::select('id')
+        ->where('class',$class)
+        ->where('subject',$subject)
+        ->first();
+
         $results=QuizResult::where('student_id',$student->id)
-                                ->where('teacher_id',$teacher->id)
-                                ->orderBy('created_at','desc')
-                                ->get();
+        ->where('teacher_id',$teacher->id)
+        ->orderBy('created_at','desc')
+        ->get();
         return view('student.show_quiz_results',compact('class','subject','results'));
     }
 
     public function showQuizContent($class,$subject){
 
         $teacher=Teacher::where('class',$class)
-                            -> where('subject',$subject)
-                            ->first();
-        if(!$teacher){
-            return redirect()->route('content.show')->withErrors(['teacher' => 'هذا المدرس لم يعد موجودا']);
-        }
+        ->where('subject',$subject)
+        ->first();
+
 
         $quiz=Quiz::where('teacher_id',$teacher->id)
                             ->orderBy('start_time','desc')

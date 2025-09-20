@@ -15,6 +15,10 @@ class SolutionStudentForHomework extends Model
         return $this->belongsTo(Student::class);
     }
 
+    public function homeworkGrade(){
+        return $this->hasOne(HomeworkGrade::class,'solution_id');
+    }
+
     public function homework(){
         return $this->belongsTo(Homework::class);
     }

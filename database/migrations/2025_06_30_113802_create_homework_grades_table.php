@@ -21,6 +21,13 @@ return new class extends Migration
                 ->on('students')
                 ->onDelete('cascade');
 
+            // foreign key
+            $table->unsignedBigInteger('solution_id');
+            $table->foreign('solution_id')
+                ->references('id')
+                ->on('student_homework_solutions')
+                ->onDelete('cascade');
+
             $table->integer('student_mark');
             $table->timestamps();
         });

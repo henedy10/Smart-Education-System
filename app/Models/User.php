@@ -8,11 +8,11 @@ class User extends Model
 {
     protected $guarded=[];
 
-    public function teachers(){
-        return $this->hasMany(Teacher::class);
+    public function teacher(){
+        return $this->hasOne(Teacher::class);
     }
 
-    public function students(){
-        return $this->hasMany(Student::class);
+    public function student(){
+        return $this->hasOne(Student::class);
     }
 }

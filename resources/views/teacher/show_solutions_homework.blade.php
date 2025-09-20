@@ -51,6 +51,7 @@
                                             <form action="{{route('teacher.homeworkGrades.store',$solution->student_id)}}" method="POST">
                                                 @csrf
                                                 <div class="flex">
+                                                    <input type="hidden" name="solution_id" value="{{$solution->id}}">
                                                     <input type="number" name="student_mark" placeholder="درجه الطالب " class="border border-amber-600 w-full p-2 ml-1.5" min="0" max="{{$solution->homework->homework_mark}}">
                                                     <button type="submit" name="homework_id" value="{{$solution->homework_id}}" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 p-2">تصحيح</button>
                                                 </div>

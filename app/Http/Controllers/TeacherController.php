@@ -186,13 +186,15 @@ class TeacherController extends Controller
             'student_mark' => 'required|integer|min:0',
         ]);
 
-        $student_mark=request()->student_mark;
-        $homework_id=request()->homework_id;
+        $student_mark = request()->student_mark;
+        $homework_id  = request()->homework_id;
+        $solution_id  = request()->solution_id;
 
         HomeworkGrade::create([
-            'student_mark' => $student_mark,
-            'homework_id'  => $homework_id,
-            'student_id'   => $StudentId,
+            'student_id'    => $StudentId,
+            'solution_id'   => $solution_id,
+            'student_mark'  => $student_mark,
+            'homework_id'   => $homework_id,
         ]);
 
         $correction_status=SolutionStudentForHomework::where('student_id',$StudentId)
