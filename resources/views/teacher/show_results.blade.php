@@ -46,6 +46,7 @@
                         @foreach ($quizzes as $quiz )
                             @php
                                     $start = \Carbon\Carbon::parse($quiz->start_time);
+                                    $time  = now('africa/cairo');
                             @endphp
                             <tr data-quiz="{{$quiz->title}}" class="hover:bg-gray-50 transition">
                                 <td class="p-3 border">{{$quiz->title}}</td>

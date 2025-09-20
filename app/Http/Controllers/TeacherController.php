@@ -16,21 +16,12 @@ use App\Models\{
 
 class TeacherController extends Controller
 {
-
-
     public function showTeacher(){
         $userId=session('id');
-        if(!$userId){
-            return redirect()->route('Login')->withErrors(['login'=>'يجب تسجيل الدخول أولا']);
-        }
 
         $teacher=Teacher::where('user_id',$userId)
-        ->withCount('lessons','homeworks','quizzes')
-        ->first();
-
-        if(!$teacher){
-            return redirect()->route('Login')->withErrors(['teacher'=>'المدرس غير موجود']);
-        }
+                        ->withCount('lessons','homeworks','quizzes')
+                        ->first();
 
             return view('teacher.show_teacher',compact('teacher'));
     }
@@ -43,9 +34,9 @@ class TeacherController extends Controller
                 'file_lesson'   => 'required|mimes:pdf,doc,docx,zip,rar,jpg,png|max:10240',
             ]);
 
-            $fileName=time() . '.' . request()->title_lesson . '.' . request()->file('file_lesson')->getClientOriginalExtension();
-            $filePath=request()->file('file_lesson')->storeAs('lessons',$fileName,'public');
-            $title_lesson=request()->title_lesson;
+            $fileName     = request()->title_lesson . '.' . request()->file('file_lesson')->getClientOriginalExtension();
+            $filePath     = request()->file('file_lesson')->storeAs('lessons',$fileName,'public');
+            $title_lesson = request()->title_lesson;
 
             Lesson::create([
                 'teacher_id'   => $TeacherId,
@@ -66,8 +57,8 @@ class TeacherController extends Controller
                 'homework_mark'      => 'required|integer',
             ]);
 
-            $fileName=request()->title_homework . '.' . request()->file('file_homework')->getClientOriginalExtension();
-            $filePath=request()->file('file_homework')->storeAs('homeworks',$fileName,'public');
+            $fileName = request()->title_homework . '.' . request()->file('file_homework')->getClientOriginalExtension();
+            $filePath = request()->file('file_homework')->storeAs('homeworks',$fileName,'public');
 
             Homework::create([
                 'teacher_id'        => $TeacherId,
@@ -106,9 +97,8 @@ class TeacherController extends Controller
             $correct_option   =  request()->correct_option;
             $option_title     =  request()->option_title;
             $question_mark    =  request()->question_mark;
-            $option_index=0;
-
-            $quiz_mark=0;
+            $option_index     = 0;
+            $quiz_mark        = 0;
 
             $Quiz=Quiz::create([
                     'teacher_id'  => $TeacherId,
@@ -119,7 +109,7 @@ class TeacherController extends Controller
                     'quiz_mark'   => $quiz_mark,
                 ]);
 
-            for($i=0 ; $i<sizeof($question_title) ; $i++){
+            for($i=0; $i<sizeof($question_title); $i++){
                     $index_key=0;
                 $question=Question::create([
                     'quiz_id'        => $Quiz->id,
@@ -128,9 +118,9 @@ class TeacherController extends Controller
                     'correct_option' => $correct_option[$i]
                 ]);
 
-                $quiz_mark+=$question->question_mark;
+                $quiz_mark += $question->question_mark;
 
-                    for($j=$option_index ; $j <= $option_index+3 ; $j++){
+                    for($j = $option_index; $j <= $option_index+3; $j++){
                         Option::create([
                             'question_id'  => $question->id,
                             'option_title' => $option_title[$j],
@@ -138,12 +128,12 @@ class TeacherController extends Controller
                         ]);
                         $index_key++;
                     }
-                    $option_index+=4;
+                    $option_index += 4;
             }
-                $Quiz->update(["quiz_mark"=>$quiz_mark]);
+                $Quiz->update(["quiz_mark" => $quiz_mark]);
 
-                $teacher=Teacher::findOrFail($TeacherId);
-                $students=Student::where('class',$teacher->class)->get();
+                $teacher  = Teacher::findOrFail($TeacherId);
+                $students = Student::where('class',$teacher->class)->get();
                 foreach($students as $student){
                     QuizResult::create([
                         'student_id'  => $student->id,
@@ -157,7 +147,7 @@ class TeacherController extends Controller
     }
 
     public function showTeacherLessons($TeacherId){
-        $lessons=Lesson::where('teacher_id',$TeacherId)->get();
+        $lessons = Lesson::where('teacher_id',$TeacherId)->get();
         return view('teacher.show_lesson',compact('TeacherId','lessons'));
     }
 
@@ -166,18 +156,17 @@ class TeacherController extends Controller
     }
 
     public function createHomework($TeacherId){
-        $homeworks=Homework::where('teacher_id',$TeacherId)->get();
+        $homeworks = Homework::where('teacher_id',$TeacherId)->get();
         return view('teacher.create_homework',compact('TeacherId','homeworks'));
     }
 
     public function correctHomework($TeacherId){
-        $time=now('africa/cairo');
-        $homeworks=Homework::where('teacher_id',$TeacherId)->get();
-        return view('teacher.correcting_homework',compact('TeacherId','homeworks','time'));
+        $homeworks = Homework::where('teacher_id',$TeacherId)->get();
+        return view('teacher.correcting_homework',compact('TeacherId','homeworks'));
     }
 
     public function solutionHomeworkOfStudent($TeacherId){
-        $solutions=SolutionStudentForHomework::where('homework_id',request()->homework_id)->get();
+        $solutions = SolutionStudentForHomework::where('homework_id',request()->homework_id)->get();
         return view('teacher.show_solutions_homework',compact('TeacherId','solutions'));
     }
 
@@ -190,19 +179,21 @@ class TeacherController extends Controller
         $homework_id  = request()->homework_id;
         $solution_id  = request()->solution_id;
 
-        HomeworkGrade::create([
+        $homeworkGrade = HomeworkGrade::create([
             'student_id'    => $StudentId,
             'solution_id'   => $solution_id,
             'student_mark'  => $student_mark,
             'homework_id'   => $homework_id,
         ]);
 
+        $studentGrade=$homeworkGrade->student_mark;
+
         $correction_status=SolutionStudentForHomework::where('student_id',$StudentId)
-        ->where('homework_id',$homework_id)
-        ->first();
+                                                    ->where('homework_id',$homework_id)
+                                                    ->first();
         $correction_status->update(['correction_status' => true]);
 
-        return redirect()->back()->with('success','تم تصحيح هذا الواجب بنجاح');
+        return view('teacher.show_solutions_homework',compact('studentGrade'))->with('success','تم تصحيح هذا الواجب بنجاح');
     }
 
     public function updateHomeworkGrade($StudentId){
@@ -210,16 +201,16 @@ class TeacherController extends Controller
             'student_mark' => 'required|integer',
         ]);
 
-        $homework_id=request()->homework_id;
-        $student_mark=request()->student_mark;
+        $homework_id  = request()->homework_id;
+        $student_mark = request()->student_mark;
 
         $modify_homework_grade=HomeworkGrade::where('student_id',$StudentId)
-        ->where('homework_id',$homework_id)
-        ->first();
+                                            ->where('homework_id',$homework_id)
+                                            ->first();
 
         $modify_homework_grade->update(['student_mark' => $student_mark]);
-
-        return redirect()->back()->with('success','تم تعديل درجه هذا الواجب بنجاح');
+$studentGrade=$modify_homework_grade->student_mark;
+        return view('teacher.show_solutions_homework',compact('studentGrade'))->with('success','تم تعديل درجه هذا الواجب بنجاح');
     }
 
     public function createQuiz($TeacherId){
@@ -227,13 +218,12 @@ class TeacherController extends Controller
     }
 
     public function showQuizzes($TeacherId){
-        $time=now('africa/cairo');
-        $quizzes=Quiz::where('teacher_id',$TeacherId)->get();
-        return view('teacher.show_results',compact('TeacherId','quizzes','time'));
+        $quizzes = Quiz::where('teacher_id',$TeacherId)->get();
+        return view('teacher.show_results',compact('TeacherId','quizzes'));
     }
 
     public function showResults($TeacherId){
-        $results=QuizResult::where('quiz_id',request()->quiz_id)->get();
+        $results = QuizResult::where('quiz_id',request()->quiz_id)->get();
         return view('teacher.show_content_results',compact('TeacherId','results'));
     }
 }

@@ -27,6 +27,9 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                                $time = now('africa/cairo');
+                            @endphp
                             @foreach ($homeworks as $homework )
                                 <tr class="hover:bg-gray-50 transition">
                                     <td class="px-4 py-2 border">{{$homework->title_homework}}</td>
