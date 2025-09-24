@@ -38,7 +38,9 @@ Route::controller(StudentController::class)->group(function (){
 Route::controller(TeacherController::class)->group(function (){
     Route::middleware('CheckTeacher')->group(function(){
         Route::get('/teacher','showTeacher')->name('teacher.show');
-        Route::post('/teacher/{teacher}','storeTeacherResource')->name('teacherResources.store');
+        Route::post('/lessons/{teacher}','storeLesson')->name('lessons.store');
+        Route::post('/homeworks/{teacher}','storeHomework')->name('homeworks.store');
+        Route::post('/quizzes/{teacher}','storeQuiz')->name('quizzes.store');
         Route::get('/lessons/{teacher}','showTeacherLessons')->name('teacher.lesson.show');
         Route::get('/action/{teacher}','showActionHomework')->name('teacher.homeworkAction.show');
         Route::get('/homework/create/{teacher}','createHomework')->name('teacher.homework.create');

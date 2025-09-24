@@ -11,9 +11,9 @@
                 <a href="{{route('teacher.homeworkCorrection.show',$TeacherId)}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
             </div>
             @if(session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-                {{ session('success') }}
-            </div>
+                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+                    {{ session('success') }}
+                </div>
             @endif
             <div class="overflow-x-auto">
                 @if ($solutions->isEmpty())
@@ -45,6 +45,7 @@
                                                     <input type="number" name="student_mark"  class="border border-amber-600 w-full p-2 ml-1.5" min="0" max="{{$solution->homework->homework_mark}}">
                                                     <button type="submit" name="homework_id" value="{{$solution->homework_id}}" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 p-2">تعديل</button>
                                                 </div>
+                                                <span class="text-danger"> @error('student_mark') {{"* ".$message}} @enderror </span>
                                             </form>
                                         @else
                                             <form action="{{route('teacher.homeworkGrades.store',$solution->student_id)}}" method="POST">
@@ -54,6 +55,7 @@
                                                     <input type="number" name="student_mark"  placeholder="درجه الطالب " class="border border-amber-600 w-full p-2 ml-1.5" min="0" max="{{$solution->homework->homework_mark}}">
                                                     <button type="submit" name="homework_id" value="{{$solution->homework_id}}" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 p-2">تصحيح</button>
                                                 </div>
+                                                <span class="text-danger"> @error('student_mark') {{"* ".$message}} @enderror </span>
                                             </form>
                                         @endif
                                         </td>
@@ -63,15 +65,6 @@
                         </table>
                 @endif
             </div>
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
         </div>
     </div>
 </body>

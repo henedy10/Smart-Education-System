@@ -38,6 +38,11 @@ class AccountUserController extends Controller
             request()->validate([
                 'email'    => 'required|email',
                 'password' => 'required',
+            ],
+            [
+                'email.required'    => ' يجب إدخال الإيميل الخاص بك',
+                'email.email'       => 'صيغة الإيميل غير صحيحه',
+                'password.required' => 'يجب إدخال كلمة المرور الخاصة بك',
             ]);
 
             $user= User::where('email',request()->email)
@@ -88,6 +93,13 @@ class AccountUserController extends Controller
             'email'             => 'required | email',
             'NewPassword'       => 'required | min:8',
             'ConfirmPassword'   => 'required | same:NewPassword',
+        ],[
+            'email.required'            => 'يجب إدخال الإيميل الخاص بك',
+            'email.email'               => 'صيغة الإيميل غير صحيحه',
+            'NewPassword.required'      => 'يجب إدخال كلمة المرور الجديدة',
+            'NewPassword.min'           => 'يجب ألا يقل كلمة المرور عن 8 أحرف',
+            'ConfirmPassword.required'  => 'يجب إدخال كلمة المرور الجديدة للتأكيد',
+            'ConfirmPassword.same'      => 'لا يوجد تطابق لكلمة المرور الجديدة',
         ]);
 
         $user= User::where('email',request()->email)->first();

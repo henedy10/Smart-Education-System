@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Http\Requests\student\{storeHomeworkSolutions};
 use App\Models\{
     Homework,
     Teacher,
     Lesson,
     Option,
-    Question,
     Quiz,
     QuizResult,
     SolutionStudentForHomework,
@@ -48,13 +49,8 @@ class StudentController extends Controller
     }
 
     public function showHomeworkUploadForm($class,$subject){
-        $userId     = session('id');
-        $studentId  = Student::where('user_id',$userId)->value('id');
-
-        request()->validate([
-            'upload_homework' => 'required|exists:homeworks,id'
-        ]);
-
+        $userId          = session('id');
+        $studentId       = Student::where('user_id',$userId)->value('id');
         $homework_id     = request()->upload_homework;
         $alreadyUploaded = SolutionStudentForHomework::where('student_id',$studentId)
                                                     ->where('homework_id',$homework_id)
@@ -63,18 +59,12 @@ class StudentController extends Controller
         return view('student.show_homework_uploading',compact('homework_id','class','subject','alreadyUploaded'));
     }
 
-    public function storeHomeworkSolution(){
+    public function storeHomeworkSolution(storeHomeworkSolutions $request){
         $userId      = session('id');
         $student     = Student::with('user')->where('user_id',$userId)->first();
-        $homework_id = request()->homework_id;
-
-        request()->validate([
-            'file'        => 'required|file|mimes:pdf,doc,docx,jpg,png',
-            'homework_id' => 'required|exists:homeworks,id'
-        ]);
-
-        $fileName  = $student->user->name.'.'.request()->file('file')->getClientOriginalExtension();
-        $filePath  = request()->file('file')->storeAs('solutions_homework',$fileName,'public');
+        $homework_id = $request->homework_id;
+        $fileName    = $student->user->name.'.'.$request->file('file')->getClientOriginalExtension();
+        $filePath    = $request->file('file')->storeAs('solutions_homework',$fileName,'public');
 
         SolutionStudentForHomework::create([
             'homework_solution_file'  => $filePath,
@@ -86,14 +76,9 @@ class StudentController extends Controller
     }
 
     public function showHomeworkDetails($class,$subject){
-        $userId    = session('id');
-        $studentId = Student::where('user_id',$userId)->value('id');
-
-        request()->validate([
-            'homework_id' => 'required|exists:homeworks,id'
-        ]);
-        $homework_id = request()->homework_id;
-
+        $userId          = session('id');
+        $studentId       = Student::where('user_id',$userId)->value('id');
+        $homework_id     = request()->homework_id;
         $homeworkDetails = SolutionStudentForHomework::with('homeworkGrade')
                                                     ->where('student_id',$studentId)
                                                     ->where('homework_id',$homework_id)
@@ -115,9 +100,9 @@ class StudentController extends Controller
         ->first();
 
         return view('student.show_quiz',[
-        'quiz'      =>  $quiz,
-        'class'     =>  $class,
-        'subject'   =>  $subject
+            'quiz'      =>  $quiz,
+            'class'     =>  $class,
+            'subject'   =>  $subject
     ]);
     }
 
@@ -143,19 +128,19 @@ class StudentController extends Controller
     public function showQuizContent($class,$subject){
 
         $teacherId = Teacher::where('class',$class)
-                        ->where('subject',$subject)
-                        ->value('id');
+                            ->where('subject',$subject)
+                            ->value('id');
 
         $quiz = Quiz::with('questions')
                     ->where('teacher_id',$teacherId)
                     ->orderBy('start_time','desc')
                     ->first();
 
-        if(!$quiz){
+        if($quiz->count() == 0){
             return redirect()->back()->withErrors(['quiz' => 'لا يوجد اختبار متاح حاليا']);
         }
 
-        $options    = [];
+        $options = [];
         foreach($quiz->questions as $Q){
             $options[$Q->id] = Option::where('question_id',$Q->id)->get();
         }
@@ -170,17 +155,17 @@ class StudentController extends Controller
     public function storeQuizAnswers($class,$subject){
         $studentMark     = 0;
         $check_selection = [];
-        $userId          = session('id');
+        $userId  = session('id');
 
-        $student   = Student::with('user')
-                            ->where('user_id',$userId)
-                            ->first();
+        $student = Student::with('user')
+                                ->where('user_id',$userId)
+                                ->first();
 
-        $teacherId   = Teacher::where('class',$class)
+        $teacherId = Teacher::where('class',$class)
                                 ->where('subject',$subject)
                                 ->value('id');
 
-        $quiz        = Quiz::with('questions')
+        $quiz = Quiz::with('questions')
                             ->where('teacher_id',$teacherId)
                             ->orderBy('start_time','desc')
                             ->first();
@@ -189,11 +174,11 @@ class StudentController extends Controller
             $options                 = request()->answer;
             $check_selection[$Q->id] = (isset($options[$Q->id]) && $Q -> correct_option == $options[$Q->id]) ? true : false;
             $store_student_option    = StudentOption::create([
-                    'student_id'     =>  $student->id,
-                    'quiz_id'        =>  $quiz->id,
-                    'question_id'    =>  $Q->id,
-                    'select_option'  =>  $options[$Q->id]??null,
-                    'status_option'  =>  $check_selection[$Q->id],
+                'student_id'     =>  $student->id,
+                'quiz_id'        =>  $quiz->id,
+                'question_id'    =>  $Q->id,
+                'select_option'  =>  $options[$Q->id] ?? null,
+                'status_option'  =>  $check_selection[$Q->id],
             ]);
 
             if($check_selection[$Q->id]){
