@@ -23,7 +23,15 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         RateLimiter::for('login', function (Request $request) {
-            return Limit::perHour(14)->by($request->ip())->response(function (Request $request, array $headers) {
+            return Limit::perHour(10)->by($request->ip())->response(function (Request $request, array $headers) {
+                $retryAfterSeconds = $headers['Retry-After'] ?? 3600;
+                $availableAt = now()->addSeconds($retryAfterSeconds)->format('Y-m-d H:i:s');
+                return response()->view('errors.too-many-requests',compact('availableAt'));
+            });
+        });
+
+        RateLimiter::for('updatePassword', function (Request $request) {
+            return Limit::perHour(10)->by($request->ip())->response(function (Request $request, array $headers) {
                 $retryAfterSeconds = $headers['Retry-After'] ?? 3600;
                 $availableAt = now()->addSeconds($retryAfterSeconds)->format('Y-m-d H:i:s');
                 return response()->view('errors.too-many-requests',compact('availableAt'));

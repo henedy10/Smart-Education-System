@@ -13,7 +13,7 @@ Route::controller(AccountUserController::class)->group(function (){
         Route::get('/','index')->name('index');
         Route::get('/passwords/edit','EditPassword')->name('Password.Edit');
     // });
-    Route::post('/passwords','UpdatePassword')->name('Password.Update');
+    Route::post('/passwords','UpdatePassword')->middleware('throttle:updatePassword')->name('Password.Update');
     Route::post('/login','login')->middleware('throttle:login')->name('login');
     Route::get('/logout','LogOut')->name('LogOut');
 });
