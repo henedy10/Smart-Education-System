@@ -18,39 +18,65 @@ Route::controller(AccountUserController::class)->group(function (){
     Route::get('/logout','LogOut')->name('LogOut');
 });
 
+/** Student Routes */
+
 Route::controller(StudentController::class)->group(function (){
     Route::middleware('CheckStudent')->group(function(){
-        Route::get('/student','showStudent')->name('student.show');
-        Route::get('/content/{class}/{subject}','showStudentContent')->name('content.show');
-        Route::get('/lessons/{class}/{subject}','showStudentLesson')->name('student.lesson.show');
-        Route::get('/homeworks/{class}/{subject}','showStudentHomework')->name('student.homework.show');
-        Route::get('/uploadHomeworks/{class}/{subject}','showHomeworkUploadForm')->name('student.homeworkUpload.show');
-        Route::post('/homeworkSolutions','storeHomeworkSolution')->name('student.homeworkSolution.store');
-        Route::get('/action/{class}/{subject}','showChooseAction')->name('student.quizAction.show');
-        Route::get('/quizzes/{class}/{subject}','showAvailableQuiz')->name('student.availableQuiz.show');
-        Route::get('/quizContent/{class}/{subject}','showQuizContent')->name('quizContent.show');
-        Route::post('/answers/{class}/{subject}','storeQuizAnswers')->name('student.answers.store');
-        Route::get('/results/{class}/{subject}','showQuizResults')->name('student.quizResult.show');
-        Route::get('/homeworkDetails/{class}/{subject}','showHomeworkDetails')->name('student.homeworkDetails.show');
+        Route::name('student.')->group(function(){
+            Route::get('/student','index')->name('index');
+            Route::get('/content/{class}/{subject}','showContent')->name('content.show');
+            Route::get('/lessons/{class}/{subject}','showLesson')->name('lesson.show');
+
+            Route::prefix('/homeworks/{class}/{subject}')->group(function (){
+                Route::get('','showHomework')->name('homework.show');
+                Route::get('/solutions/create','createHomeworkSolution')->name('homeworkSolution.create');
+                Route::post('/solutions/store','storeHomeworkSolution')->name('homeworkSolution.store');
+                Route::get('/details','showHomeworkDetails')->name('homeworkDetails.show');
+            });
+
+            Route::prefix('/quiz/{class}/{subject}')->group(function (){
+                Route::get('/action','showAction')->name('quizAction.show');
+                Route::get('','showAvailableQuiz')->name('availableQuiz.show');
+                Route::get('/content','showQuizContent')->name('quizContent.show');
+                Route::post('/answers','storeAnswers')->name('answers.store');
+                Route::get('/results','showResults')->name('results.show');
+            });
+        });
     });
 });
 
+/** Teacher Routes */
+
 Route::controller(TeacherController::class)->group(function (){
     Route::middleware('CheckTeacher')->group(function(){
-        Route::get('/teacher','showTeacher')->name('teacher.show');
-        Route::post('/lessons/{teacher}','storeLesson')->name('lessons.store');
-        Route::post('/homeworks/{teacher}','storeHomework')->name('homeworks.store');
-        Route::post('/quizzes/{teacher}','storeQuiz')->name('quizzes.store');
-        Route::get('/lessons/{teacher}','showTeacherLessons')->name('teacher.lesson.show');
-        Route::get('/action/{teacher}','showActionHomework')->name('teacher.homeworkAction.show');
-        Route::get('/homework/create/{teacher}','createHomework')->name('teacher.homework.create');
-        Route::get('/correctionHomeworks/{teacher}','correctHomework')->name('teacher.homeworkCorrection.show');
-        Route::get('/homeworkSolutions/{teacher}','solutionHomeworkOfStudent')->name('teacher.homeworkSolutions.show');
-        Route::post('/homeworkGrades/{student}','storeHomeworkGrades')-> name('teacher.homeworkGrades.store');
-        Route::post('/homeworkGrades/{student}/edit','updateHomeworkGrade')->name('teacher.homeworkGrades.update');
-        Route::get('/quiz/{teacher}/create','createQuiz')->name('teacher.quiz.create');
-        Route::get('/quizzes/{teacher}','showQuizzes')-> name('quizzes.show');
-        Route::get('/results/{teacher}','showResults')-> name('quizResults.show');
+        Route::name('teacher.')->group(function(){
+            Route::get('/teacher','index')->name('index');
+
+            Route::prefix('/lessons/{teacher}')->group(function(){
+                Route::post('','storeLessons')->name('lessons.store');
+                Route::get('','showLessons')->name('lessons.show');
+            });
+
+            Route::prefix('/homeworks/teacher/{teacher}')->group(function(){
+                Route::post('','storeHomeworks')->name('homeworks.store');
+                Route::get('/create','createHomeworks')->name('homeworks.create');
+                Route::get('/solutions','homeworks')->name('homeworks.show');
+                Route::get('/correction','correctHomeworks')->name('homeworkCorrection.show');
+                Route::get('/action','showAction')->name('homeworkAction.show');
+            });
+
+            Route::prefix('/homeworks/{student}/grades')->group(function(){
+                Route::post('','storeHomeworkGrades')-> name('homeworkGrades.store');
+                Route::put('','updateHomeworkGrade')->name('homeworkGrades.update');
+            });
+
+            Route::prefix('/quizzes/{teacher}')->group(function(){
+                Route::post('','storeQuiz')->name('quizzes.store');
+                Route::get('/create','createQuiz')->name('quizzes.create');
+                Route::get('','showQuizzes')-> name('quizzes.show');
+                Route::get('/results','showResults')-> name('quizResults.show');
+            });
+        });
     });
 });
 

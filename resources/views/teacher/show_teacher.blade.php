@@ -23,10 +23,10 @@
             </div>
 
             <nav class="space-y-2">
-                <a href="{{route('teacher.lesson.show',$teacher)}}" class="block py-2 px-4 rounded hover:bg-blue-100 text-gray-700"><i class="fas fa-chalkboard-teacher mr-2"></i> محاضراتي</a>
+                <a href="{{route('teacher.lessons.show',$teacher)}}" class="block py-2 px-4 rounded hover:bg-blue-100 text-gray-700"><i class="fas fa-chalkboard-teacher mr-2"></i> محاضراتي</a>
                 <a href="{{route('teacher.homeworkAction.show',$teacher)}}" class="block py-2 px-4 rounded hover:bg-green-100 text-gray-700"><i class="fas fa-tasks mr-2"></i> الواجبات</a>
-                <a href="{{route('teacher.quiz.create',$teacher)}}" class="block py-2 px-4 rounded hover:bg-yellow-100 text-gray-700"><i class="fas fa-file-alt mr-2"></i> الامتحانات</a>
-                <a href="{{route('quizzes.show',$teacher)}}" class="block py-2 px-4 rounded hover:bg-red-200 text-gray-700"><i class="fas fa-chart-line mr-2"></i> النتائج</a>
+                <a href="{{route('teacher.quizzes.create',$teacher)}}" class="block py-2 px-4 rounded hover:bg-yellow-100 text-gray-700"><i class="fas fa-file-alt mr-2"></i> الامتحانات</a>
+                <a href="{{route('teacher.quizzes.show',$teacher)}}" class="block py-2 px-4 rounded hover:bg-red-200 text-gray-700"><i class="fas fa-chart-line mr-2"></i> النتائج</a>
             </nav>
         </div>
 

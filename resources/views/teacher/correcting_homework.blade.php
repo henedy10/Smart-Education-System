@@ -42,7 +42,7 @@
                                                 اضغط هنا
                                             </button>
                                         @else
-                                            <form action="{{route('teacher.homeworkSolutions.show',$TeacherId)}}" method="get">
+                                            <form action="{{route('teacher.homeworks.show',$TeacherId)}}" method="get">
                                                 @csrf
                                                 <button type="submit" name="homework_id" value="{{$homework->id}}">اضغط هنا</button>
                                             </form>

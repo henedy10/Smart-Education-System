@@ -27,7 +27,7 @@
                     @endif
 
 
-            <form action="{{route('student.homeworkSolution.store')}}" method="POST" enctype="multipart/form-data" class="space-y-5">
+            <form action="{{route('student.homeworkSolution.store',[$class,$subject])}}" method="POST" enctype="multipart/form-data" class="space-y-5">
                 @csrf
 
                 <!-- زر الإرسال -->

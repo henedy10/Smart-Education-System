@@ -18,7 +18,7 @@ use App\Models\{
 class StudentController extends Controller
 {
 
-    public function showStudent() {
+    public function index() {
         $userId  = session('id');
         $student = Student::whereHas('user',function($q) use($userId){
             $q->select('name')->where('id',$userId);
@@ -28,11 +28,11 @@ class StudentController extends Controller
         return view('student.show_student',compact('student','teachers'));
     }
 
-    public function showStudentContent($class,$subject) {
+    public function showContent($class,$subject) {
         return view('student.show_content',compact('class','subject'));
     }
 
-    public function showStudentLesson($class,$subject){
+    public function showLesson($class,$subject){
         $lessons = Lesson::whereHas('teacher',function($q) use($class,$subject){
             $q->where('class',$class)->where('subject',$subject);
         })->get();
@@ -40,7 +40,7 @@ class StudentController extends Controller
         return view('student.show_lesson',compact('class','subject','lessons'));
     }
 
-    public function showStudentHomework($class,$subject){
+    public function showHomework($class,$subject){
         $homeworks = Homework::whereHas('teacher',function($q) use($class,$subject){
             $q->where('class',$class)->where('subject',$subject);
         })->get();
@@ -48,7 +48,7 @@ class StudentController extends Controller
         return view('student.show_homework',compact('subject','class','homeworks'));
     }
 
-    public function showHomeworkUploadForm($class,$subject){
+    public function createHomeworkSolution($class,$subject){
         $userId          = session('id');
         $studentId       = Student::where('user_id',$userId)->value('id');
         $homework_id     = request()->upload_homework;
@@ -106,11 +106,11 @@ class StudentController extends Controller
     ]);
     }
 
-    public function showChooseAction($class,$subject){
+    public function showAction($class,$subject){
         return view('student.show_action_content_quiz',compact('class','subject'));
     }
 
-    public function showQuizResults($class,$subject){
+    public function showResults($class,$subject){
         $userId    = session('id');
         $studentId = Student::where('user_id',$userId)->value('id');
         $teacherId = Teacher::where('class',$class)
@@ -152,7 +152,7 @@ class StudentController extends Controller
         ));
     }
 
-    public function storeQuizAnswers($class,$subject){
+    public function storeAnswers($class,$subject){
         $studentMark     = 0;
         $check_selection = [];
         $userId  = session('id');

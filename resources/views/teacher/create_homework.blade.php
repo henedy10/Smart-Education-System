@@ -23,7 +23,7 @@
         </div>
 
         <!-- نموذج رفع الواجب -->
-        <form action="{{route('homeworks.store', $TeacherId)}}" method="POST" enctype="multipart/form-data" class="bg-white rounded-lg shadow-md px-6 py-8 space-y-6">
+        <form action="{{route('teacher.homeworks.store', $TeacherId)}}" method="POST" enctype="multipart/form-data" class="bg-white rounded-lg shadow-md px-6 py-8 space-y-6">
             @csrf
 
             <!-- عنوان الواجب -->

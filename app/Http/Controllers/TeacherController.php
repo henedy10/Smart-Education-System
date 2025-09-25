@@ -19,7 +19,7 @@ use App\Models\{
 
 class TeacherController extends Controller
 {
-    public function showTeacher(){
+    public function index(){
         $userId=session('id');
 
         $teacher=Teacher::where('user_id',$userId)
@@ -29,7 +29,7 @@ class TeacherController extends Controller
         return view('teacher.show_teacher',compact('teacher'));
     }
 
-    public function storeLesson(storeLesson $request , $TeacherId){
+    public function storeLessons(storeLesson $request , $TeacherId){
 
         $fileName     = $request->title_lesson . '.' . request()->file('file_lesson')->getClientOriginalExtension();
         $filePath     = $request->file('file_lesson')->storeAs('lessons',$fileName,'public');
@@ -44,7 +44,7 @@ class TeacherController extends Controller
         return redirect()->back()->with('success', 'تم رفع الملف بنجاح');
     }
 
-    public function storeHomework(storeHomework $request,$TeacherId){
+    public function storeHomeworks(storeHomework $request,$TeacherId){
 
         $fileName = $request->title_homework . '.' . request()->file('file_homework')->getClientOriginalExtension();
         $filePath = $request->file('file_homework')->storeAs('homeworks',$fileName,'public');
@@ -119,26 +119,26 @@ class TeacherController extends Controller
         return redirect()->back()->with('success','تم عمل اختبار جديد بنجاح ');
     }
 
-    public function showTeacherLessons($TeacherId){
+    public function showLessons($TeacherId){
         $lessons = Lesson::where('teacher_id',$TeacherId)->get();
         return view('teacher.show_lesson',compact('TeacherId','lessons'));
     }
 
-    public function showActionHomework($TeacherId){
+    public function showAction($TeacherId){
         return view('teacher.choose_action_homework',compact('TeacherId'));
     }
 
-    public function createHomework($TeacherId){
+    public function createHomeworks($TeacherId){
         $homeworks = Homework::where('teacher_id',$TeacherId)->get();
         return view('teacher.create_homework',compact('TeacherId','homeworks'));
     }
 
-    public function correctHomework($TeacherId){
+    public function correctHomeworks($TeacherId){
         $homeworks = Homework::where('teacher_id',$TeacherId)->get();
         return view('teacher.correcting_homework',compact('TeacherId','homeworks'));
     }
 
-    public function solutionHomeworkOfStudent($TeacherId){
+    public function homeworks($TeacherId){
         $solutions = SolutionStudentForHomework::where('homework_id',request()->homework_id)->get();
         return view('teacher.show_solutions_homework',compact('TeacherId','solutions'));
     }

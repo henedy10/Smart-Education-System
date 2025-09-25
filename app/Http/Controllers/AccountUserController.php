@@ -25,8 +25,8 @@ class AccountUserController extends Controller
             ]);
 
             return $user->user_as === 'teacher'
-                ? redirect()->route('teacher.show')
-                : redirect()->route('student.show');
+                ? redirect()->route('teacher.index')
+                : redirect()->route('student.index');
 
         }else{
             return view('index');
@@ -63,8 +63,8 @@ class AccountUserController extends Controller
                 }
 
                 return $user->user_as == 'teacher'
-                        ? redirect()->route('teacher.show')
-                        : redirect()->route('student.show');
+                        ? redirect()->route('teacher.index')
+                        : redirect()->route('student.index');
             }
     }
         // تسجيل الخروج لكل من الطالب و المدرس
