@@ -17,9 +17,14 @@ use App\Models\{
 
 class StudentController extends Controller
 {
+    public function getUserId()
+    {
+        return session('id');
+    }
 
-    public function index() {
-        $userId  = session('id');
+    public function index()
+    {
+        $userId  = $this->getUserId();
         $student = Student::whereHas('user',function($q) use($userId){
             $q->select('name')->where('id',$userId);
         })->first();
@@ -28,11 +33,13 @@ class StudentController extends Controller
         return view('student.show_student',compact('student','teachers'));
     }
 
-    public function showContent($class,$subject) {
+    public function showContent($class,$subject)
+    {
         return view('student.show_content',compact('class','subject'));
     }
 
-    public function showLesson($class,$subject){
+    public function showLesson($class,$subject)
+    {
         $lessons = Lesson::whereHas('teacher',function($q) use($class,$subject){
             $q->where('class',$class)->where('subject',$subject);
         })->get();
@@ -40,7 +47,8 @@ class StudentController extends Controller
         return view('student.show_lesson',compact('class','subject','lessons'));
     }
 
-    public function showHomework($class,$subject){
+    public function showHomework($class,$subject)
+    {
         $homeworks = Homework::whereHas('teacher',function($q) use($class,$subject){
             $q->where('class',$class)->where('subject',$subject);
         })->get();
@@ -48,8 +56,9 @@ class StudentController extends Controller
         return view('student.show_homework',compact('subject','class','homeworks'));
     }
 
-    public function createHomeworkSolution($class,$subject){
-        $userId          = session('id');
+    public function createHomeworkSolution($class,$subject)
+    {
+        $userId          = $this->getUserId();
         $studentId       = Student::where('user_id',$userId)->value('id');
         $homework_id     = request()->upload_homework;
         $alreadyUploaded = SolutionStudentForHomework::where('student_id',$studentId)
@@ -59,8 +68,9 @@ class StudentController extends Controller
         return view('student.show_homework_uploading',compact('homework_id','class','subject','alreadyUploaded'));
     }
 
-    public function storeHomeworkSolution(storeHomeworkSolutions $request){
-        $userId      = session('id');
+    public function storeHomeworkSolution(storeHomeworkSolutions $request)
+    {
+        $userId      = $this->getUserId();
         $student     = Student::with('user')->where('user_id',$userId)->first();
         $homework_id = $request->homework_id;
         $fileName    = $student->user->name.'.'.$request->file('file')->getClientOriginalExtension();
@@ -75,8 +85,9 @@ class StudentController extends Controller
         return redirect()->back()->with('success','تم رفع الملف بنجاح');
     }
 
-    public function showHomeworkDetails($class,$subject){
-        $userId          = session('id');
+    public function showHomeworkDetails($class,$subject)
+    {
+        $userId          = $this->getUserId();
         $studentId       = Student::where('user_id',$userId)->value('id');
         $homework_id     = request()->homework_id;
         $homeworkDetails = SolutionStudentForHomework::with('homeworkGrade')
@@ -91,8 +102,8 @@ class StudentController extends Controller
         ));
     }
 
-    public function showAvailableQuiz($class,$subject){
-
+    public function showAvailableQuiz($class,$subject)
+    {
         $quiz=Quiz::whereHas('teacher',function($q) use($class,$subject){
             $q->where('class',$class)->where('subject',$subject);
         })
@@ -103,15 +114,17 @@ class StudentController extends Controller
             'quiz'      =>  $quiz,
             'class'     =>  $class,
             'subject'   =>  $subject
-    ]);
+        ]);
     }
 
-    public function showAction($class,$subject){
+    public function showAction($class,$subject)
+    {
         return view('student.show_action_content_quiz',compact('class','subject'));
     }
 
-    public function showResults($class,$subject){
-        $userId    = session('id');
+    public function showResults($class,$subject)
+    {
+        $userId    = $this->getUserId();
         $studentId = Student::where('user_id',$userId)->value('id');
         $teacherId = Teacher::where('class',$class)
                             ->where('subject',$subject)
@@ -125,8 +138,8 @@ class StudentController extends Controller
         return view('student.show_quiz_results',compact('class','subject','results'));
     }
 
-    public function showQuizContent($class,$subject){
-
+    public function showQuizContent($class,$subject)
+    {
         $teacherId = Teacher::where('class',$class)
                             ->where('subject',$subject)
                             ->value('id');
@@ -152,10 +165,11 @@ class StudentController extends Controller
         ));
     }
 
-    public function storeAnswers($class,$subject){
+    public function storeAnswers($class,$subject)
+    {
         $studentMark     = 0;
         $check_selection = [];
-        $userId  = session('id');
+        $userId  = $this->getUserId();
 
         $student = Student::with('user')
                                 ->where('user_id',$userId)

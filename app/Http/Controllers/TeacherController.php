@@ -19,10 +19,14 @@ use App\Models\{
 
 class TeacherController extends Controller
 {
-    public function index(){
-        $userId=session('id');
+    public function getUserId()
+    {
+        return session('id');
+    }
 
-        $teacher=Teacher::where('user_id',$userId)
+    public function index(){
+        $userId  = $this->getUserId();
+        $teacher = Teacher::where('user_id',$userId)
                         ->withCount('lessons','homeworks','quizzes')
                         ->first();
 
@@ -84,8 +88,8 @@ class TeacherController extends Controller
             ]);
 
         for($i=0; $i<sizeof($question_title); $i++){
-                $index_key=0;
-            $question=Question::create([
+            $index_key = 0;
+            $question  = Question::create([
                 'quiz_id'        => $Quiz->id,
                 'title'          => $question_title[$i],
                 'question_mark'  => $question_mark[$i],
@@ -169,7 +173,7 @@ class TeacherController extends Controller
         $homework_id  = $request->homework_id;
         $student_mark = $request->student_mark;
 
-        $modify_homework_grade=HomeworkGrade::where('student_id',$StudentId)
+        $modify_homework_grade = HomeworkGrade::where('student_id',$StudentId)
                                             ->where('homework_id',$homework_id)
                                             ->first();
         $modify_homework_grade->update(['student_mark' => $student_mark]);
