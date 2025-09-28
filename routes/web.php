@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\Route;
 Route::controller(AccountUserController::class)->group(function (){
     // Route::middleware('checkLogin')->group(function(){
         Route::get('/','index')->name('index');
-        Route::get('/passwords/edit','EditPassword')->name('Password.Edit');
+        Route::get('/passwords/edit','editPassword')->name('Password.Edit');
     // });
-    Route::post('/passwords','UpdatePassword')->middleware('throttle:updatePassword')->name('Password.Update');
+    Route::post('/passwords','updatePassword')->middleware('throttle:updatePassword')->name('Password.Update');
     Route::post('/login','login')->middleware('throttle:login')->name('login');
-    Route::get('/logout','LogOut')->name('LogOut');
+    Route::get('/logout','logout')->name('LogOut');
 });
 
 /** Student Routes */

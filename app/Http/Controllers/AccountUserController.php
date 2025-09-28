@@ -60,7 +60,7 @@ class AccountUserController extends Controller
     }
         // تسجيل الخروج لكل من الطالب و المدرس
 
-    public function LogOut()
+    public function logout()
     {
         session() -> forget(['email','id','user_as']);
         session() -> invalidate();
@@ -71,12 +71,12 @@ class AccountUserController extends Controller
     }
 
     // تغيير كلمه المرور للمستخدم
-    public function EditPassword()
+    public function editPassword()
     {
         return view('EditPassword');
     }
 
-    public function UpdatePassword(updatePassword $request)
+    public function updatePassword(updatePassword $request)
     {
         $user = User::where('email',$request->email)->first();
         $user->update(['password' => $request->NewPassword]);

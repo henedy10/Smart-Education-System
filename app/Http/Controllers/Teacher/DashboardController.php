@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Http\Controllers\Teacher;
+
+use App\Http\Controllers\Controller;
+use App\Services\Teacher\DashboardService;
+
+class DashboardController extends Controller
+{
+    public function index(DashboardService $dashboard)
+    {
+        $dashboard = $dashboard->index();
+        return view('teacher.show_teacher',compact('dashboard'));
+    }
+}

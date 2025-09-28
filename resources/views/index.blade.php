@@ -18,6 +18,10 @@
             </div>
         @endif
 
+        <div class="bg-red-100 text-red-700 rounded mb-4">
+            @error('login'){{'* '.$message}}@enderror
+        </div>
+
         <form action="{{route('login')}}" method="POST" class="space-y-4">
             @csrf
             <div>
