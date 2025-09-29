@@ -9,7 +9,7 @@ class DashboardController extends Controller
 {
     public function index(DashboardService $dashboard)
     {
-        $dashboard = $dashboard->index();
-        return view('teacher.show_teacher',compact('dashboard'));
+        $teacher = $dashboard->index();
+        return view('teacher.show_teacher',compact('teacher'));
     }
 }

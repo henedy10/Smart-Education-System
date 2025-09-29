@@ -18,13 +18,13 @@ class QuizController extends Controller
         return redirect()->back()->with('success','تم عمل اختبار جديد بنجاح ');
     }
 
-    public function showQuizzes($TeacherId , QuizService $quiz)
+    public function showQuiz($TeacherId , QuizService $quiz)
     {
         $quizzes = $quiz->getAll($TeacherId);
         return view('teacher.show_results',compact('TeacherId','quizzes'));
     }
 
-    public function showResults($TeacherId, QuizService $quiz)
+    public function showResult($TeacherId, QuizService $quiz)
     {
         $results = $quiz->getResults(request()->quiz_id);
         return view('teacher.show_content_results',compact('TeacherId','results'));

@@ -13,7 +13,7 @@ use App\Services\Teacher\HomeworkService;
 
 class HomeworkController extends Controller
 {
-    public function action($TeacherId)
+    public function showAction($TeacherId)
     {
         return view('teacher.choose_action_homework',compact('TeacherId'));
     }
