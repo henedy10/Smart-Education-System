@@ -3,74 +3,93 @@
 @section('title')  الحصص @endsection
 
 @section('content')
-<body class=" min-h-screen">
-    <div class="max-w-5xl bg-gray-200  mx-auto py-10 px-4">
-        <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
-            <h1 class="text-lg font-bold">إدارة المحاضرات</h1>
-            <a href="{{route('teacher.index')}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
+<body class="min-h-screen bg-gray-100">
+    <div class="max-w-5xl mx-auto py-10 px-4">
+
+        <!-- Header -->
+        <div class="bg-white shadow-md rounded-2xl p-6 mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <h1 class="text-xl font-bold text-gray-800">📚 إدارة المحاضرات</h1>
+            <a href="{{route('teacher.index')}}"
+               class="w-full md:w-auto text-center border border-red-600 text-red-600 font-medium px-6 py-2 rounded-xl hover:bg-red-600 hover:text-white transition-all duration-300">
+               الصفحة السابقة
+            </a>
         </div>
 
         <!-- رفع محاضرة جديدة -->
-        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-
+        <div class="bg-white rounded-2xl shadow-md p-6 mb-8">
             @if(session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
+                <div class="mb-4 text-green-700 bg-green-100 border border-green-300 rounded-lg p-3 text-sm">
+                    ✅ {{ session('success') }}
                 </div>
             @endif
 
-            <h2 class="text-xl font-semibold mb-4 text-gray-700">رفع محاضرة جديدة</h2>
-            <form action="{{route('teacher.lessons.store',$TeacherId)}}" method="POST" enctype="multipart/form-data" class="space-y-4">
-                    @csrf
-                    <div>
-                        <label class="block mb-1 text-sm font-medium">عنوان المحاضرة</label>
-                        <input type="text" name="title_lesson" class="w-full border rounded p-2 focus:outline-none focus:ring focus:ring-blue-200">
-                    </div>
+            <h2 class="text-xl font-semibold mb-6 text-gray-700">رفع محاضرة جديدة</h2>
+            <form action="{{route('teacher.lessons.store',$TeacherId)}}" method="POST" enctype="multipart/form-data" class="space-y-5">
+                @csrf
+
+                <!-- عنوان المحاضرة -->
+                <div>
+                    <label class="block mb-1 text-sm font-medium text-gray-600">عنوان المحاضرة</label>
+                    <input type="text" name="title_lesson"
+                           class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-300">
                     @error('title_lesson')
-                        <span class="text-danger">{{"* ".$message}}</span>
+                        <p class="text-red-500 text-sm mt-1">* {{ $message }}</p>
                     @enderror
+                </div>
 
-                    <div>
-                        <label class="block mb-1 text-sm font-medium">تحميل الملف</label>
-                        <input type="file" name="file_lesson" class="w-full border rounded p-2">
-                    </div>
-
-                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded">
-                        <i class="fas fa-upload ml-1"></i> رفع المحاضرة
-                    </button>
-
+                <!-- ملف المحاضرة -->
+                <div>
+                    <label class="block mb-1 text-sm font-medium text-gray-600">تحميل الملف</label>
+                    <input type="file" name="file_lesson"
+                           class="w-full border rounded-lg p-3 bg-gray-50">
                     @error('file_lesson')
-                        <span class="text-danger">{{"* ".$message}}</span>
+                        <p class="text-red-500 text-sm mt-1">* {{ $message }}</p>
                     @enderror
+                </div>
+
+                <!-- زرار -->
+                <button type="submit"
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-xl shadow transition-all duration-300">
+                    <i class="fas fa-upload ml-2"></i> رفع المحاضرة
+                </button>
             </form>
         </div>
 
         <!-- عرض المحاضرات السابقة -->
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h2 class="text-xl font-semibold mb-4 text-gray-700">المحاضرات التي تم رفعها</h2>
+        <div class="bg-white rounded-2xl shadow-md p-6">
+            <h2 class="text-xl font-semibold mb-6 text-gray-700">المحاضرات التي تم رفعها</h2>
+
             @if ($lessons->isEmpty())
-                    <h2 class="text-danger">* لا توجد محاضرات تم رفعها حاليا</h2>
+                <p class="text-red-600 font-medium">* لا توجد محاضرات تم رفعها حاليا</p>
             @else
-                <table class="w-full text-right border-collapse">
-                    <thead>
-                        <tr class="bg-gray-200 text-sm">
-                            <th class="p-2 border">العنوان</th>
-                            <th class="p-2 border">الملف</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($lessons as $lesson )
-                            <tr>
-                            <td class="border p-2">{{$lesson->title_lesson}}</td>
-                            <td class="border p-2 text-blue-600 text-center"><a href="{{asset('storage/'.$lesson->file_lesson)}}"  download class="bg-green-500 rounded text-white font-bold py-1 px-4 hover:bg-green-600 ">تحميل</a></td>
+                <div class="overflow-x-auto rounded-lg border border-gray-200">
+                    <table class="w-full text-right border-collapse">
+                        <thead>
+                            <tr class="bg-gray-100 text-sm text-gray-700">
+                                <th class="p-3 border">العنوان</th>
+                                <th class="p-3 border text-center">الملف</th>
                             </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            @foreach ($lessons as $lesson)
+                                <tr class="hover:bg-gray-50 transition">
+                                    <td class="border p-3">{{$lesson->title_lesson}}</td>
+                                    <td class="border p-3 text-center">
+                                        <a href="{{asset('storage/'.$lesson->file_lesson)}}" download
+                                           class="inline-block border border-green-600 text-green-600 font-medium px-5 py-1.5 rounded-lg hover:bg-green-600 hover:text-white transition-all duration-300">
+                                           تحميل
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
             @endif
         </div>
     </div>
 </body>
+
 
 @endsection
 

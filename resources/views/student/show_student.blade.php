@@ -14,7 +14,7 @@
         </div>
         <form action="{{route("LogOut")}}" method="GET">
             @csrf
-            <button type="submit" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">تسجيل الخروج</button>
+            <button type="submit" class="w-full md:w-auto text-center border border-red-600 text-red-600 font-medium px-5 py-2 rounded-xl hover:bg-red-600 hover:text-white transition-all duration-300">تسجيل الخروج</button>
         </form>
     </div>
 

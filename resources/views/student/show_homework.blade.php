@@ -11,7 +11,7 @@
                 <i data-lucide="file-text" class="w-6 h-6 text-red-600"></i>
                 <span class="text-lg font-semibold text-gray-800">📚 الواجبات الدراسية</span>
             </div>
-            <a href="{{route('student.content.show',[$class,$subject])}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
+            <a href="{{route('student.content.show',[$class,$subject])}}" class="w-full md:w-auto text-center border border-red-600 text-red-600 font-medium px-5 py-2 rounded-xl hover:bg-red-600 hover:text-white transition-all duration-300">الصفحة السابقة</a>
         </div>
         <!-- ✅ قائمة الواجبات -->
         <div class="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-6">

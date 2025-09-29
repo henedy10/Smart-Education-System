@@ -8,7 +8,7 @@
         <div class="bg-white p-6 rounded-xl shadow-md">
             <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
                 <h1 class="text-lg font-bold text-gray-800">حلول الطلاب للواجبات</h1>
-                <a href="{{route('teacher.homeworkCorrection.show',$TeacherId)}}" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700">الصفحة السابقة</a>
+                <a href="{{route('teacher.homeworkCorrection.show',$TeacherId)}}" class="w-full md:w-auto text-center border border-red-600 text-red-600 font-medium px-5 py-2 rounded-xl hover:bg-red-600 hover:text-white transition-all duration-300">الصفحة السابقة</a>
             </div>
             @if(session('success'))
                 <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">

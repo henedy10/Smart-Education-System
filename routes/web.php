@@ -1,16 +1,21 @@
 <?php
 
-use App\Http\Controllers\{
-        AccountUserController,
+use App\Http\Controllers\AccountUserController;
+use App\Http\Controllers\Student\
+{
+    HomeController,
+    HomeworkController,
+    LessonController,
+    QuizController,
 };
-use App\Http\Controllers\Student\HomeController;
-use App\Http\Controllers\Student\HomeworkController;
-use App\Http\Controllers\Student\LessonController;
-use App\Http\Controllers\Student\QuizController;
-use App\Http\Controllers\Teacher\HomeworkController as TeacherHomeworkController;
-use App\Http\Controllers\Teacher\LessonController as TeacherLessonController;
-use App\Http\Controllers\Teacher\QuizController as TeacherQuizController;
-use App\Http\Controllers\Teacher\DashboardController ;
+
+use App\Http\Controllers\Teacher\
+{
+    HomeworkController as TeacherHomeworkController,
+    LessonController as TeacherLessonController,
+    QuizController as TeacherQuizController,
+    DashboardController,
+};
 use Illuminate\Support\Facades\Route;
 
 

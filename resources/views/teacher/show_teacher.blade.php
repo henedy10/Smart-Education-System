@@ -23,7 +23,7 @@
             </div>
 
             <nav class="space-y-2">
-                <a href="{{route('teacher.lessons.show',$teacher)}}" class="block py-2 px-4 rounded hover:bg-blue-100 text-gray-700"><i class="fas fa-chalkboard-teacher mr-2"></i> محاضراتي</a>
+                <a href="{{route('teacher.lessons.show',$teacher)}}" class="block py-2 px-4 rounded hover:bg-blue-100 text-gray-700"><i class="fas fa-chalkboard-teacher mr-2"></i> المحاضرات</a>
                 <a href="{{route('teacher.homeworkAction.show',$teacher)}}" class="block py-2 px-4 rounded hover:bg-green-100 text-gray-700"><i class="fas fa-tasks mr-2"></i> الواجبات</a>
                 <a href="{{route('teacher.quizzes.create',$teacher)}}" class="block py-2 px-4 rounded hover:bg-yellow-100 text-gray-700"><i class="fas fa-file-alt mr-2"></i> الامتحانات</a>
                 <a href="{{route('teacher.quizzes.show',$teacher)}}" class="block py-2 px-4 rounded hover:bg-red-200 text-gray-700"><i class="fas fa-chart-line mr-2"></i> النتائج</a>
@@ -35,14 +35,27 @@
             <button class="md:hidden mb-4 text-blue-600" onclick="toggleSidebar()">
                 <i class="fas fa-bars"></i> القائمة
             </button>
-            <div class="flex justify-between bg-white shadow rounded-lg p-4 mb-6 ">
-                <div class="flex items-center gap-3">
-                    <i data-lucide="user" class="w-6 h-6 text-blue-600"></i>
-                    <span class="text-lg font-semibold text-gray-800">👋 مرحبًا، <span id="studentName">{{$teacher->user->name}}</span></span>
+            <div class="bg-white shadow-md rounded-2xl p-6 mb-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                <!-- Left: Avatar + Name -->
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 text-xl font-bold shadow">
+                        <i data-lucide="user" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-gray-600 text-sm">مرحبًا 👋</p>
+                        <h2 class="text-xl font-semibold text-gray-800">
+                            <span id="studentName">{{$teacher->user->name}}</span>
+                        </h2>
+                    </div>
                 </div>
-                <form action="{{route("LogOut")}}" method="GET">
+
+                <!-- Right: Logout -->
+                <form action="{{route("LogOut")}}" method="GET" class="w-full md:w-auto">
                     @csrf
-                    <button type="submit" class="text-white bg-red-600 rounded px-6 py-2 hover:bg-red-700"> تسجيل الخروج</button>
+                    <button type="submit"
+                        class="w-full md:w-auto px-6 py-2 border border-red-600 text-red-600 rounded-xl font-medium hover:bg-red-600 hover:text-white transition-all duration-300">
+                        تسجيل الخروج
+                    </button>
                 </form>
             </div>
 
