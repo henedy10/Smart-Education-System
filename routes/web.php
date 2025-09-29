@@ -22,10 +22,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(PreventBackHistory::class)->group(function(){
     Route::controller(AccountUserController::class)->group(function ()
     {
-        // Route::middleware('checkLogin')->group(function(){
+        Route::middleware('checkLogin')->group(function(){
             Route::get('/','index')->name('index');
             Route::get('/passwords/edit','editPassword')->name('Password.Edit');
-        // });
+        });
         Route::post('/passwords','updatePassword')->middleware('throttle:updatePassword')->name('Password.Update');
         Route::post('/login','login')->middleware('throttle:login')->name('login');
         Route::get('/logout','logout')->name('LogOut');
