@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Middleware\{CheckTeacher,CheckStudent, checkLogin};
+use App\Http\Middleware\{CheckTeacher,CheckStudent, checkLogin, PreventBackHistory};
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -13,9 +13,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'CheckTeacher' => CheckTeacher::class,
-            'CheckStudent' => CheckStudent::class,
-            'checkLogin' => checkLogin::class,
+            'CheckTeacher'       => CheckTeacher::class,
+            'CheckStudent'       => CheckStudent::class,
+            'checkLogin'         => checkLogin::class,
+            'PreventBackHistory' => PreventBackHistory::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
