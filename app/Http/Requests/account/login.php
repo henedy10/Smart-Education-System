@@ -26,15 +26,4 @@ class login extends FormRequest
             'password' => 'required|min:8',
         ];
     }
-
-    public function messages(): array
-    {
-        return [
-            'email.required'    => ' يجب إدخال الإيميل الخاص بك',
-            'email.email'       => 'صيغة الإيميل غير صحيحه',
-            'email.exists'      => 'هذا الإيميل غير موجود!',
-            'password.required' => 'يجب إدخال كلمة المرور الخاصة بك',
-            'password.min'      => 'يجب ألا تقل كلمة المرور عن 8 أحرف',
-        ];
-    }
 }

@@ -27,17 +27,4 @@ class updatePassword extends FormRequest
             'ConfirmPassword'   => 'required | same:NewPassword',
         ];
     }
-
-    public function messages(): array
-    {
-        return [
-            'email.required'            => 'يجب إدخال الإيميل الخاص بك',
-            'email.email'               => 'صيغة الإيميل غير صحيحه',
-            'email.exists'              => 'هذا الإيميل غير موجود !',
-            'NewPassword.required'      => 'يجب إدخال كلمة المرور الجديدة',
-            'NewPassword.min'           => 'يجب ألا يقل كلمة المرور عن 8 أحرف',
-            'ConfirmPassword.required'  => 'يجب إدخال كلمة المرور الجديدة للتأكيد',
-            'ConfirmPassword.same'      => 'لا يوجد تطابق لكلمة المرور الجديدة',
-        ];
-    }
 }

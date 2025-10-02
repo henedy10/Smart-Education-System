@@ -17,9 +17,21 @@ use App\Http\Controllers\Teacher\
     DashboardController,
 };
 use App\Http\Middleware\PreventBackHistory;
+use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(PreventBackHistory::class)->group(function(){
+// Localization
+Route::get('/lang/{locale}',function (string $locale){
+    if (in_array($locale, ['en', 'ar'])) {
+        session(['locale' => $locale]);
+    }else{
+        session(['locale' => 'en']);
+    }
+
+    return redirect()->back();
+})->name('SetLocale');
+
+Route::middleware([PreventBackHistory::class , SetLocale::class])->group(function(){
     Route::controller(AccountUserController::class)->group(function ()
     {
         Route::middleware('checkLogin')->group(function(){

@@ -1,56 +1,63 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="{{app()->getLocale()}}" dir="{{__('messages.page_direction')}}">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>تغيير كلمة المرور</title>
+    <title>{{__('messages.change_password')}}</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="bg-gradient-to-r from-indigo-50 to-blue-100 flex items-center justify-center min-h-screen font-sans">
 
-    <div class="bg-white shadow-lg rounded-xl w-full max-w-md p-6 space-y-6">
-        <h2 class="text-2xl font-bold text-center text-gray-800"> تغيير كلمة المرور</h2>
-            @if(session('message'))
-                <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
-                    {{ session('message') }}
-                </div>
-            @endif
-        <form action="{{route('Password.Update')}}" method="POST" class="space-y-4">
+    <div class="bg-white shadow-2xl rounded-2xl w-full max-w-md p-8 space-y-6 border border-gray-200">
+        <h2 class="text-3xl font-extrabold text-center text-gray-800">{{__('messages.change_password')}}</h2>
+
+        {{-- Flash Message --}}
+        @if(session('message'))
+            <div class="bg-red-100 border border-red-300 text-red-700 p-3 rounded-lg text-sm">
+                {{ session('message') }}
+            </div>
+        @endif
+
+        <form action="{{route('Password.Update')}}" method="POST" class="space-y-5">
             @csrf
 
+            {{-- Email --}}
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">الايميل</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">{{__('messages.email')}}</label>
                 <input type="email" name="email"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" />
+                @error('email')
+                    <span class="text-red-500 text-xs mt-1">* {{ $message }}</span>
+                @enderror
             </div>
-            <span class="text-danger">
-                @error('email'){{'* '.$message}}@enderror
-            </span>
 
+            {{-- New Password --}}
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">كلمة المرور الجديدة</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">{{__('messages.new_password')}}</label>
                 <input type="password" name="NewPassword"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" />
+                @error('NewPassword')
+                    <span class="text-red-500 text-xs mt-1">* {{ $message }}</span>
+                @enderror
             </div>
-            <span class="text-danger">
-                @error('NewPassword'){{'* '.$message}}@enderror
-            </span>
 
+            {{-- Confirm Password --}}
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1"> تأكيد كلمة المرور الجديدة </label>
+                <label class="block text-sm font-medium text-gray-700 mb-1">{{__('messages.confirm_password')}}</label>
                 <input type="password" name="ConfirmPassword"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 transition" />
+                @error('ConfirmPassword')
+                    <span class="text-red-500 text-xs mt-1">* {{ $message }}</span>
+                @enderror
             </div>
-            <span class="text-danger">
-                @error('ConfirmPassword'){{'* '.$message}}@enderror
-            </span>
 
+            {{-- Submit --}}
             <button type="submit"
-                    class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200">
-                حفظ
+                class="w-full bg-indigo-600 text-white py-2.5 rounded-lg hover:bg-indigo-700 transition duration-200 shadow-md font-semibold">
+                {{__('messages.save')}}
             </button>
         </form>
     </div>
+
 </body>
 </html>
