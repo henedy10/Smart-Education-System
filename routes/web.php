@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountUserController;
+use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\Student\
 {
     HomeController,
@@ -44,6 +45,12 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
         Route::post('/passwords','updatePassword')->middleware('throttle:updatePassword')->name('Password.Update');
         Route::post('/login','login')->middleware('throttle:login')->name('login');
         Route::get('/logout','logout')->name('LogOut');
+    });
+
+    /** Admin Routes */
+
+    Route::controller(AdminController::class)->group(function(){
+        Route::get('/dashboard' , 'index')->name('admin.index');
     });
 
     /** Student Routes */

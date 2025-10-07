@@ -11,7 +11,8 @@ class AccountUserController extends Controller
     {
         $email = Cookie::get('user_email');
 
-        if($email){
+        if($email)
+        {
             $user = User::firstWhere('email',$email);
 
             if(is_null($user)){
@@ -24,10 +25,14 @@ class AccountUserController extends Controller
                 'id'       => $user->id,
                 'user_as'  => $user->user_as,
             ]);
-
-            return $user->user_as === 'teacher'
-                ? redirect()->route('teacher.index')
-                : redirect()->route('student.index');
+            if($user->user_as === 'admin')
+            {
+                return redirect()->route('admin.index');
+            }else{
+                return $user->user_as === 'teacher'
+                    ? redirect()->route('teacher.index')
+                    : redirect()->route('student.index');
+            }
 
         }else{
             return view('index');
@@ -53,9 +58,14 @@ class AccountUserController extends Controller
                 Cookie::queue('user_email', $request->email, 60*24*30, '/'); // for 1 month
             }
 
-            return $user->user_as === 'teacher'
+            if($user->user_as === 'admin')
+            {
+                return redirect()->route('admin.index');
+            }else{
+                return $user->user_as === 'teacher'
                     ? redirect()->route('teacher.index')
                     : redirect()->route('student.index');
+            }
         }
     }
         // تسجيل الخروج لكل من الطالب و المدرس
