@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="{{app()->getLocale()}}" dir="{{__('messages.page_direction')}}">
 <head>
     <meta charset="UTF-8">
     <title>@yield('title')</title>

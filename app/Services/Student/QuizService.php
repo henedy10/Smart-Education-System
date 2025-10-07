@@ -61,9 +61,7 @@ class QuizService
         $check_selection = [];
         $userId  = $this->getUserId();
 
-        $student = Student::with('user')
-                                ->where('user_id',$userId)
-                                ->first();
+        $student = Student::with('user')->firstWhere('user_id',$userId);
 
         $teacherId = Teacher::where('class',$class)
                                 ->where('subject',$subject)

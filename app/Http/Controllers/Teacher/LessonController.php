@@ -17,6 +17,6 @@ class LessonController extends Controller
     public function store(storeLesson $request , $TeacherId, LessonService $lesson)
     {
         $lesson->store($request,$TeacherId);
-        return redirect()->back()->with('success', 'تم رفع الملف بنجاح');
+        return redirect()->back()->with(['success' =>  __('messages.success_store_lesson')]);
     }
 }

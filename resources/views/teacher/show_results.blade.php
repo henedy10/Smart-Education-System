@@ -10,8 +10,8 @@
         <div class="bg-white rounded-xl shadow-md p-6">
 
             <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
-                <h2 class="text-lg font-bold text-gray-800">قائمة الإمتحانات</h2>
-                <a href="{{route('teacher.index')}}" class="w-full md:w-auto text-center border border-red-600 text-red-600 font-medium px-5 py-2 rounded-xl hover:bg-red-600 hover:text-white transition-all duration-300">الصفحة السابقة</a>
+                <h2 class="text-lg font-bold text-gray-800">{{__('messages.quizzes')}}</h2>
+                <a href="{{route('teacher.index')}}" class="w-full md:w-auto text-center border border-red-600 text-red-600 font-medium px-5 py-2 rounded-xl hover:bg-red-600 hover:text-white transition-all duration-300">{{__('messages.previous-page')}}</a>
             </div>
 
             <div class="flex flex-col sm:flex-row  items-center gap-4 mb-6">
@@ -20,7 +20,7 @@
                 @else
                 <div>
                     <select id="quizFilter" class="border border-gray-300 rounded p-2 w-full sm:w-64">
-                        <option value="all">كل الاختبارات</option>
+                        <option value="all">{{__('messages.quizzes')}}</option>
                         @foreach ( $quizzes as $quiz )
                             <option value="{{$quiz->title}}">{{$quiz->title}}</option>
                         @endforeach
@@ -28,7 +28,7 @@
                 </div>
                 <button onclick="filterTable()"
                         class="bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700 transition">
-                فلترة
+                {{__('messages.filter')}}
                 </button>
             </div>
 
@@ -36,26 +36,26 @@
                 <table class="w-full text-sm text-right text-gray-700 border border-gray-200 rounded">
                     <thead class="bg-blue-100 text-blue-800">
                         <tr>
-                            <th class="p-3 border border-gray-200">الاختبار</th>
-                            <th class="p-3 border border-gray-200">درجه الامتحان</th>
-                            <th class="p-3 border border-gray-200">تاريخ الامتحان</th>
-                            <th class="p-3 border border-gray-200">مدة الامتحان</th>
-                            <th class="p-3 border border-gray-200">نتائج الطلاب</th>
+                            <th class="p-3 border border-gray-200">{{__('messages.title')}}</th>
+                            <th class="p-3 border border-gray-200">{{__('messages.grade')}}</th>
+                            <th class="p-3 border border-gray-200">{{__('messages.date')}}</th>
+                            <th class="p-3 border border-gray-200">{{__('messages.duration')}}</th>
+                            <th class="p-3 border border-gray-200">{{__('messages.results')}}</th>
                         </tr>
                     </thead>
                     <tbody id="resultsTable">
                         @foreach ($quizzes as $quiz )
                             <tr data-quiz="{{$quiz->title}}" class="hover:bg-gray-50 transition">
-                                <td class="p-3 border">{{$quiz->title}}</td>
-                                <td class="p-3 border">{{$quiz->quiz_mark}}</td>
-                                <td class="p-3 border"><span class="text-red-500">{{$quiz->start_time}}</span></span></td>
-                                <td class="p-3 border"><span class="text-red-500">{{$quiz->duration}}</span></span></td>
+                                <td class="p-3 border"><span class="text-red-500">{{$quiz->title}}</span></td>
+                                <td class="p-3 border"><span class="text-red-500">{{$quiz->quiz_mark}}</span></td>
+                                <td class="p-3 border"><span class="text-red-500">{{$quiz->start_time}}</span></td>
+                                <td class="p-3 border"><span class="text-red-500">{{$quiz->duration}}</span></td>
                                 <td class="p-3 border">
                                     @if (now('africa/cairo')<$quiz->start_time->copy()->addMinutes($quiz->duration)->format('Y-m-d H:i:s'))
-                                        <button type="submit" onclick="alert('لا يمكن رؤيه النتائج الا بعد انتهاء وقت الامتحان')"  class="text-green-600 font-semibold">اضغط هنا</button>
+                                        <button type="submit" onclick="alert('لا يمكن رؤيه النتائج الا بعد انتهاء وقت الامتحان')"  class="text-green-600 font-semibold">{{__('messages.show')}}</button>
                                     @else
                                         <form action="{{route('teacher.quizResults.show',$TeacherId)}}" method="GET">
-                                            <button type="submit" name="quiz_id" value="{{$quiz->id}}" class="text-green-600 font-semibold">اضغط هنا</button>
+                                            <button type="submit" name="quiz_id" value="{{$quiz->id}}" class="text-green-600 font-semibold">{{__('messages.show')}}</button>
                                         </form>
                                     @endif
                                 </td>

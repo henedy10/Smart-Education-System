@@ -40,7 +40,7 @@ class HomeworkService
     public function storeSolution($request)
     {
         $userId      = $this->getUserId();
-        $student     = Student::with('user')->where('user_id',$userId)->first();
+        $student     = Student::with('user')->firstWhere('user_id',$userId);
         $homeworkId  = $request->homework_id;
         $fileName    = $student->user->name.'.'.$request->file('file')->getClientOriginalExtension();
         $filePath    = $request->file('file')->storeAs('solutions_homework',$fileName,'public');

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="{{app()->getLocale()}}" dir="{{__('messages.page_direction')}}">
 <head>
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])

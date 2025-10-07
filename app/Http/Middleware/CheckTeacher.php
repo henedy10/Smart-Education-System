@@ -19,6 +19,6 @@ class CheckTeacher
             return $next($request);
         }
 
-        return redirect()->route('index')->withErrors(['login' => 'لا يمكنك دخول هذه الصفحه, يجب تسجيل الدخول أولا']);
+        return redirect()->route('index')->withErrors(['login' => __('messages.check_teacher_middleware')]);
     }
 }

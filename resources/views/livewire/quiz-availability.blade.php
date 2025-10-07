@@ -14,6 +14,6 @@
             </li>
         </ul>
     @else
-        <h2 class="text-lg text-red-700">  * لا يوجد اختبارات حاليا  </h2>
+        <h2 class="text-lg text-red-700">  * {{__('messages.no_quiz')}} </h2>
     @endif
 </div>

@@ -1,6 +1,6 @@
 @extends('teacher.layout.app')
 
-@section('title') نتائج الطلاب @endsection
+@section('title'){{__('messages.results')}} @endsection
 
 @section('content')
 
@@ -10,8 +10,8 @@
         <div class="bg-white rounded-xl shadow-md p-6">
 
             <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
-                <h2 class="text-lg font-bold text-gray-800">نتائج الطلاب</h2>
-                <a href="{{route('teacher.quizzes.show',$TeacherId)}}" class="w-full md:w-auto text-center border border-red-600 text-red-600 font-medium px-5 py-2 rounded-xl hover:bg-red-600 hover:text-white transition-all duration-300">الصفحة السابقة</a>
+                <h2 class="text-lg font-bold text-gray-800">{{__('messages.results')}}</h2>
+                <a href="{{route('teacher.quizzes.show',$TeacherId)}}" class="w-full md:w-auto text-center border border-red-600 text-red-600 font-medium px-5 py-2 rounded-xl hover:bg-red-600 hover:text-white transition-all duration-300">{{__('messages.previous-page')}}</a>
             </div>
 
             <div class="overflow-x-auto">
@@ -21,9 +21,9 @@
                 <table class="w-full text-sm text-right text-gray-700 border border-gray-200 rounded">
                     <thead class="bg-blue-100 text-blue-800">
                         <tr>
-                            <th class="p-3 border border-gray-200">اسم الطالب </th>
-                            <th class="p-3 border border-gray-200">درجة الطالب</th>
-                            <th class="p-3 border border-gray-200">النسبة المئوية</th>
+                            <th class="p-3 border border-gray-200">{{__('messages.name')}}</th>
+                            <th class="p-3 border border-gray-200">{{__('messages.grade')}}</th>
+                            <th class="p-3 border border-gray-200">{{__('messages.precentage')}}</th>
                         </tr>
                     </thead>
                     <tbody>

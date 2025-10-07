@@ -26,12 +26,4 @@ class storeHomeworkSolutions extends FormRequest
             'homework_id' => 'required|exists:homeworks,id'
         ];
     }
-
-    public function messages(): array
-    {
-        return [
-            'file.required' => 'يجب رفع ملف الواجب الخاص بك',
-            'file.mimes'    => 'الملفات المسموح رفعها : pdf,doc,docx',
-        ];
-    }
 }

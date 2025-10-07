@@ -32,7 +32,7 @@ class HomeworkController extends Controller
     public function storeHomework(storeHomework $request, $TeacherId, HomeworkService $homework)
     {
         $homework = $homework->storeHomework($request,$TeacherId);
-        return redirect()->back()->with('success', 'تم رفع الملف بنجاح');
+        return redirect()->back()->with(['success' => __('messages.success_store_homework')]);
     }
 
     public function indexSolution($TeacherId,HomeworkService $solution)
@@ -44,12 +44,12 @@ class HomeworkController extends Controller
     public function storeHomeworkGrades(storeHomeworkGrades $request, $StudentId, HomeworkService $grade)
     {
         $grade->storeHomeworkGrade($request,$StudentId);
-        return redirect()->back()->with('success','تم تصحيح هذا الواجب بنجاح');
+        return redirect()->back()->with(['success' => __('messages.success_store_homework_grade')]);
     }
 
     public function updateHomeworkGrade(updateHomeworkGrades $request, $StudentId, HomeworkService $grade)
     {
         $grade->updateHomeworkGrade($request,$StudentId);
-        return redirect()->back()->with('success','تم تعديل درجه هذا الواجب بنجاح');
+        return redirect()->back()->with(['success' => __('messages.success_update_homework_grade')]);
     }
 }

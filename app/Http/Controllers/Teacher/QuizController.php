@@ -15,7 +15,7 @@ class QuizController extends Controller
     public function storeQuiz(storeQuiz $request, $TeacherId, QuizService $quiz)
     {
         $quiz->create($request,$TeacherId);
-        return redirect()->back()->with('success','تم عمل اختبار جديد بنجاح ');
+        return redirect()->back()->with(['success' => __('messages.success_store_quiz')]);
     }
 
     public function showQuiz($TeacherId , QuizService $quiz)

@@ -1,6 +1,6 @@
 @extends('teacher.layout.app')
 
-@section('title') الاختبارات @endsection
+@section('title') {{__("messages.quizzes")}} @endsection
 
 @section('content')
 
@@ -14,16 +14,16 @@
         <div class="max-w-5xl bg-gray-200  mx-auto py-10 px-4">
             <div class="bg-white p-6 rounded-2xl shadow-md">
                 <div class="bg-white shadow rounded-lg p-4 mb-6 flex items-center justify-between">
-                    <h1 class="text-lg font-bold text-gray-800">إنشاء اختبار جديد</h1>
-                    <a href="{{route('teacher.index')}}" class="w-full md:w-auto text-center border border-red-600 text-red-600 font-medium px-5 py-2 rounded-xl hover:bg-red-600 hover:text-white transition-all duration-300">الصفحة السابقة</a>
+                    <h1 class="text-lg font-bold text-gray-800">{{__('messages.new-upload-quiz')}}</h1>
+                    <a href="{{route('teacher.index')}}" class="w-full md:w-auto text-center border border-red-600 text-red-600 font-medium px-5 py-2 rounded-xl hover:bg-red-600 hover:text-white transition-all duration-300"> {{__('messages.previous-page')}}</a>
                 </div>
 
                 <form method="POST" action="{{route('teacher.quizzes.store',$TeacherId)}}">
                     @csrf
                     <!-- عنوان الاختبار -->
                     <div class="mb-4">
-                        <label class="block mb-2 text-sm font-medium text-gray-700">عنوان الاختبار</label>
-                        <input type="text" name="quiz_title" placeholder="عنوان الاختبار" class="w-full p-3 rounded-lg border border-gray-300" />
+                        <label class="block mb-2 text-sm font-medium text-gray-700">{{__('messages.title')}}</label>
+                        <input type="text" name="quiz_title" class="w-full p-3 rounded-lg border border-gray-300" />
                         @error('quiz_title')
                             <span class="text-danger">{{"* ".$message}}</span>
                         @enderror
@@ -32,13 +32,13 @@
 
                     <!-- وصف الاختبار -->
                     <div class="mb-4">
-                        <label class="block mb-2 text-sm font-medium text-gray-700">الوصف</label>
-                        <textarea rows="3" type="text" name="quiz_description" placeholder="معلومات عن الاختبار..." class="w-full p-3 rounded-lg border border-gray-300"></textarea>
+                        <label class="block mb-2 text-sm font-medium text-gray-700">{{__('messages.description')}}</label>
+                        <textarea rows="3" type="text" name="quiz_description" class="w-full p-3 rounded-lg border border-gray-300"></textarea>
                     </div>
 
                     <!-- موعد الامتحان -->
                     <div class="mb-4">
-                        <label class="block mb-2 text-sm font-medium text-gray-700">موعد الامتحان</label>
+                        <label class="block mb-2 text-sm font-medium text-gray-700">{{__('messages.date')}}</label>
                         <input type="datetime-local" name="quiz_date" class="w-full p-3 rounded-lg border border-gray-300" />
                         @error('quiz_date')
                             <span class="text-danger">{{"* ".$message}}</span>
@@ -48,8 +48,8 @@
 
                     <!-- مدة الامتحان -->
                     <div class="mb-4">
-                        <label class="block mb-2 text-sm font-medium text-gray-700">مدة الامتحان (بالدقائق)</label>
-                        <input type="number" name="quiz_duration" min="1" placeholder="مدة الإمتحان" class="w-full p-3 rounded-lg border border-gray-300" />
+                        <label class="block mb-2 text-sm font-medium text-gray-700">{{__('messages.duration')}}</label>
+                        <input type="number" name="quiz_duration" min="1" class="w-full p-3 rounded-lg border border-gray-300" />
                         @error('quiz_duration')
                             <span class="text-danger">{{"* ".$message}}</span>
                         @enderror
@@ -58,30 +58,30 @@
 
                     <!-- الأسئلة -->
                     <div class="mb-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-2">الأسئلة</h3>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">{{__('messages.questions')}}</h3>
                         <div id="questions-container" class="space-y-4">
                             <!-- سؤال واحد افتراضي -->
                             <div class="question bg-gray-50 p-4 rounded-lg border">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">نص السؤال</label>
-                            <input type="text" name="question_title[]" placeholder="نص السؤال" class="w-full p-2 rounded border" />
+                            <label class="block text-sm font-medium text-gray-700 mb-1">{{__('messages.title')}}</label>
+                            <input type="text" name="question_title[]" class="w-full p-2 rounded border" />
                             @error('question_title.*')
                                 <span class="text-danger">{{"* ".$message}}</span>
                             @enderror
                             <div class="grid grid-cols-2 gap-3 mt-3">
                                 <div>
-                                    <label class="block text-sm" >الإجابة 1</label>
+                                    <label class="block text-sm" >{{__('messages.option')."1"}}</label>
                                     <input type="text" name="option_title[]" class="w-full p-2 rounded border" />
                                 </div>
                                 <div>
-                                    <label class="block text-sm" >الإجابة 2</label>
+                                    <label class="block text-sm" >{{__('messages.option')."2"}}</label>
                                     <input type="text" name="option_title[]" class="w-full p-2 rounded border" />
                                 </div>
                                 <div>
-                                    <label class="block text-sm" >الإجابة 3</label>
+                                    <label class="block text-sm" >{{__('messages.option')."3"}}</label>
                                     <input type="text" name="option_title[]" class="w-full p-2 rounded border" />
                                 </div>
                                 <div>
-                                    <label class="block text-sm">الإجابة 4</label>
+                                    <label class="block text-sm">{{__('messages.option')."4"}}</label>
                                     <input type="text" name="option_title[]" class="w-full p-2 rounded border" />
                                 </div>
                             </div>
@@ -91,13 +91,13 @@
                             @enderror
 
                             <div class="mt-3">
-                                <label class="block text-sm font-medium">الإجابة الصحيحة</label>
+                                <label class="block text-sm font-medium">{{__('messages.correct_answer')}}</label>
                                 <select class="w-full p-2 rounded border" name="correct_option[]">
-                                    <option value="" selected>إختر الإجابة الصحيحة</option>
-                                    <option value="الإجابة 1">الإجابة 1</option>
-                                    <option value="الإجابة 2">الإجابة 2</option>
-                                    <option value="الإجابة 3">الإجابة 3</option>
-                                    <option  value="الإجابة 4">الإجابة 4</option>
+                                    <option value="" selected>{{__('messages.choose')." ".__('messages.correct_answer')}}</option>
+                                    <option value="الإجابة 1">{{__('messages.option')."1"}}</option>
+                                    <option value="الإجابة 2">{{__('messages.option')."2"}}</option>
+                                    <option value="الإجابة 3">{{__('messages.option')."3"}}</option>
+                                    <option  value="الإجابة 4">{{__('messages.option')."4"}}</option>
                                 </select>
                                 @error('correct_option.*')
                                     <span class="text-danger">{{"* ".$message}}</span>
@@ -107,28 +107,28 @@
 
                             <!-- درجة كل سؤال  -->
                             <div class="mt-4">
-                                <label class="block mb-2 text-sm font-medium text-gray-700">درجة السؤال</label>
-                                <input type="number" name="question_mark[]"  placeholder="درجة السؤال" class="w-full p-3 rounded-lg border border-gray-300" />
+                                <label class="block mb-2 text-sm font-medium text-gray-700">{{__('messages.grade')}}</label>
+                                <input type="number" name="question_mark[]" class="w-full p-3 rounded-lg border border-gray-300" />
                                 @error('question_mark.*')
                                     <span class="text-danger">{{"* ".$message}}</span>
                                 @enderror
                             </div>
                             <!-- زر حذف السؤال -->
                             <button type="button" onclick="removeQuestion(this)" class="mt-4 px-3 py-2 bg-red-500 text-white  rounded hover:bg-red-600">
-                                حذف السؤال
+                                {{__('messages.delete')}}
                             </button>
                         </div>
                     </div>
 
                     <!-- زر إضافة سؤال -->
                     <button type="button" name="add_question" onclick="addQuestion()" class="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">
-                        إضافة سؤال جديد
+                        {{__('messages.add')}}
                     </button>
                     </div>
 
                     <!-- زر إرسال -->
                     <button type="submit" class="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold">
-                        إنشاء الاختبار
+                        {{__('messages.upload')}}
                     </button>
                 </form>
             </div>

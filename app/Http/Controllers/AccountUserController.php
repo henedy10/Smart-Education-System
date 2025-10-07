@@ -12,11 +12,11 @@ class AccountUserController extends Controller
         $email = Cookie::get('user_email');
 
         if($email){
-            $user = User::where('email',$email)->first();
+            $user = User::firstWhere('email',$email);
 
             if(is_null($user)){
                 Cookie::queue(Cookie::forget('user_email'));
-                return redirect()->view('index')->withErrors(['login' => 'هذا الحساب غير موجود']);
+                return redirect()->view('index')->withErrors(['login' => __('messages.fail_login')]);
             }
 
             session([
@@ -41,7 +41,7 @@ class AccountUserController extends Controller
                     ->first();
 
         if(is_null($user)){
-            return redirect()->back()->withErrors(['password' => 'كلمة المرور غير صحيحة']);
+            return redirect()->back()->withErrors(['password' => __('messages.fail_password')]);
         }else{
             session([
                 'email'     => $user->email,
@@ -78,9 +78,9 @@ class AccountUserController extends Controller
 
     public function updatePassword(updatePassword $request)
     {
-        $user = User::where('email',$request->email)->first();
+        $user = User::firstWhere('email', $request->email);
         $user->update(['password' => $request->NewPassword]);
 
-        return redirect()->route('index')->with('success','تم تغيير كلمة المرور بنجاح');
+        return redirect()->route('index')->with('success',__('messages.success_update_password'));
     }
 }

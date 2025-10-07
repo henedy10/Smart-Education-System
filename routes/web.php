@@ -16,16 +16,19 @@ use App\Http\Controllers\Teacher\
     QuizController as TeacherQuizController,
     DashboardController,
 };
-use App\Http\Middleware\PreventBackHistory;
-use App\Http\Middleware\SetLocale;
+
+use App\Http\Middleware\
+{
+    PreventBackHistory,
+    SetLocale,
+};
+
 use Illuminate\Support\Facades\Route;
 
 // Localization
 Route::get('/lang/{locale}',function (string $locale){
     if (in_array($locale, ['en', 'ar'])) {
         session(['locale' => $locale]);
-    }else{
-        session(['locale' => 'en']);
     }
 
     return redirect()->back();

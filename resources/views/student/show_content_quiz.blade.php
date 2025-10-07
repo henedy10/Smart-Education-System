@@ -1,6 +1,6 @@
 @extends('student.layout.app')
 
-@section('title','الأسئلة - الاختبار')
+@section('title'){{__('messages.quiz')}}@endsection
 
 @section('style',"bg-gray-100 text-gray-800")
 
@@ -9,8 +9,8 @@
 
     <div class="max-w-4xl mx-auto p-6 mt-10 bg-white rounded-xl shadow-md">
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-blue-600">الأسئلة - اختبار: <span class="text-gray-800">الرياضيات</span></h1>
-            <span class="text-sm text-gray-600">الوقت المتبقي: <span id="timer" class="font-bold text-red-600">{{$quiz->duration}}:00</span></span>
+            <h1 class="text-2xl font-bold text-blue-600">{{__('messages.quiz')}}</h1>
+            <span class="text-sm text-gray-600">{{__('messages.time_remaining')}}<span id="timer" class="font-bold text-red-600">{{$quiz->duration}}:00</span></span>
         </div>
 
         <form action="{{route('student.answers.store',[$class,$subject])}}" method="POST" id="quizForm">
@@ -29,7 +29,7 @@
             @endforeach
 
         <button type="submit" class="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded">
-            إرسال الإجابات
+            {{__('messages.submit')}}
         </button>
         </form>
     </div>
@@ -51,7 +51,7 @@
 
             if (remaining <= 0) {
                 clearInterval(timerInterval);
-                alert("انتهى الوقت!");
+                alert({{__('messages.time_finish')}});
                 document.getElementById("quizForm").submit(); // يرسل الإجابات
             }
         }

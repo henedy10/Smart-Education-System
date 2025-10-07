@@ -1,6 +1,6 @@
 @extends('teacher.layout.app')
 
-@section('title') الواجبات @endsection
+@section('title') {{__('messages.homeworks')}} @endsection
 
 @section('content')
 <body class="bg-gray-100 min-h-screen">
@@ -16,10 +16,10 @@
 
         <!-- رأس الصفحة -->
         <div class="bg-white shadow-md rounded-2xl px-6 py-4 mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
-            <h1 class="text-2xl font-bold text-gray-800">✏️ رفع واجب جديد</h1>
+            <h1 class="text-2xl font-bold text-gray-800">✏️ {{__('messages.new-upload-homework')}}</h1>
             <a href="{{route('teacher.homeworkAction.show', $TeacherId)}}"
                class="w-full md:w-auto text-center border border-red-600 text-red-600 font-medium px-5 py-2 rounded-xl hover:bg-red-600 hover:text-white transition-all duration-300">
-                الصفحة السابقة
+                {{__('messages.previous-page')}}
             </a>
         </div>
 
@@ -30,7 +30,7 @@
 
             <!-- عنوان الواجب -->
             <div>
-                <label for="title_homework" class="block mb-1 text-sm font-medium text-gray-700">عنوان الواجب</label>
+                <label for="title_homework" class="block mb-1 text-sm font-medium text-gray-700"> {{__('messages.title')}}</label>
                 <input type="text" name="title_homework" id="title_homework"
                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
                 @error('title_homework')
@@ -40,7 +40,7 @@
 
             <!-- المطلوب -->
             <div>
-                <label for="content_homework" class="block mb-1 text-sm font-medium text-gray-700">المطلوب</label>
+                <label for="content_homework" class="block mb-1 text-sm font-medium text-gray-700">{{__('messages.required')}}</label>
                 <textarea name="content_homework" id="content_homework" rows="3"
                           class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
                 @error('content_homework')
@@ -50,7 +50,7 @@
 
             <!-- درجة الواجب -->
             <div>
-                <label for="homework_mark" class="block mb-1 text-sm font-medium text-gray-700">درجة الواجب</label>
+                <label for="homework_mark" class="block mb-1 text-sm font-medium text-gray-700">{{__('messages.grade')}}</label>
                 <input type="number" name="homework_mark" id="homework_mark"
                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
                 @error('homework_mark')
@@ -60,7 +60,7 @@
 
             <!-- الموعد النهائي -->
             <div>
-                <label for="deadline_homework" class="block mb-1 text-sm font-medium text-gray-700">آخر ميعاد للتسليم</label>
+                <label for="deadline_homework" class="block mb-1 text-sm font-medium text-gray-700">{{__('messages.deadline')}}</label>
                 <input type="datetime-local" name="deadline_homework" id="deadline_homework"
                        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
                 @error('deadline_homework')
@@ -71,7 +71,7 @@
             <!-- رفع الملف -->
             <div>
                 <label for="file_homework" class="block mb-1 text-sm font-medium text-gray-700">
-                    رفع ملف (pdf, doc, docx, zip, rar, jpg, png)
+                     {{__('messages.upload').' '.__('messages.file')}} (pdf, doc, docx, zip, rar, jpg, png)
                 </label>
                 <input type="file" name="file_homework" id="file_homework"
                        class="w-full file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0
@@ -86,7 +86,7 @@
             <div class="text-center">
                 <button type="submit"
                         class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-xl shadow transition-all duration-300">
-                    <i class="fas fa-upload"></i> رفع الواجب
+                    <i class="fas fa-upload"></i>  {{__('messages.upload')}}
                 </button>
             </div>
         </form>

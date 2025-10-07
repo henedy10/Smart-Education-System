@@ -37,7 +37,7 @@ class HomeworkController extends Controller
     public function storeSolution(storeHomeworkSolutions $request , HomeworkService $solution)
     {
         $solution->storeSolution($request);
-        return redirect()->back()->with('success','تم رفع الملف بنجاح');
+        return redirect()->back()->with(['success' => __('messages.success_store_homework_solution')]);
     }
 
     public function showGrade($class,$subject,HomeworkService $grade)

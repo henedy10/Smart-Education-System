@@ -31,7 +31,7 @@ class QuizController extends Controller
 
         if($quiz->count() == 0)
         {
-            return redirect()->back()->withErrors(['quiz' => 'لا يوجد اختبار متاح حاليا']);
+            return redirect()->back()->withErrors(['quiz' => __('messages.no_quiz')]);
         }
 
         return view('student.show_content_quiz',compact(

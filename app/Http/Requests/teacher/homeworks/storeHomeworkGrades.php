@@ -25,12 +25,4 @@ class storeHomeworkGrades extends FormRequest
             'student_mark' => 'required|integer|min:0'
         ];
     }
-
-    public function messages(): array
-    {
-        return [
-            'student_mark.required' => 'يجب إدخال درجة الطالب',
-            'student_mark.min'      => 'غير مسموح بالأرقام السالبة',
-        ];
-    }
 }
