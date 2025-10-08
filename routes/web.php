@@ -51,6 +51,8 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
 
     Route::controller(AdminController::class)->group(function(){
         Route::get('/dashboard' , 'index')->name('admin.index');
+        Route::get('/students','studentIndex')->name('admin.student.index');
+        Route::get('/teachers','teacherIndex')->name('admin.teacher.index');
     });
 
     /** Student Routes */
