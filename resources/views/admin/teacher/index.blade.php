@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Students Table</title>
+    <title>Teachers Table</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-gray-100 min-h-screen flex flex-col items-center p-10">
-
     <!-- زر الرجوع -->
     <div class="w-full max-w-6xl flex justify-start mb-6">
         <a href="{{route('admin.index')}}"
@@ -21,12 +20,23 @@
         </a>
     </div>
 
-    <h1 class="text-3xl font-bold text-gray-800 mb-8">Students List</h1>
+    <h1 class="text-3xl font-bold text-gray-800 mb-8">Teachers List</h1>
 
-    <!-- Search Input -->
-    <div class="mb-6 w-full max-w-md">
-        <input type="text" id="search" placeholder="Search by name..."
-            class="w-full px-4 py-2 border rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+    <div class="mb-6 w-full max-w-3xl flex items-center gap-3">
+        <!-- Search Input -->
+        <input
+            type="text"
+            id="search"
+            placeholder="Search by name..."
+            class="flex-1 px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+
+        <!-- Add Teacher Button -->
+        <a
+            href="{{route('admin.teacher.create')}}"
+            class="bg-green-600 text-white px-5 py-2 rounded-xl shadow hover:bg-green-700 transition font-medium">
+            + Add Teacher
+        </a>
     </div>
 
     <!-- Table -->
@@ -36,28 +46,29 @@
                 <tr>
                     <th class="py-3 px-4 text-left">#</th>
                     <th class="py-3 px-4 text-left">Name</th>
-                    <th class="py-3 px-4 text-left">Class</th>
+                    <th class="py-3 px-4 text-left">class</th>
+                    <th class="py-3 px-4 text-left">Subject</th>
                     <th class="py-3 px-4 text-left">Email</th>
                     <th class="py-3 px-4 text-center">Actions</th>
                 </tr>
             </thead>
 
             <tbody class="divide-y divide-gray-200 text-gray-700">
-                @forelse ($students as $student)
+                @forelse ($teachers as $teacher)
                     <tr class="hover:bg-gray-50 transition">
                         <td class="py-3 px-4 font-medium text-gray-600">{{ $loop->iteration }}</td>
-                        <td class="py-3 px-4 font-semibold">{{ $student->user->name }}</td>
-                        <td class="py-3 px-4">{{ $student->class }}</td>
-                        <td class="py-3 px-4 text-blue-600">{{ $student->user->email }}</td>
+                        <td class="py-3 px-4 font-semibold">{{ $teacher->user->name }}</td>
+                        <td class="py-3 px-4 font-semibold">{{ $teacher->class }}</td>
+                        <td class="py-3 px-4">{{ $teacher->subject }}</td>
+                        <td class="py-3 px-4 text-blue-600">{{ $teacher->user->email }}</td>
                         <td class="py-3 px-4 text-center">
-                            <button class="bg-green-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-green-600 transition">View</button>
                             <button class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600 ml-2 transition">Delete</button>
                         </td>
                     </tr>
                 @empty
                     <tr>
                         <td colspan="5" class="py-4 text-center text-red-500 font-medium">
-                            * There are no students
+                            * There are no teachers
                         </td>
                     </tr>
                 @endforelse

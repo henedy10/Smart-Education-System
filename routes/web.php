@@ -51,8 +51,14 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
 
     Route::controller(AdminController::class)->group(function(){
         Route::get('/dashboard' , 'index')->name('admin.index');
+
         Route::get('/students','studentIndex')->name('admin.student.index');
+        Route::get('/students/create','studentCreate')->name('admin.student.create');
+        Route::post('/students','studentStore')->name('admin.student.store');
+
         Route::get('/teachers','teacherIndex')->name('admin.teacher.index');
+        Route::get('/teachers/create','teacherCreate')->name('admin.teacher.create');
+        Route::post('/teachers','teacherStore')->name('admin.teacher.store');
     });
 
     /** Student Routes */

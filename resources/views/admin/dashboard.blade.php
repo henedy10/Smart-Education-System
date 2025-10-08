@@ -65,12 +65,12 @@
             <div class="grid md:grid-cols-3 gap-4">
                 <div class="bg-white shadow rounded-lg p-4">
                     <h3 class="text-lg font-bold text-blue-600 mb-2">{{__('messages.num_students')}}</h3>
-                    <p class="text-3xl font-semibold text-blue-800">{{$dashboard->count_students ?? "-"}}</p>
+                    <p class="text-3xl font-semibold text-blue-800">{{$count_teachers}}</p>
                 </div>
 
                 <div class="bg-white shadow rounded-lg p-4">
                     <h3 class="text-lg font-bold text-green-600 mb-2">{{__('messages.num_teachers')}}</h3>
-                    <p class="text-3xl font-semibold text-green-800">{{$dashboard->count_teachers ?? "-"}}</p>
+                    <p class="text-3xl font-semibold text-green-800">{{$count_students}}</p>
                 </div>
             </div>
         </div>
