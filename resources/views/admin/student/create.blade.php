@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Student</title>
+    <title>{{__('messages.add-student')}}</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 min-h-screen flex flex-col items-center justify-center py-10">
@@ -19,10 +19,10 @@
 
     <!-- Header -->
     <div class="w-full max-w-2xl flex justify-between items-center mb-8">
-        <h1 class="text-3xl font-bold text-gray-800">Add New Student</h1>
+        <h1 class="text-3xl font-bold text-gray-800">{{__('messages.add-student')}}</h1>
         <a href="{{ route('admin.student.index') }}"
         class="bg-gray-700 text-white px-4 py-2 rounded-xl shadow hover:bg-gray-800 transition">
-            ← Back
+            ← {{__('messages.previous-page')}}
         </a>
     </div>
 
@@ -34,9 +34,8 @@
 
             <!-- Name -->
             <div>
-                <label for="name" class="block text-gray-700 font-semibold mb-2">Full Name <span class="text-red-500">*</span></label>
-                <input type="text" name="name" id="name"
-                    placeholder="Enter student's full name"
+                <label for="name" class="block text-gray-700 font-semibold mb-2">{{__('messages.name')}} <span class="text-red-500"> *</span></label>
+                <input type="text" name="name" id="name" value="{{old('name')}}"
                     class="w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 @error('name')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -45,9 +44,8 @@
 
             <!-- Email -->
             <div>
-                <label for="email" class="block text-gray-700 font-semibold mb-2">Email Address <span class="text-red-500">*</span></label>
-                <input type="email" name="email" id="email"
-                    placeholder="Enter student's email"
+                <label for="email" class="block text-gray-700 font-semibold mb-2">{{__('messages.email')}}<span class="text-red-500"> *</span></label>
+                <input type="email" name="email" id="email" value="{{old('email')}}"
                     class="w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 @error('email')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -56,9 +54,8 @@
 
             <!-- Password -->
             <div>
-                <label for="password" class="block text-gray-700 font-semibold mb-2">Password <span class="text-red-500">*</span></label>
+                <label for="password" class="block text-gray-700 font-semibold mb-2">{{__('messages.password')}} <span class="text-red-500"> *</span></label>
                 <input type="password" name="password" id="password"
-                    placeholder="Enter student's password"
                     class="w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 @error('password')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -67,14 +64,9 @@
 
             <!-- Class -->
             <div>
-                <label for="class" class="block text-gray-700 font-semibold mb-2">Class <span class="text-red-500">*</span></label>
-                <select id="class" name="class"
+                <label for="class" class="block text-gray-700 font-semibold mb-2">{{__('messages.class')}} <span class="text-red-500">*</span></label>
+                <input type="text" id="class" name="class" value="{{old('class')}}"
                         class="w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                <option value="">Select class</option>
-                <option value="Class 1">Class 1</option>
-                <option value="Class 2">Class 2</option>
-                <option value="Class 3">Class 3</option>
-                </select>
                 @error('class')
                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -84,7 +76,7 @@
             <div class="pt-4">
                 <button type="submit"
                         class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-xl shadow transition">
-                + Add Student
+                + {{__('messages.add-student')}}
                 </button>
             </div>
         </form>

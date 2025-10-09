@@ -2,7 +2,7 @@
 <html lang="{{app()->getLocale()}}" dir="{{__('messages.page_direction')}}">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard - Admin</title>
+    <title>{{__('messages.dashboard')}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -65,12 +65,12 @@
             <div class="grid md:grid-cols-3 gap-4">
                 <div class="bg-white shadow rounded-lg p-4">
                     <h3 class="text-lg font-bold text-blue-600 mb-2">{{__('messages.num_students')}}</h3>
-                    <p class="text-3xl font-semibold text-blue-800">{{$count_teachers}}</p>
+                    <p class="text-3xl font-semibold text-blue-800">{{$count_students}}</p>
                 </div>
 
                 <div class="bg-white shadow rounded-lg p-4">
                     <h3 class="text-lg font-bold text-green-600 mb-2">{{__('messages.num_teachers')}}</h3>
-                    <p class="text-3xl font-semibold text-green-800">{{$count_students}}</p>
+                    <p class="text-3xl font-semibold text-green-800">{{$count_teachers}}</p>
                 </div>
             </div>
         </div>
