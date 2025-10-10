@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use Illuminate\Database\Eloquent\Builder;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\student\store;
 use App\Http\Requests\admin\teacher\store as TeacherStore;
@@ -13,6 +14,7 @@ use App\Models\
 };
 
 use Illuminate\Support\Facades\Hash;
+
 
 class AdminController extends Controller
 {
@@ -28,8 +30,11 @@ class AdminController extends Controller
 
     public function studentIndex()
     {
-        $students = Student::with('user')->get();
-        return view('admin.student.index',compact('students'));
+        $students = Student::whereHas('user', function (Builder $query) {
+                    $query->where('deleted_at' , NULL);})->get();
+
+        $count_students_trashed = User::onlyTrashed()->where('user_as' , 'student')->count();
+        return view('admin.student.index',compact('students','count_students_trashed'));
     }
     public function studentCreate()
     {
@@ -57,10 +62,39 @@ class AdminController extends Controller
         return redirect()->back()->with(['successCreateMsg' => 'Student created successfully']);
     }
 
+    public function studentTrash($studentId)
+    {
+        User::where('id',$studentId)->delete();
+        return redirect()->back();
+    }
+
+    public function studentIndexTrash()
+    {
+        $students = User::with('student')->onlyTrashed()->get();
+        return view('admin.student.trash',compact('students'));
+    }
+
+    public function studentForceDelete($studentId)
+    {
+        User::where('id',$studentId)->forceDelete();
+        return redirect()->back();
+    }
+
+    public function studentRestore($studentId)
+    {
+        User::where('id',$studentId)->restore();
+        return redirect()->back();
+    }
+
+
+
     public function teacherIndex()
     {
-        $teachers = Teacher::with('user')->get();
-        return view('admin.teacher.index',compact('teachers'));
+        $teachers = Teacher::whereHas('user', function (Builder $query) {
+                    $query->where('deleted_at' , NULL);})->get();
+
+        $count_teachers_trashed = User::onlyTrashed()->where('user_as' , 'teacher')->count();
+        return view('admin.teacher.index',compact('teachers','count_teachers_trashed'));
     }
 
     public function teacherCreate()
@@ -88,5 +122,29 @@ class AdminController extends Controller
         ]);
 
         return redirect()->back()->with(['successCreateMsg' => 'Teacher created successfully']);
+    }
+
+    public function teacherTrash($teacherId)
+    {
+        User::where('id',$teacherId)->delete();
+        return redirect()->back();
+    }
+
+    public function teacherIndexTrash()
+    {
+        $teachers = User::with('teacher')->onlyTrashed()->get();
+        return view('admin.teacher.trash',compact('teachers'));
+    }
+
+    public function teacherForceDelete($teacherId)
+    {
+        User::where('id',$teacherId)->forceDelete();
+        return redirect()->back();
+    }
+
+    public function teacherRestore($teacherId)
+    {
+        User::where('id',$teacherId)->restore();
+        return redirect()->back();
     }
 }

@@ -79,6 +79,7 @@ return [
     'results'                            => 'النتائج',
     'result'                             => 'النتيجة',
     'required'                           => 'المطلوب',
+    'restore'                            => 'استرجاع',
     'save'                               => 'حفظ',
     'show'                               => 'عرض',
     'submit'                             => 'إرسال',

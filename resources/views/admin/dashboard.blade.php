@@ -28,8 +28,8 @@
             </div>
 
             <nav class="space-y-2">
-                <a href="{{route('admin.teacher.index')}}" class="block py-2 px-4 rounded hover:bg-blue-100 text-gray-700"><i class="fas fa-chalkboard-teacher mr-2"></i> {{__('messages.teachers')}}</a>
-                <a href="{{route('admin.student.index')}}" class="block py-2 px-4 rounded hover:bg-green-100 text-gray-700"><i class="fas fa-tasks mr-2"></i> {{__('messages.students')}}</a>
+                <a href="{{route('admin.teacher.index')}}" class="block py-2 px-4 rounded hover:bg-blue-100 text-gray-700"><i class="fa-solid fa-person-chalkboard"></i> {{__('messages.teachers')}}</a>
+                <a href="{{route('admin.student.index')}}" class="block py-2 px-4 rounded hover:bg-green-100 text-gray-700"><i class="fa-solid fa-graduation-cap"></i> {{__('messages.students')}}</a>
             </nav>
         </div>
 

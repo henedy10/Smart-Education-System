@@ -79,6 +79,7 @@ return [
     'results'                            => 'Results',
     'result'                             => 'Result',
     'required'                           => 'Required',
+    'restore'                            => 'Restore',
     'save'                               => 'Save',
     'show'                               => 'Show',
     'submit'                             => 'Submit',

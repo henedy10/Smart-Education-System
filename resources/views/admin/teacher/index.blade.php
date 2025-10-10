@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
     <title>{{__('messages.teachers_list')}}</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -37,6 +39,7 @@
             class="bg-green-600 text-white px-5 py-2 rounded-xl shadow hover:bg-green-700 transition font-medium">
             + {{__('messages.add-teacher')}}
         </a>
+        <a href="{{route('admin.teacher.index.trash')}}" class="text-lg"><i class="fa-solid fa-trash"></i></a><span>({{$count_teachers_trashed}})</span>
     </div>
 
     <!-- Table -->
@@ -61,9 +64,17 @@
                         <td class="py-3 px-4 text-blue-600">{{ $teacher->user->email }}</td>
                         <td class="py-3 px-4 font-semibold">{{ $teacher->class }}</td>
                         <td class="py-3 px-4">{{ $teacher->subject }}</td>
-                        <td class="py-3 px-4 text-center">
-                            <button class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600 ml-2 transition">{{__('messages.delete')}}</button>
-                            <button class="bg-green-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-green-600 ml-2 transition">{{__('messages.edit')}}</button>
+                        <td class="py-3 px-4 text-center flex">
+                            <form action="{{route('admin.teacher.trash',$teacher->user->id)}}" method="POST" onsubmit="return confirmDelete()">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600 ml-2 transition">{{__('messages.delete')}}</button>
+                            </form>
+                            <form action="#" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <button class="bg-green-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-green-600 ml-2 transition">{{__('messages.edit')}}</button>
+                            </form>
                         </td>
                     </tr>
                 @empty
@@ -76,6 +87,13 @@
             </tbody>
         </table>
     </div>
+
+    <script>
+        function confirmDelete()
+        {
+            return confirm('Are you sure to delete it ?')
+        }
+    </script>
 
 </body>
 </html>

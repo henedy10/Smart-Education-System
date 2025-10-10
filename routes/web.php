@@ -55,10 +55,18 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
         Route::get('/students','studentIndex')->name('admin.student.index');
         Route::get('/students/create','studentCreate')->name('admin.student.create');
         Route::post('/students','studentStore')->name('admin.student.store');
+        Route::delete('/students/{user}/trash','studentTrash')->name('admin.student.trash');
+        Route::get('/students/trashed','studentIndexTrash')->name('admin.student.index.trash');
+        Route::delete('/students/{user}/forceDelete','studentForceDelete')->name('admin.student.forceDelete');
+        Route::post('/students/{user}/restore','studentRestore')->name('admin.student.restore');
 
         Route::get('/teachers','teacherIndex')->name('admin.teacher.index');
         Route::get('/teachers/create','teacherCreate')->name('admin.teacher.create');
         Route::post('/teachers','teacherStore')->name('admin.teacher.store');
+        Route::delete('/teachers/{user}/trash','teacherTrash')->name('admin.teacher.trash');
+        Route::get('/teachers/trashed','teacherIndexTrash')->name('admin.teacher.index.trash');
+        Route::delete('/teachers/{user}/forceDelete','teacherForceDelete')->name('admin.teacher.forceDelete');
+        Route::post('/teachers/{user}/restore','teacherRestore')->name('admin.teacher.restore');
     });
 
     /** Student Routes */
