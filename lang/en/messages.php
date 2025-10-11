@@ -60,7 +60,7 @@ return [
     'num_homeworks'                      => 'num-homeworks',
     'num_quizzes'                        => 'num-quizzes',
     'num_students'                       => 'num-students',
-    'num_teachers'                       => 'num_teachers',
+    'num_teachers'                       => 'num-teachers',
     'new-upload-lesson'                  => 'Upload New Lesson',
     'new-upload-quiz'                    => 'Upload New Quiz',
     'new-upload-homework'                => 'Upload New Homework',

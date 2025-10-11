@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Database\Eloquent\Builder;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\student\
 {
@@ -10,100 +9,63 @@ use App\Http\Requests\admin\student\
     update,
 };
 
-use Illuminate\Support\Facades\Hash;
-
-use App\Models\
-{
-    Student,
-    User,
-};
-
+use App\Services\Admin\StudentService;
 
 class StudentController extends Controller
 {
-    public function index()
+    public function index(StudentService $Service)
     {
-        $students = Student::whereHas('user', function (Builder $query) {
-                    $query->where('deleted_at' , NULL);})->get();
+        $info                   = $Service->index();
+        $students               = $info['students'];
+        $count_students_trashed = $info['count_students_trashed'];
 
-        $count_students_trashed = User::onlyTrashed()->where('user_as' , 'student')->count();
         return view('admin.student.index',compact('students','count_students_trashed'));
     }
+
     public function create()
     {
         return view('admin.student.create');
     }
 
-    public function store(store $request)
+    public function store(store $request , StudentService $Service)
     {
-        $validated = $request->validated();
-
-        User::create([
-            'user_as'  => $validated['user_as'],
-            'email'    => $validated['email'],
-            'name'     => $validated['name'],
-            'password' => Hash::make($validated['password']),
-        ]);
-
-        $studentId = User::latest()->value('id');
-
-        Student::create([
-            'user_id' => $studentId,
-            'class'   => $validated['class'],
-        ]);
-
+        $Service->store($request);
         return redirect()->back()->with(['successCreateMsg' => 'Student created successfully']);
     }
 
-    public function edit($studentId)
+    public function edit($studentId, StudentService $Service)
     {
-        $student = User::with('student')->firstWhere('id',$studentId);
+        $student = $Service->edit($studentId);
         return view('admin.student.edit',compact('student'));
     }
 
-    public function update(update $request , $studentId)
+    public function update(update $request , $studentId , StudentService $Service)
     {
-        $validated = $request->validated();
-        $user      = User::find($studentId);
-
-        $user->update([
-            'user_as'  => $validated['user_as'],
-            'email'    => $validated['email'],
-            'name'     => $validated['name'],
-            'password' => Hash::make($validated['password']),
-        ]);
-
-        $student = Student::firstWhere('user_id' , $user->id);
-
-        $student->update([
-            'user_id' => $studentId,
-            'class'   => $validated['class'],
-        ]);
-
+        $Service->update($request,$studentId);
         return redirect()->back()->with(['successEditMsg' => 'Student updated successfully']);
     }
 
-    public function trash($studentId)
+    public function trash($studentId , StudentService $Service)
     {
-        User::where('id',$studentId)->delete();
+        $Service->trash($studentId);
         return redirect()->back()->with(['successDeleteMsg' => 'تم حذف الطالب مؤقتا']);
     }
 
-    public function indexTrash()
+    public function indexTrash(StudentService $Service)
     {
-        $students = User::with('student')->where('user_as','student')->onlyTrashed()->get();
+        $students = $Service->indexTrash();
         return view('admin.student.trash',compact('students'));
     }
 
-    public function forceDelete($studentId)
+    public function forceDelete($studentId,StudentService $Service)
     {
-        User::where('id',$studentId)->forceDelete();
+        $Service->forceDelete($studentId);
         return redirect()->back()->with(['successDeleteMsg' => 'تم حذف الطالب نهائيا']);
     }
 
-    public function restore($studentId)
+    public function restore($studentId,StudentService $Service)
     {
-        User::where('id',$studentId)->restore();
+        $Service->restore($studentId);
         return redirect()->back()->with(['successRestoreMsg' => 'تم استرجاع الطالب بنجاح']);
     }
 }
