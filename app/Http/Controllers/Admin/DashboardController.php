@@ -3,21 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\
-{
-    Student,
-    Teacher,
-    User,
-};
+use App\Services\Admin\DashboardService;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(DashboardService $Service)
     {
-        $userId         = session('id');
-        $dashboard      = User::firstWhere('id',$userId);
-        $count_teachers = Teacher::count();
-        $count_students = Student::count();
+        $info           = $Service->index();
+        $dashboard      = $info['dashboard'];
+        $count_teachers = $info['count_teachers'];
+        $count_students = $info['count_students'];
 
         return view('admin.dashboard' , compact('dashboard','count_teachers','count_students'));
     }

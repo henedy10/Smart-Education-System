@@ -2,34 +2,23 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Database\Eloquent\Builder;
-
 use App\Http\Controllers\Controller;
 use App\Http\Requests\admin\teacher\
 {
     store as TeacherStore,
     update,
 };
-
-use Illuminate\Support\Facades\Hash;
-
-use App\Models\
-{
-    Teacher,
-    User,
-};
-
-
+use App\Services\Admin\TeacherService;
 
 class TeacherController extends Controller
 {
 
-    public function index()
+    public function index(TeacherService $Service)
     {
-        $teachers = Teacher::whereHas('user', function (Builder $query) {
-                    $query->where('deleted_at' , NULL);})->get();
+        $info                   = $Service->index();
+        $teachers               = $info['teachers'];
+        $count_teachers_trashed = $info['count_teachers_trashed'];
 
-        $count_teachers_trashed = User::onlyTrashed()->where('user_as' , 'teacher')->count();
         return view('admin.teacher.index',compact('teachers','count_teachers_trashed'));
     }
 
@@ -38,77 +27,45 @@ class TeacherController extends Controller
         return view('admin.teacher.create');
     }
 
-    public function store(TeacherStore $request)
+    public function store(TeacherStore $request ,TeacherService $Service)
     {
-        $validated = $request->validated();
-
-        User::create([
-            'user_as'  => $validated['user_as'],
-            'email'    => $validated['email'],
-            'name'     => $validated['name'],
-            'password' => Hash::make($validated['password']),
-        ]);
-
-        $teacherId = User::latest()->value('id');
-
-        Teacher::create([
-            'user_id' => $teacherId,
-            'class'   => $validated['class'],
-            'subject' => $validated['subject'],
-        ]);
-
+        $Service->store($request);
         return redirect()->back()->with(['successCreateMsg' => 'Teacher created successfully']);
     }
 
-    public function edit($teacherId)
+    public function edit($teacherId , TeacherService $Service)
     {
-        $teacher = User::with('teacher')->firstWhere('id',$teacherId);
+        $teacher = $Service->edit($teacherId);
         return view('admin.teacher.edit',compact('teacher'));
     }
 
-    public function update(update $request ,$teacherId)
+    public function update(update $request ,$teacherId,TeacherService $Service)
     {
-        $validated = $request->validated();
-        $user      = User::find($teacherId);
-
-        $user->update([
-            'user_as'  => $validated['user_as'],
-            'email'    => $validated['email'],
-            'name'     => $validated['name'],
-            'password' => Hash::make($validated['password']),
-        ]);
-
-        $teacher = Teacher::firstWhere('user_id' , $user->id);
-        $teacher->update([
-            'user_id' => $teacherId,
-            'class'   => $validated['class'],
-            'subject' => $validated['subject'],
-        ]);
-
+        $Service->update($request,$teacherId);
         return redirect()->back()->with(['successEditMsg' => 'Teacher updated successfully']);
     }
 
-    public function trash($teacherId)
+    public function trash($teacherId , TeacherService $Service)
     {
-        User::where('id',$teacherId)->delete();
+        $Service->trash($teacherId);
         return redirect()->back()->with(['successDeleteMsg' => 'تم حذف المدرس مؤقتا']);
     }
 
-    public function indexTrash()
+    public function indexTrash(TeacherService $Service)
     {
-        $teachers = User::with('teacher')->where('user_as','teacher')->onlyTrashed()->get();
+        $teachers = $Service->indexTrash();
         return view('admin.teacher.trash',compact('teachers'));
     }
 
-    public function forceDelete($teacherId)
+    public function forceDelete($teacherId,TeacherService $Service)
     {
-        User::where('id',$teacherId)->forceDelete();
+        $Service->forceDelete($teacherId);
         return redirect()->back()->with(['successDeleteMsg' => 'تم حذف المدرس نهائيا']);
     }
 
-    public function restore($teacherId)
+    public function restore($teacherId , TeacherService $Service)
     {
-        User::where('id',$teacherId)->restore();
+        $Service->restore($teacherId);
         return redirect()->back()->with(['successRestoreMsg' => 'تم استرجاع المدرس بنجاح']);
     }
 }
