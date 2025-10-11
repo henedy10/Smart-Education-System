@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Middleware\{CheckTeacher,CheckStudent, checkLogin, PreventBackHistory, SetLocale};
+use App\Http\Middleware\{CheckAdmin, CheckTeacher,CheckStudent, checkLogin, PreventBackHistory, SetLocale};
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -18,6 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'checkLogin'         => checkLogin::class,
             'PreventBackHistory' => PreventBackHistory::class,
             'SetLocale'          => SetLocale::class,
+            'CheckAdmin'         => CheckAdmin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
