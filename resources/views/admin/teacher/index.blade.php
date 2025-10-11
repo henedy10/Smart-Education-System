@@ -47,12 +47,12 @@
         <table class="w-full border-collapse">
             <thead class="bg-blue-600 text-white">
                 <tr>
-                    <th class="py-3 px-4 text-left">#</th>
-                    <th class="py-3 px-4 text-left">{{__('messages.name')}}</th>
-                    <th class="py-3 px-4 text-left">{{__('messages.email')}}</th>
-                    <th class="py-3 px-4 text-left">{{__('messages.class')}}</th>
-                    <th class="py-3 px-4 text-left">{{__('messages.subject')}}</th>
-                    <th class="py-3 px-4 text-center">{{__('messages.actions')}}</th>
+                    <th class="py-3 px-4">#</th>
+                    <th class="py-3 px-4">{{__('messages.name')}}</th>
+                    <th class="py-3 px-4">{{__('messages.email')}}</th>
+                    <th class="py-3 px-4">{{__('messages.class')}}</th>
+                    <th class="py-3 px-4">{{__('messages.subject')}}</th>
+                    <th class="py-3 px-4">{{__('messages.actions')}}</th>
                 </tr>
             </thead>
 
@@ -70,11 +70,8 @@
                                 @method('DELETE')
                                 <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600 ml-2 transition">{{__('messages.delete')}}</button>
                             </form>
-                            <form action="#" method="POST">
-                                @csrf
-                                @method('PUT')
-                                <button class="bg-green-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-green-600 ml-2 transition">{{__('messages.edit')}}</button>
-                            </form>
+
+                            <a href="{{route('admin.teacher.edit',$teacher->user->id)}}" class="bg-green-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-green-600 ml-2 transition">{{__('messages.edit')}}</a>
                         </td>
                     </tr>
                 @empty

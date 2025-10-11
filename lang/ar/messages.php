@@ -104,4 +104,6 @@ return [
     'teachers_list'                      => 'قائمة المدرسين',
     'upload'                             => 'تحميل',
     'upload_homework_solution'           => 'رفع حل الواجب',
+    'update_student'                     => 'تعديل بيانات الطالب',
+    'update_teacher'                     => 'تعديل بيانات المدرس',
 ];

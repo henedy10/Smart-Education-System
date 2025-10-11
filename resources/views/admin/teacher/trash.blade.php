@@ -10,6 +10,22 @@
 </head>
 
 <body class="bg-gray-100 min-h-screen flex flex-col items-center p-10">
+
+    <!-- Success Message -->
+    @if (session('successDeleteMsg'))
+        <div class="mb-6 w-full max-w-2xl px-4">
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl shadow text-center">
+                {{ session('successDeleteMsg') }}
+            </div>
+        </div>
+    @elseif (session('successRestoreMsg'))
+        <div class="mb-6 w-full max-w-2xl px-4">
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl shadow text-center">
+                {{ session('successRestoreMsg') }}
+            </div>
+        </div>
+    @endif
+
     <!-- زر الرجوع -->
     <div class="w-full max-w-6xl flex justify-start mb-6">
         <a href="{{route('admin.teacher.index')}}"
@@ -39,12 +55,12 @@
         <table class="w-full border-collapse">
             <thead class="bg-blue-600 text-white">
                 <tr>
-                    <th class="py-3 px-4 text-left">#</th>
-                    <th class="py-3 px-4 text-left">{{__('messages.name')}}</th>
-                    <th class="py-3 px-4 text-left">{{__('messages.email')}}</th>
-                    <th class="py-3 px-4 text-left">{{__('messages.class')}}</th>
-                    <th class="py-3 px-4 text-left">{{__('messages.subject')}}</th>
-                    <th class="py-3 px-4 text-center">{{__('messages.actions')}}</th>
+                    <th class="py-3 px-4">#</th>
+                    <th class="py-3 px-4">{{__('messages.name')}}</th>
+                    <th class="py-3 px-4">{{__('messages.email')}}</th>
+                    <th class="py-3 px-4">{{__('messages.class')}}</th>
+                    <th class="py-3 px-4">{{__('messages.subject')}}</th>
+                    <th class="py-3 px-4">{{__('messages.actions')}}</th>
                 </tr>
             </thead>
 

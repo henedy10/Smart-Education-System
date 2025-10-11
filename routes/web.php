@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\AccountUserController;
 use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\TeacherController;
 use App\Http\Controllers\Student\
 {
     HomeController,
@@ -48,25 +51,32 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
     });
 
     /** Admin Routes */
-
-    Route::controller(AdminController::class)->group(function(){
+    Route::controller(AdminDashboardController::class)->group(function(){
         Route::get('/dashboard' , 'index')->name('admin.index');
+    });
 
-        Route::get('/students','studentIndex')->name('admin.student.index');
-        Route::get('/students/create','studentCreate')->name('admin.student.create');
-        Route::post('/students','studentStore')->name('admin.student.store');
-        Route::delete('/students/{user}/trash','studentTrash')->name('admin.student.trash');
-        Route::get('/students/trashed','studentIndexTrash')->name('admin.student.index.trash');
-        Route::delete('/students/{user}/forceDelete','studentForceDelete')->name('admin.student.forceDelete');
-        Route::post('/students/{user}/restore','studentRestore')->name('admin.student.restore');
+    Route::controller(StudentController::class)->group(function(){
+        Route::get('/students','index')->name('admin.student.index');
+        Route::get('/students/create','create')->name('admin.student.create');
+        Route::post('/students','store')->name('admin.student.store');
+        Route::get('/students/{user}/edit','edit')->name('admin.student.edit');
+        Route::put('/students/{user}','update')->name('admin.student.update');
+        Route::delete('/students/{user}/trash','trash')->name('admin.student.trash');
+        Route::get('/students/trashed','indexTrash')->name('admin.student.index.trash');
+        Route::delete('/students/{user}/forceDelete','forceDelete')->name('admin.student.forceDelete');
+        Route::post('/students/{user}/restore','restore')->name('admin.student.restore');
+    });
 
-        Route::get('/teachers','teacherIndex')->name('admin.teacher.index');
-        Route::get('/teachers/create','teacherCreate')->name('admin.teacher.create');
-        Route::post('/teachers','teacherStore')->name('admin.teacher.store');
-        Route::delete('/teachers/{user}/trash','teacherTrash')->name('admin.teacher.trash');
-        Route::get('/teachers/trashed','teacherIndexTrash')->name('admin.teacher.index.trash');
-        Route::delete('/teachers/{user}/forceDelete','teacherForceDelete')->name('admin.teacher.forceDelete');
-        Route::post('/teachers/{user}/restore','teacherRestore')->name('admin.teacher.restore');
+    Route::controller(TeacherController::class)->group(function(){
+        Route::get('/teachers','index')->name('admin.teacher.index');
+        Route::get('/teachers/create','create')->name('admin.teacher.create');
+        Route::get('/teachers/{user}/edit','edit')->name('admin.teacher.edit');
+        Route::put('/teachers/{user}','update')->name('admin.teacher.update');
+        Route::post('/teachers','store')->name('admin.teacher.store');
+        Route::delete('/teachers/{user}/trash','trash')->name('admin.teacher.trash');
+        Route::get('/teachers/trashed','indexTrash')->name('admin.teacher.index.trash');
+        Route::delete('/teachers/{user}/forceDelete','forceDelete')->name('admin.teacher.forceDelete');
+        Route::post('/teachers/{user}/restore','restore')->name('admin.teacher.restore');
     });
 
     /** Student Routes */

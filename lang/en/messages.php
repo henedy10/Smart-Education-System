@@ -104,4 +104,6 @@ return [
     'teachers_list'                      => 'Teachers List',
     'upload'                             => 'Upload',
     'upload_homework_solution'           => 'Upload Homework Solution',
+    'update_student'                     => 'Edit Student',
+    'update_teacher'                     => 'Edit Teacher',
 ];
