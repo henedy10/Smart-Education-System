@@ -13,13 +13,9 @@ use App\Services\Admin\TeacherService;
 class TeacherController extends Controller
 {
 
-    public function index(TeacherService $Service)
+    public function index()
     {
-        $info                   = $Service->index();
-        $teachers               = $info['teachers'];
-        $count_teachers_trashed = $info['count_teachers_trashed'];
-
-        return view('admin.teacher.index',compact('teachers','count_teachers_trashed'));
+        return view('admin.teacher.index');
     }
 
     public function create()

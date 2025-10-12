@@ -13,13 +13,9 @@ use App\Services\Admin\StudentService;
 
 class StudentController extends Controller
 {
-    public function index(StudentService $Service)
+    public function index()
     {
-        $info                   = $Service->index();
-        $students               = $info['students'];
-        $count_students_trashed = $info['count_students_trashed'];
-
-        return view('admin.student.index',compact('students','count_students_trashed'));
+        return view('admin.student.index');
     }
 
     public function create()

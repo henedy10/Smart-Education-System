@@ -1,7 +1,6 @@
 <?php
 namespace App\Services\Admin ;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Hash;
 
 use App\Models\
@@ -12,19 +11,6 @@ use App\Models\
 
 class StudentService
 {
-    public function index()
-    {
-        $students = Student::whereHas('user', function (Builder $query) {
-                    $query->where('deleted_at' , NULL);})->get();
-
-        $count_students_trashed = User::onlyTrashed()->where('user_as' , 'student')->count();
-
-        return
-        [
-            'students'=>$students , 'count_students_trashed'=>$count_students_trashed
-        ];
-    }
-
     public function store($request)
     {
         $validated = $request->validated();
