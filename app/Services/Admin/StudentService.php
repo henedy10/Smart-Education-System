@@ -61,12 +61,6 @@ class StudentService
         User::where('id',$studentId)->delete();
     }
 
-    public function indexTrash()
-    {
-        $students = User::with('student')->where('user_as','student')->onlyTrashed()->get();
-        return $students;
-    }
-
     public function forceDelete($studentId)
     {
         User::where('id',$studentId)->forceDelete();

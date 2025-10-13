@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
     <title>{{__('messages.students_list')}}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    @livewireStyles
 </head>
 
 <body class="bg-gray-100 min-h-screen flex flex-col items-center p-10">
@@ -38,61 +38,7 @@
     </div>
 
     <h1 class="text-3xl font-bold text-gray-800 mb-8">{{__('messages.students_list')}}</h1>
-
-    <div class="mb-6 w-full max-w-3xl flex items-center gap-3">
-        <!-- Search Input -->
-        <input
-            type="text"
-            id="search"
-            placeholder="{{__('messages.search_by_name')}} ...."
-            class="flex-1 px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-        >
-    </div>
-
-    <!-- Table -->
-    <div class="overflow-x-auto w-full max-w-6xl bg-white rounded-2xl shadow-md">
-        <table class="w-full border-collapse">
-            <thead class="bg-blue-600 text-white">
-                <tr>
-                    <th class="py-3 px-4">#</th>
-                    <th class="py-3 px-4">{{__('messages.name')}}</th>
-                    <th class="py-3 px-4">{{__('messages.email')}}</th>
-                    <th class="py-3 px-4">{{__('messages.class')}}</th>
-                    <th class="py-3 px-4">{{__('messages.subject')}}</th>
-                    <th class="py-3 px-4">{{__('messages.actions')}}</th>
-                </tr>
-            </thead>
-
-            <tbody class="divide-y divide-gray-200 text-gray-700">
-                @forelse ($students as $student)
-                    <tr class="hover:bg-gray-50 transition">
-                        <td class="py-3 px-4 font-medium text-gray-600">{{ $loop->iteration }}</td>
-                        <td class="py-3 px-4 font-semibold">{{ $student->name }}</td>
-                        <td class="py-3 px-4 text-blue-600">{{ $student->email }}</td>
-                        <td class="py-3 px-4 font-semibold">{{ $student->student->class }}</td>
-                        <td class="py-3 px-4">{{ $student->student->subject }}</td>
-                        <td class="py-3 px-4 text-center flex">
-                            <form action="{{route('admin.student.forceDelete',$student->id)}}" method="POST" onsubmit="return confirmDelete()">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-600 ml-2 transition">{{__('messages.delete')}}</button>
-                            </form>
-                            <form action="{{route('admin.student.restore',$student->id)}}" method="POST">
-                                @csrf
-                                <button class="bg-blue-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-blue-600 ml-2 transition">{{__('messages.restore')}}</button>
-                            </form>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" class="py-4 text-center text-red-500 font-medium">
-                            * {{__('messages.no_students')}}
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
-    </div>
+    @livewire('trash-student')
 
     <script>
         function confirmDelete()
@@ -100,6 +46,6 @@
             return confirm('Are you sure to delete it ? it will delete forever?')
         }
     </script>
-
+@livewireScripts
 </body>
 </html>

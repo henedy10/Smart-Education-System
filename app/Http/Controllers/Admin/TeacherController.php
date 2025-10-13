@@ -47,10 +47,9 @@ class TeacherController extends Controller
         return redirect()->back()->with(['successDeleteMsg' => 'تم حذف المدرس مؤقتا']);
     }
 
-    public function indexTrash(TeacherService $Service)
+    public function indexTrash()
     {
-        $teachers = $Service->indexTrash();
-        return view('admin.teacher.trash',compact('teachers'));
+        return view('admin.teacher.trash');
     }
 
     public function forceDelete($teacherId,TeacherService $Service)

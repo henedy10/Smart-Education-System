@@ -47,10 +47,9 @@ class StudentController extends Controller
         return redirect()->back()->with(['successDeleteMsg' => 'تم حذف الطالب مؤقتا']);
     }
 
-    public function indexTrash(StudentService $Service)
+    public function indexTrash()
     {
-        $students = $Service->indexTrash();
-        return view('admin.student.trash',compact('students'));
+        return view('admin.student.trash');
     }
 
     public function forceDelete($studentId,StudentService $Service)
