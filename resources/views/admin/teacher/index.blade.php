@@ -19,6 +19,25 @@
             </div>
         </div>
     @endif
+
+    <div class="w-full">
+        <div class="p-3 rounded-xl flex flex-row-reverse gap-1">
+            <!-- الزرار في اليمين -->
+            <button id="btn"
+            class="bg-red-500 text-white rounded-full w-6 h-6 text-sm font-semibold  hover:bg-red-600 transition">
+            !
+            </button>
+
+        <!-- الرسالة -->
+        <p id="alert"
+            class="hidden text-sm text-red-800 bg-red-100 px-4 py-2 rounded-lg leading-relaxed transition-all duration-300">
+            ⚠️ <strong>Warning:</strong> If you delete a teacher, their data can be retrieved again within
+            <strong>30 days</strong>. After that, it will be permanently deleted automatically.
+        </p>
+
+        </div>
+    </div>
+
     <!-- زر الرجوع -->
     <div class="w-full max-w-6xl flex justify-start mb-6">
         <a href="{{route('admin.index')}}"
@@ -36,10 +55,19 @@
 
     @livewire('search-teacher')
     <script>
+
+        let btn   = document.getElementById('btn')
+        let alert = document.getElementById('alert')
+
         function confirmDelete()
         {
             return confirm('Are you sure to delete it ?')
         }
+
+        btn.addEventListener('click',function(){
+            alert.classList.toggle('hidden')
+        })
+
     </script>
 @livewireScripts
 </body>
