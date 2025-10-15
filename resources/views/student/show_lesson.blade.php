@@ -29,7 +29,7 @@
                     </div>
                 </div>
         @empty
-            <h2 class="text-lg text-red-700 font-bold">* {{__('messages.no_lessons')}}</h2>
+            <h2 class="text-lg text-red-700 font-bold">* {{__('messages.no_lesson')}}</h2>
         @endforelse
     </div>
 @endsection

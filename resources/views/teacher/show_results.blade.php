@@ -1,6 +1,6 @@
 @extends('teacher.layout.app')
 
-@section('title') نتائج الطلاب @endsection
+@section('title') {{__('messages.results')}}@endsection
 
 @section('content')
 
@@ -16,7 +16,7 @@
 
             <div class="flex flex-col sm:flex-row  items-center gap-4 mb-6">
                 @if ($quizzes->isEmpty())
-                    <h2 class="text-red-500 font-bold">* لا يوجد نتائج حاليا</h2>
+                    <h2 class="text-red-500 font-bold">* {{__('messages.no_results')}}</h2>
                 @else
                 <div>
                     <select id="quizFilter" class="border border-gray-300 rounded p-2 w-full sm:w-64">
