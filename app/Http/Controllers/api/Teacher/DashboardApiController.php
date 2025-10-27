@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Http\Controllers\api\Teacher;
+
+use App\Http\Controllers\Controller;
+use App\Services\Teacher\DashboardService;
+use Illuminate\Http\Request;
+
+class DashboardApiController extends Controller
+{
+    public function index(DashboardService $dashboard)
+    {
+        $teacher = $dashboard->index();
+        return response()->json([
+            'status' => 'Success',
+            'data'   => $teacher
+        ],200);
+    }
+}

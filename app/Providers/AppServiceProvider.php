@@ -23,18 +23,40 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         RateLimiter::for('login', function (Request $request) {
-            return Limit::perHour(30)->by($request->ip())->response(function (Request $request, array $headers) {
+            return Limit::perHour(5)->by($request->ip())->response(function (Request $request, array $headers) {
                 $retryAfterSeconds = $headers['Retry-After'] ?? 3600;
                 $availableAt = now()->addSeconds($retryAfterSeconds)->format('Y-m-d H:i:s');
                 return response()->view('errors.too-many-requests',compact('availableAt'));
             });
         });
+        RateLimiter::for('loginApi', function (Request $request) {
+            return Limit::perHour(5)->by($request->ip())->response(function (Request $request, array $headers) {
+                $retryAfterSeconds = $headers['Retry-After'] ?? 3600;
+                $availableAt = now()->addSeconds($retryAfterSeconds)->format('Y-m-d H:i:s');
+                return response()->json([
+                    'success'     => false,
+                    'msg'         => 'too-many-requests',
+                    'availableAt' => $availableAt,
+                ],429)->header('X-Rate-Limiting-Remaining',0);
+            });
+        });
 
         RateLimiter::for('updatePassword', function (Request $request) {
-            return Limit::perHour(30)->by($request->ip())->response(function (Request $request, array $headers) {
+            return Limit::perHour(5)->by($request->ip())->response(function (Request $request, array $headers) {
                 $retryAfterSeconds = $headers['Retry-After'] ?? 3600;
                 $availableAt = now()->addSeconds($retryAfterSeconds)->format('Y-m-d H:i:s');
                 return response()->view('errors.too-many-requests',compact('availableAt'));
+            });
+        });
+        RateLimiter::for('updatePasswordApi', function (Request $request) {
+            return Limit::perHour(5)->by($request->ip())->response(function (Request $request, array $headers) {
+                $retryAfterSeconds = $headers['Retry-After'] ?? 3600;
+                $availableAt = now()->addSeconds($retryAfterSeconds)->format('Y-m-d H:i:s');
+                return response()->json([
+                    'success'     => false,
+                    'msg'         => 'too-many-requests',
+                    'availableAt' => $availableAt,
+                ],429)->header('X-Rate-Limiting-Remaining',0);
             });
         });
     }

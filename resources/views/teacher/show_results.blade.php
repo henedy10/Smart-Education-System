@@ -52,11 +52,9 @@
                                 <td class="p-3 border"><span class="text-red-500">{{$quiz->duration}}</span></td>
                                 <td class="p-3 border">
                                     @if (now('africa/cairo')<$quiz->start_time->copy()->addMinutes($quiz->duration)->format('Y-m-d H:i:s'))
-                                        <button type="submit" onclick="alert('لا يمكن رؤيه النتائج الا بعد انتهاء وقت الامتحان')"  class="text-green-600 font-semibold">{{__('messages.show')}}</button>
+                                        <a onclick="alert('لا يمكن رؤيه النتائج الا بعد انتهاء وقت الامتحان')"  class="text-green-600 font-semibold">{{__('messages.show')}}</a>
                                     @else
-                                        <form action="{{route('teacher.quizResults.show',$TeacherId)}}" method="GET">
-                                            <button type="submit" name="quiz_id" value="{{$quiz->id}}" class="text-green-600 font-semibold">{{__('messages.show')}}</button>
-                                        </form>
+                                        <a href="{{route('teacher.quizResults.show',[$TeacherId,$quiz->id])}}" class="text-green-600 font-semibold">{{__('messages.show')}}</a>
                                     @endif
                                 </td>
                             </tr>

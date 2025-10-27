@@ -58,16 +58,31 @@ class StudentService
 
     public function trash($studentId)
     {
-        User::where('id',$studentId)->delete();
+        $query = User::where('id',$studentId)->delete();
+        if($query){
+            return true;
+        }
+
+        return false;
     }
 
     public function forceDelete($studentId)
     {
-        User::where('id',$studentId)->forceDelete();
+        $query = User::where('id',$studentId)->forceDelete();
+        if($query){
+            return true;
+        }
+
+        return false;
     }
 
     public function restore($studentId)
     {
-        User::where('id',$studentId)->restore();
+        $query = User::where('id',$studentId)->restore();
+        if($query){
+            return true;
+        }
+
+        return false;
     }
 }

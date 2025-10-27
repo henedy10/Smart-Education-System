@@ -19,6 +19,6 @@ class CheckStudent
             return $next($request);
         }
 
-        return redirect()->route('index')->withErrors(['login' => __('messages.check_student_middleware')]);
+        return redirect()->route('index')->withErrors(['login' => __('messages.check_role_middleware')]);
     }
 }

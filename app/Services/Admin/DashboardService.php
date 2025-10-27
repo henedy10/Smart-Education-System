@@ -7,12 +7,15 @@ use App\Models\
     Teacher,
     User,
 };
+use App\Traits\UserHelper;
 
 class DashboardService
 {
+    use UserHelper;
+
     public function index()
     {
-        $userId         = session('id');
+        $userId         = $this->getUserId();
         $dashboard      = User::firstWhere('id',$userId);
         $count_teachers = Teacher::count();
         $count_students = Student::count();

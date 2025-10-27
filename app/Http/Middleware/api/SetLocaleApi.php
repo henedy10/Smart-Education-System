@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Http\Middleware\api;
 
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckAdmin
+class SetLocaleApi
 {
     /**
      * Handle an incoming request.
@@ -15,9 +15,6 @@ class CheckAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(session()->has('user_as') && session('user_as') === 'admin' ){
-            return $next($request);
-        }
-        return redirect()->route('index')->withErrors(['login' => __('messages.check_role_middleware')]);
+        return $next($request);
     }
 }

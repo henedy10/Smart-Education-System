@@ -58,16 +58,31 @@ class TeacherService
 
     public function trash($teacherId)
     {
-        User::where('id',$teacherId)->delete();
+        $query = User::where('id',$teacherId)->delete();
+        if($query){
+            return true;
+        }
+
+        return false;
     }
 
     public function forceDelete($teacherId)
     {
-        User::where('id',$teacherId)->forceDelete();
+        $query = User::where('id',$teacherId)->forceDelete();
+        if($query){
+            return true;
+        }
+
+        return false;
     }
 
     public function restore($teacherId)
     {
-        User::where('id',$teacherId)->restore();
+        $query = User::where('id',$teacherId)->restore();
+        if($query){
+            return true;
+        }
+
+        return false;
     }
 }

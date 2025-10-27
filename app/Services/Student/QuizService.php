@@ -40,7 +40,7 @@ class QuizService
                     ->first();
         $options = [];
 
-        if($quiz->count() == 1)
+        if($quiz)
         {
             foreach($quiz->questions as $Q)
             {
@@ -71,37 +71,36 @@ class QuizService
                             ->where('teacher_id',$teacherId)
                             ->orderBy('start_time','desc')
                             ->first();
+                            
+        if($quiz){
+            foreach($quiz->questions as $Q)
+            {
+                $options                 = request()->answer;
+                $check_selection[$Q->id] = (isset($options[$Q->id]) && $Q -> correct_option == $options[$Q->id]) ? true : false;
 
-        foreach($quiz->questions as $Q)
-        {
-            $options                 = request()->answer;
-            $check_selection[$Q->id] = (isset($options[$Q->id]) && $Q -> correct_option == $options[$Q->id]) ? true : false;
+                StudentOption::create([
+                    'student_id'     =>  $student->id,
+                    'quiz_id'        =>  $quiz->id,
+                    'question_id'    =>  $Q->id,
+                    'select_option'  =>  $options[$Q->id] ?? null,
+                    'status_option'  =>  $check_selection[$Q->id],
+                ]);
 
-            StudentOption::create([
-                'student_id'     =>  $student->id,
-                'quiz_id'        =>  $quiz->id,
-                'question_id'    =>  $Q->id,
-                'select_option'  =>  $options[$Q->id] ?? null,
-                'status_option'  =>  $check_selection[$Q->id],
-            ]);
-
-            if($check_selection[$Q->id]){
-                $studentMark += $Q->question_mark;
+                if($check_selection[$Q->id]){
+                    $studentMark += $Q->question_mark;
+                }
+            }
+            $student_result = QuizResult::where('student_id',$student->id)
+                                        ->where('quiz_id',$quiz->id)
+                                        ->first();
+            if($student_result)
+            {
+                $student_result->update([
+                    'student_mark' => $studentMark,
+                    'test'         => true,
+                ]);
             }
         }
-
-        $student_result = QuizResult::where('student_id',$student->id)
-                                    ->where('quiz_id',$quiz->id)
-                                    ->first();
-
-        if($student_result)
-        {
-            $student_result->update([
-                'student_mark' => $studentMark,
-                'test'         => true,
-            ]);
-        }
-
         return
         [
             'student'     => $student,

@@ -54,7 +54,7 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
     /** Admin Routes */
     Route::middleware(CheckAdmin::class)->group(function(){
         Route::controller(AdminDashboardController::class)->group(function(){
-            Route::get('/dashboard' , 'index')->name('admin.index');
+            Route::get('/admin/dashboard' , 'index')->name('admin.index');
         });
 
         Route::controller(StudentController::class)->group(function(){
@@ -65,7 +65,7 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
             Route::put('/students/{user}','update')->name('admin.student.update');
             Route::delete('/students/{user}/trash','trash')->name('admin.student.trash');
             Route::get('/students/trashed','indexTrash')->name('admin.student.index.trash');
-            Route::delete('/students/{user}/forceDelete','forceDelete')->name('admin.student.forceDelete');
+            Route::delete('/students/{user}/force-delete','forceDelete')->name('admin.student.forceDelete');
             Route::post('/students/{user}/restore','restore')->name('admin.student.restore');
         });
 
@@ -77,7 +77,7 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
             Route::post('/teachers','store')->name('admin.teacher.store');
             Route::delete('/teachers/{user}/trash','trash')->name('admin.teacher.trash');
             Route::get('/teachers/trashed','indexTrash')->name('admin.teacher.index.trash');
-            Route::delete('/teachers/{user}/forceDelete','forceDelete')->name('admin.teacher.forceDelete');
+            Route::delete('/teachers/{user}/force-delete','forceDelete')->name('admin.teacher.forceDelete');
             Route::post('/teachers/{user}/restore','restore')->name('admin.teacher.restore');
         });
     });
@@ -168,7 +168,7 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
                         Route::post('','storeQuiz')->name('quizzes.store');
                         Route::get('/create','createQuiz')->name('quizzes.create');
                         Route::get('','showQuiz')-> name('quizzes.show');
-                        Route::get('/results','showResult')-> name('quizResults.show');
+                        Route::get('/results/{quizId}','showResult')-> name('quizResults.show');
                     });
                 });
             });

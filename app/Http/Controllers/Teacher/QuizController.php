@@ -24,9 +24,9 @@ class QuizController extends Controller
         return view('teacher.show_results',compact('TeacherId','quizzes'));
     }
 
-    public function showResult($TeacherId, QuizService $quiz)
+    public function showResult($TeacherId,$QuizID, QuizService $quiz)
     {
-        $results = $quiz->getResults(request()->quiz_id);
+        $results = $quiz->getResults($QuizID);
         return view('teacher.show_content_results',compact('TeacherId','results'));
     }
 }

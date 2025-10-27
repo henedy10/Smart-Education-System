@@ -9,3 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('model:prune')->everySixHours();
+Schedule::command('sanctum:prune-expired --hours=24')->daily();

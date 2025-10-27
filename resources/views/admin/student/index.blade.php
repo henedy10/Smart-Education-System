@@ -53,8 +53,6 @@
 
     <h1 class="text-3xl font-bold text-gray-800 mb-8">{{__('messages.students_list')}}</h1>
     @livewire('search-student')
-
-
     <script>
 
         let btn   = document.getElementById('btn')

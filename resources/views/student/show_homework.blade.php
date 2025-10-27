@@ -25,7 +25,7 @@
                     <p class="text-sm text-gray-700 mb-4">{{$homework->content_homework}}</p>
                     <p class="text-xs text-gray-500 mb-3"> {{__('messages.deadline')}}: {{$homework->deadline}}</p>
                     <div class="flex">
-                        <a href="{{asset('storage/'.$homework->file_homework)}}" download class="bg-blue-600 text-white px-3 py-1 ml-2 rounded hover:bg-blue-500 text-sm">{{__('messages.upload')}}</a>
+                        <a href="{{asset('storage/'.$homework->file_homework)}}" download class="bg-blue-600 text-white px-3 py-1 ml-2 rounded hover:bg-blue-500 text-sm">{{__('messages.download')}}</a>
                         <a href="{{asset('storage/'.$homework->file_homework)}}" target="_blank" class="bg-red-600 text-white px-3 py-1 ml-2 rounded hover:bg-red-500 text-sm">{{__('messages.show')}}</a>
                         @if (now('africa/cairo')<=$homework->deadline)
                             <form action="{{route('student.homeworkSolution.create',[$class,$subject])}}" method="GET">

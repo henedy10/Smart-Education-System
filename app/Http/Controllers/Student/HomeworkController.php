@@ -19,25 +19,25 @@ class HomeworkController extends Controller
         ));
     }
 
-    public function createSolution($class, $subject, HomeworkService $homework)
+    public function createSolution($class, $subject)
     {
-        $homework        = $homework->createSolution(request()->homework_id);
-        $alreadyUploaded = $homework['alreadyUploaded'];
-        $homework_id     = $homework['homework_id'];
-
+        $homework_id = request()->upload_homework;
         return view('student.show_homework_uploading',compact
         (
             'homework_id',
             'class',
             'subject',
-            'alreadyUploaded',
         ));
     }
 
     public function storeSolution(storeHomeworkSolutions $request , HomeworkService $solution)
     {
-        $solution->storeSolution($request);
-        return redirect()->back()->with(['success' => __('messages.success_store_homework_solution')]);
+        $saved = $solution->storeSolution($request);
+        if($saved){
+            return redirect()->back()->with(['success' => __('messages.success_store_homework_solution')]);
+        }
+
+        return redirect()->back()->with(['failed' => __('messages.no_more_upload_solution')]);
     }
 
     public function showGrade($class,$subject,HomeworkService $grade)

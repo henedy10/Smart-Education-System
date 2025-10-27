@@ -23,25 +23,18 @@ class HomeworkService
         return $homeworks;
     }
 
-    public function createSolution($homeworkId)
+    public function storeSolution($request)
     {
         $userId          = $this->getUserId();
-        $studentId       = Student::where('user_id',$userId)->value('id');
-        $alreadyUploaded = SolutionStudentForHomework::where('student_id',$studentId)
+        $student         = Student::with('user')->firstWhere('user_id',$userId);
+        $homeworkId      = $request->homework_id;
+        $alreadyUploaded = SolutionStudentForHomework::where('student_id',$student->id)
                                                     ->where('homework_id',$homeworkId)
                                                     ->exists();
 
-        return [
-            'alreadyUploaded' => $alreadyUploaded,
-            'homework_id'     => $homeworkId,
-        ];
-    }
-
-    public function storeSolution($request)
-    {
-        $userId      = $this->getUserId();
-        $student     = Student::with('user')->firstWhere('user_id',$userId);
-        $homeworkId  = $request->homework_id;
+        if($alreadyUploaded){
+            return false;
+        }
         $fileName    = $student->user->name.'.'.$request->file('file')->getClientOriginalExtension();
         $filePath    = $request->file('file')->storeAs('solutions_homework',$fileName,'public');
 

@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\MassPrunable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class User extends Model
+use Laravel\Sanctum\HasApiTokens;
+class User extends Authenticatable
 {
-    use SoftDeletes,MassPrunable;
+    use SoftDeletes,HasApiTokens,MassPrunable;
 
     protected $guarded=[];
 
