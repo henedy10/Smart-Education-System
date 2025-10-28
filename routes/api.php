@@ -29,26 +29,13 @@ use App\Http\Middleware\api\
     SetLocaleApi,
 };
 
-
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-// Localization
-Route::get('/lang/{locale}',function (string $locale){
-    if (in_array($locale, ['en', 'ar'])) {
-        session(['locale' => $locale]);
-    }
-
-    return redirect()->back();
-})->name('SetLocale');
-
-Route::middleware(['PreventBackHistoryApi', 'SetLocaleApi'])->group(function(){
+Route::middleware(['SetLocaleApi'])->group(function(){
     Route::controller(AccountUserApiController::class)->group(function ()
     {
-        Route::middleware('checkLoginApi')->group(function(){
-            Route::get('/','index');
-        });
         Route::post('/passwords','updatePassword')->middleware('throttle:updatePasswordApi');
         Route::post('/login','login')->middleware('throttle:loginApi');
         Route::get('/logout','logout')->middleware('auth:sanctum');
@@ -99,8 +86,8 @@ Route::middleware(['PreventBackHistoryApi', 'SetLocaleApi'])->group(function(){
                 Route::prefix('/homeworks/{class}/{subject}')->group(function ()
                 {
                     Route::get('','index');
-                    Route::post('/solutions/store','storeSolution');
-                    Route::get('/details','showGrade');
+                    Route::post('/{homeworkId}/solutions/store','storeSolution');
+                    Route::get('/{homeworkId}/details','showGrade');
                 });
             });
 
@@ -129,7 +116,7 @@ Route::middleware(['PreventBackHistoryApi', 'SetLocaleApi'])->group(function(){
 
                 Route::controller(TeacherLessonApiController::class)->group(function()
                 {
-                    Route::prefix('/lessons/{teacher}')->group(function()
+                    Route::prefix('/lessons/{teacherId}')->group(function()
                     {
                         Route::post('','store');
                         Route::get('','index');
@@ -138,14 +125,14 @@ Route::middleware(['PreventBackHistoryApi', 'SetLocaleApi'])->group(function(){
 
                 Route::controller(TeacherHomeworkApiController::class)->group(function()
                 {
-                    Route::prefix('/homeworks/teacher/{teacher}')->group(function()
+                    Route::prefix('/homeworks/teacher/{teacherId}')->group(function()
                     {
                         Route::post('','storeHomework');
                         Route::get('/solutions','indexSolution');
                         Route::get('/correction','indexHomework');
                     });
 
-                    Route::prefix('/homeworks/{student}/grades')->group(function()
+                    Route::prefix('/homeworks/{studentId}/grades')->group(function()
                     {
                         Route::post('','storeHomeworkGrades');
                         Route::put('','updateHomeworkGrade');
@@ -154,7 +141,7 @@ Route::middleware(['PreventBackHistoryApi', 'SetLocaleApi'])->group(function(){
 
                 Route::controller(TeacherQuizApiController::class)->group(function()
                 {
-                    Route::prefix('/quizzes/{teacher}')->group(function()
+                    Route::prefix('/quizzes/{teacherId}')->group(function()
                     {
                         Route::post('','storeQuiz');
                         Route::get('','indexResults');

@@ -32,8 +32,8 @@
                                 <button type="submit" value="{{$homework->id}}" name="upload_homework" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 text-sm">{{__('messages.upload')}}</button>
                             </form>
                         @else
-                            <form action="{{route('student.homeworkDetails.show',[$class,$subject])}}" method="GET">
-                                <button type="submit" name="homework_id" value="{{$homework->id}}" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 text-sm">{{__('messages.grade')}}</button>
+                            <form action="{{route('student.homeworkDetails.show',[$class,$subject,$homework->id])}}" method="GET">
+                                <button type="submit" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 text-sm">{{__('messages.grade')}}</button>
                             </form>
                         @endif
                     </div>

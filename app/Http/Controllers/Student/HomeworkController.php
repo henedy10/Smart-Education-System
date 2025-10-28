@@ -30,9 +30,9 @@ class HomeworkController extends Controller
         ));
     }
 
-    public function storeSolution(storeHomeworkSolutions $request , HomeworkService $solution)
+    public function storeSolution(storeHomeworkSolutions $request , HomeworkService $solution , $homeworkId)
     {
-        $saved = $solution->storeSolution($request);
+        $saved = $solution->storeSolution($request,$homeworkId);
         if($saved){
             return redirect()->back()->with(['success' => __('messages.success_store_homework_solution')]);
         }
@@ -40,9 +40,9 @@ class HomeworkController extends Controller
         return redirect()->back()->with(['failed' => __('messages.no_more_upload_solution')]);
     }
 
-    public function showGrade($class,$subject,HomeworkService $grade)
+    public function showGrade($class,$subject,HomeworkService $grade,$homeworkId)
     {
-        $homeworkDetails = $grade->showGrade(request()->homework_id);
+        $homeworkDetails = $grade->showGrade($homeworkId);
         return view('student.show_homework_grade',compact
         (
             'class',

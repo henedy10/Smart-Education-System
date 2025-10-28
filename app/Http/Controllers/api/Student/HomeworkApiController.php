@@ -25,9 +25,9 @@ class HomeworkApiController extends Controller
         ],200);
     }
 
-    public function storeSolution(storeHomeworkSolutions $request , HomeworkService $solution)
+    public function storeSolution(storeHomeworkSolutions $request , HomeworkService $solution , $homeworkId)
     {
-        $saved = $solution->storeSolution($request);
+        $saved = $solution->storeSolution($request,$homeworkId);
         if(!$saved){
             return response()->json([
                 'status'  => 'Failed',
@@ -41,9 +41,9 @@ class HomeworkApiController extends Controller
         ],201);
     }
 
-    public function showGrade(HomeworkService $grade)
+    public function showGrade(HomeworkService $grade , $homeworkId)
     {
-        $homeworkDetails = $grade->showGrade(request()->homework_id);
+        $homeworkDetails = $grade->showGrade($homeworkId);
         if(!$homeworkDetails){
             return response()->json([
                 'status' => 'Failed',

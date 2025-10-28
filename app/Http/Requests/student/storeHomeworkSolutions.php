@@ -21,9 +21,9 @@ class storeHomeworkSolutions extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'file'        => 'required|file|mimes:pdf,doc,docx',
-            'homework_id' => 'required|exists:homeworks,id'
+        return
+        [
+            'file' => 'required|file|mimes:pdf,doc,docx'
         ];
     }
 }

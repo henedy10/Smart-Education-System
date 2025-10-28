@@ -32,7 +32,9 @@ use Illuminate\Support\Facades\Route;
 
 // Localization
 Route::get('/lang/{locale}',function (string $locale){
-    if (in_array($locale, ['en', 'ar'])) {
+    if (!in_array($locale, ['en', 'ar'])) {
+        session(['locale' => 'en']);
+    }else{
         session(['locale' => $locale]);
     }
 
@@ -104,8 +106,8 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
                     {
                         Route::get('','index')->name('homework.show');
                         Route::get('/solutions/create','createSolution')->name('homeworkSolution.create');
-                        Route::post('/solutions/store','storeSolution')->name('homeworkSolution.store');
-                        Route::get('/details','showGrade')->name('homeworkDetails.show');
+                        Route::post('/{homeworkId}/solutions/store','storeSolution')->name('homeworkSolution.store');
+                        Route::get('/{homeworkId}/details','showGrade')->name('homeworkDetails.show');
                     });
                 });
 
@@ -136,7 +138,7 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
 
                 Route::controller(TeacherLessonController::class)->group(function()
                 {
-                    Route::prefix('/lessons/{teacher}')->group(function()
+                    Route::prefix('/lessons/{teacherId}')->group(function()
                     {
                         Route::post('','store')->name('lessons.store');
                         Route::get('','index')->name('lessons.show');
@@ -145,7 +147,7 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
 
                 Route::controller(TeacherHomeworkController::class)->group(function()
                 {
-                    Route::prefix('/homeworks/teacher/{teacher}')->group(function()
+                    Route::prefix('/homeworks/teacher/{teacherId}')->group(function()
                     {
                         Route::post('','storeHomework')->name('homeworks.store');
                         Route::get('/create','createHomework')->name('homeworks.create');
@@ -154,7 +156,7 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
                         Route::get('/action','showAction')->name('homeworkAction.show');
                     });
 
-                    Route::prefix('/homeworks/{student}/grades')->group(function()
+                    Route::prefix('/homeworks/{studentId}/grades')->group(function()
                     {
                         Route::post('','storeHomeworkGrades')-> name('homeworkGrades.store');
                         Route::put('','updateHomeworkGrade')->name('homeworkGrades.update');
@@ -163,7 +165,7 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
 
                 Route::controller(TeacherQuizController::class)->group(function()
                 {
-                    Route::prefix('/quizzes/{teacher}')->group(function()
+                    Route::prefix('/quizzes/{teacherId}')->group(function()
                     {
                         Route::post('','storeQuiz')->name('quizzes.store');
                         Route::get('/create','createQuiz')->name('quizzes.create');

@@ -23,7 +23,7 @@ class CheckStudentApi
             ],401);
         }
 
-        if(Auth::user()->user_as !=='admin'){
+        if(Auth::user()->user_as !=='student'){
             return response()->json([
                 'success' => false,
                 'msg'     => __('messages.check_role_middleware')
