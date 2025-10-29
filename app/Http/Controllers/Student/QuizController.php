@@ -52,9 +52,9 @@ class QuizController extends Controller
         return view('student.show_result',compact('student','quiz','studentMark','class','subject'));
     }
 
-    public function showResults($class, $subject, QuizService $result)
+    public function indexResult($class, $subject, QuizService $result)
     {
-        $results = $result->showResult($class,$subject);
+        $results = $result->indexResult($class,$subject);
         return view('student.show_quiz_results',compact('class','subject','results'));
     }
 }

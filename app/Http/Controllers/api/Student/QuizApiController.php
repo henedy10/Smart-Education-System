@@ -4,6 +4,10 @@ namespace App\Http\Controllers\api\Student;
 
 use App\Services\Student\QuizService;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OptionResource;
+use App\Http\Resources\QuizResource;
+use App\Http\Resources\QuizResultResource;
+use App\Http\Resources\StudentResource;
 use Illuminate\Http\Request;
 
 class QuizApiController extends Controller
@@ -15,7 +19,7 @@ class QuizApiController extends Controller
         if($quiz){
             return response()->json([
                 'status' => 'Success',
-                'data'   => $quiz
+                'data'   => new QuizResource($quiz)
             ],200);
         }
 
@@ -41,8 +45,8 @@ class QuizApiController extends Controller
 
         return response()->json([
             'status'  => 'Success',
-            'quiz'    => $quiz,
-            'options' => $options
+            'quiz'    => new QuizResource($quiz),
+            'options' => OptionResource::collection($options)
         ],200);
     }
 
@@ -56,8 +60,8 @@ class QuizApiController extends Controller
         if($quiz){
             return response()->json([
                 'status'      => 'Success',
-                'dataStudent' => $student,
-                'quiz'        => $quiz,
+                'dataStudent' => new StudentResource($student),
+                'quiz'        => new QuizResource($quiz),
                 'studentMark' => $studentMark
             ],201);
         }
@@ -68,13 +72,13 @@ class QuizApiController extends Controller
         ],404);
     }
 
-    public function showResults($class, $subject, QuizService $result)
+    public function indexResult($class, $subject, QuizService $result)
     {
-        $results = $result->showResult($class,$subject);
-        if($results->count()>0){
+        $results = $result->indexResult($class,$subject);
+        if($results->count() > 0){
             return response()->json([
                 'status'  => 'Success',
-                'results' => $results
+                'results' => QuizResultResource::collection($results)
             ],200);
         }
 

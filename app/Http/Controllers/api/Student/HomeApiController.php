@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\Student;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TeacherResource;
 use App\Services\Student\HomeService;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,7 @@ class HomeApiController extends Controller
             return response()->json([
                 'status'    =>  'Success',
                 'student'   =>  $student->user->name,
-                'teachers'  =>  $teachers
+                'teachers'  =>  TeacherResource::collection($teachers)
             ],200);
         }
 
@@ -26,15 +27,5 @@ class HomeApiController extends Controller
             'status'  => 'Failed',
             'message' => 'There is no content now !'
         ],404);
-    }
-
-
-    public function showContent($class,$subject)
-    {
-        return response()->json([
-            __('messages.lessons')    =>  __('messages.lesson_msg'),
-            __('messages.homeworks')  =>  __('messages.homework_msg'),
-            __('messages.quizzes')    =>  __('messages.quiz_msg')
-        ],200);
     }
 }

@@ -71,7 +71,7 @@ class QuizService
                             ->where('teacher_id',$teacherId)
                             ->orderBy('start_time','desc')
                             ->first();
-                            
+
         if($quiz){
             foreach($quiz->questions as $Q)
             {
@@ -109,7 +109,7 @@ class QuizService
         ];
     }
 
-    public function showResult($class, $subject)
+    public function indexResult($class, $subject)
     {
         $userId    = $this->getUserId();
         $studentId = Student::where('user_id',$userId)->value('id');

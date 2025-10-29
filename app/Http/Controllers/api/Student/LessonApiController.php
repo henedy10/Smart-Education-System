@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\Student;
 use App\Services\Student\LessonService;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\LessonResource;
 use Illuminate\Http\Request;
 
 class LessonApiController extends Controller
@@ -19,8 +20,8 @@ class LessonApiController extends Controller
         }
 
         return response()->json([
-            'status' => 'Success',
-            'data'   => $lessons,
+            'status'    => 'Success',
+            'lessons'   => LessonResource::collection($lessons),
         ],200);
-}
+    }
 }

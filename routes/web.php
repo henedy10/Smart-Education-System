@@ -119,7 +119,7 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
                         Route::get('','showAvailableQuiz')->name('availableQuiz.show');
                         Route::get('/content','showQuizContent')->name('quizContent.show');
                         Route::post('/answers','storeAnswers')->name('answers.store');
-                        Route::get('/results','showResults')->name('results.show');
+                        Route::get('/results','indexResult')->name('results.show');
                     });
                 });
             });

@@ -98,7 +98,7 @@ Route::middleware(['SetLocaleApi'])->group(function(){
                     Route::get('','showAvailableQuiz');
                     Route::get('/content','showQuizContent');
                     Route::post('/answers','storeAnswer');
-                    Route::get('/results','showResults');
+                    Route::get('/results','indexResult');
                 });
             });
         });

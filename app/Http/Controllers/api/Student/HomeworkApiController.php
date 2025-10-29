@@ -5,6 +5,11 @@ namespace App\Http\Controllers\api\Student;
 use App\Http\Controllers\Controller;
 use App\Services\Student\HomeworkService;
 use App\Http\Requests\student\storeHomeworkSolutions;
+use App\Http\Resources\
+{
+    HomeworkResource,
+    HomeworkGradeResource,
+};
 use Illuminate\Http\Request;
 
 class HomeworkApiController extends Controller
@@ -14,14 +19,14 @@ class HomeworkApiController extends Controller
         $homeworks = $homework->index($class,$subject);
         if($homeworks->isEmpty()){
             return response()->json([
-                'status' => 'Failed',
+                'status'  => 'Failed',
                 'message' => 'No homeworks found!',
             ],404);
         }
 
         return response()->json([
-            'status' => 'Success',
-            'data'   => $homeworks,
+            'status'      => 'Success',
+            'homeworks'   => HomeworkResource::collection($homeworks),
         ],200);
     }
 
@@ -46,14 +51,14 @@ class HomeworkApiController extends Controller
         $homeworkDetails = $grade->showGrade($homeworkId);
         if(!$homeworkDetails){
             return response()->json([
-                'status' => 'Failed',
+                'status'  => 'Failed',
                 'message' => __('messages.no_assessment')
             ],404);
         }
 
         return response()->json([
             'status' => 'Success',
-            'data'   => $homeworkDetails
+            'data'   => new HomeworkGradeResource($homeworkDetails)
         ],200);
     }
 }
