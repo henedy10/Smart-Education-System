@@ -107,7 +107,7 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
                         Route::get('','index')->name('homework.show');
                         Route::get('/solutions/create','createSolution')->name('homeworkSolution.create');
                         Route::post('/{homeworkId}/solutions/store','storeSolution')->name('homeworkSolution.store');
-                        Route::get('/{homeworkId}/details','showGrade')->name('homeworkDetails.show');
+                        Route::get('/{homeworkId}/grade','showGrade')->name('homeworkDetails.show');
                     });
                 });
 
@@ -118,7 +118,7 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
                         Route::get('/action','showAction')->name('quizAction.show');
                         Route::get('','showAvailableQuiz')->name('availableQuiz.show');
                         Route::get('/content','showQuizContent')->name('quizContent.show');
-                        Route::post('/answers','storeAnswers')->name('answers.store');
+                        Route::post('/answers','storeAnswer')->name('answers.store');
                         Route::get('/results','indexResult')->name('results.show');
                     });
                 });

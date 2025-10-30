@@ -8,7 +8,7 @@
                     <p class="text-sm text-gray-600">عدد الأسئلة :{{$num_questions}} </p>
                     <p class="text-sm text-gray-600">الوقت : {{$quiz->duration}}</p>
                 </div>
-                <a href="{{route('quizContent.show',[$class,$subject])}}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+                <a href="{{route('student.quizContent.show',[$class,$subject])}}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
                     ابدأ الاختبار
                 </a>
             </li>

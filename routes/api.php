@@ -22,12 +22,12 @@ use App\Http\Controllers\api\Teacher\
     DashboardApiController,
 };
 
-use App\Http\Middleware\api\
-{
-    CheckAdminApi,
-    PreventBackHistoryApi,
-    SetLocaleApi,
-};
+// use App\Http\Middleware\api\
+// {
+//     CheckAdminApi,
+//     PreventBackHistoryApi,
+//     SetLocaleApi,
+// };
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -87,7 +87,7 @@ Route::middleware(['SetLocaleApi'])->group(function(){
                 {
                     Route::get('','index');
                     Route::post('/{homeworkId}/solutions/store','storeSolution');
-                    Route::get('/{homeworkId}/details','showGrade');
+                    Route::get('/{homeworkId}/grade','showGrade');
                 });
             });
 

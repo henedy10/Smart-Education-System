@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OptionResource extends JsonResource
+class SolutionStudentForHomeworkResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,8 +15,8 @@ class OptionResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'option_titel' => $this->option_title,
+            'homework_solution_file' => $this->homework_solution_file,
+            'student_grade'          => new HomeworkGradeResource($this->whenLoaded('homeworkGrade')),
         ];
     }
 }

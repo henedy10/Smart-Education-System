@@ -33,7 +33,6 @@ class QuizApiController extends Controller
     {
         $content = $content->showContentQuiz($class,$subject);
         $quiz    = $content['quiz'];
-        $options = $content['options'];
 
         if(!$quiz)
         {
@@ -46,7 +45,6 @@ class QuizApiController extends Controller
         return response()->json([
             'status'  => 'Success',
             'quiz'    => new QuizResource($quiz),
-            'options' => OptionResource::collection($options)
         ],200);
     }
 
@@ -60,7 +58,7 @@ class QuizApiController extends Controller
         if($quiz){
             return response()->json([
                 'status'      => 'Success',
-                'dataStudent' => new StudentResource($student),
+                'student'     => new StudentResource($student),
                 'quiz'        => new QuizResource($quiz),
                 'studentMark' => $studentMark
             ],201);

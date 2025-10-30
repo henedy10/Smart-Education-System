@@ -9,6 +9,7 @@ use App\Http\Requests\teacher\homeworks\
 };
 use App\Services\Teacher\HomeworkService;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\HomeworkResource;
 use Illuminate\Http\Request;
 
 class HomeworkApiController extends Controller
@@ -20,7 +21,7 @@ class HomeworkApiController extends Controller
         if($homeworks->count() > 0){
             return response()->json([
                 'status' => 'Success',
-                'data'   => $homeworks
+                'data'   => HomeworkResource::collection($homeworks)
             ],200);
         }
 

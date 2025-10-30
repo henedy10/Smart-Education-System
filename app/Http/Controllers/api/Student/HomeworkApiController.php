@@ -9,6 +9,7 @@ use App\Http\Resources\
 {
     HomeworkResource,
     HomeworkGradeResource,
+    SolutionStudentForHomeworkResource,
 };
 use Illuminate\Http\Request;
 
@@ -58,7 +59,7 @@ class HomeworkApiController extends Controller
 
         return response()->json([
             'status' => 'Success',
-            'data'   => new HomeworkGradeResource($homeworkDetails)
+            'data'   => new SolutionStudentForHomeworkResource($homeworkDetails)
         ],200);
     }
 }

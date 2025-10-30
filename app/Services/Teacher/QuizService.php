@@ -73,7 +73,7 @@ class QuizService
 
     public function getResults($quizId)
     {
-        $results = QuizResult::where('quiz_id',$quizId)->get();
+        $results = QuizResult::with('student.user')->where('quiz_id',$quizId)->get();
         return $results;
     }
 

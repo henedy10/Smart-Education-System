@@ -34,24 +34,14 @@ class QuizService
                     ->where('subject',$subject)
                     ->value('id');
 
-        $quiz = Quiz::with('questions')
+        $quiz = Quiz::with('questions.options')
                     ->where('teacher_id',$teacherId)
                     ->orderBy('start_time','desc')
                     ->first();
-        $options = [];
-
-        if($quiz)
-        {
-            foreach($quiz->questions as $Q)
-            {
-                $options[$Q->id] = Option::where('question_id',$Q->id)->get();
-            }
-        }
 
         return
         [
             'quiz'    => $quiz,
-            'options' => $options,
         ];
     }
 
@@ -117,7 +107,7 @@ class QuizService
                             ->where('subject',$subject)
                             ->value('id');
 
-        $results = QuizResult::where('student_id',$studentId)
+        $results = QuizResult::with('quiz')->where('student_id',$studentId)
                             ->where('teacher_id',$teacherId)
                             ->orderBy('created_at','desc')
                             ->get();

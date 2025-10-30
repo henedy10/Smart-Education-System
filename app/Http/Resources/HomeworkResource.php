@@ -15,6 +15,7 @@ class HomeworkResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id'                => $this->id,
             'file_homework'     => $this->file_homework,
             'content_homework'  => $this->content_homework,
             'deadline'          => $this->deadline,

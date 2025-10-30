@@ -27,7 +27,6 @@ class QuizController extends Controller
     {
         $content = $content->showContentQuiz($class,$subject);
         $quiz    = $content['quiz'];
-        $options = $content['options'];
 
         if($quiz->count() == 0)
         {
@@ -36,7 +35,6 @@ class QuizController extends Controller
 
         return view('student.show_content_quiz',compact(
             'quiz',
-            'options',
             'class',
             'subject',
         ));

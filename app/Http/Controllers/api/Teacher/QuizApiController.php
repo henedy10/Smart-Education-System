@@ -5,6 +5,8 @@ namespace App\Http\Controllers\api\Teacher;
 use App\Http\Controllers\Controller;
 use App\Services\Teacher\QuizService;
 use App\Http\Requests\teacher\quizzes\storeQuiz;
+use App\Http\Resources\QuizResource;
+use App\Http\Resources\QuizResultResource;
 use Illuminate\Http\Request;
 
 class QuizApiController extends Controller
@@ -13,7 +15,7 @@ class QuizApiController extends Controller
     {
         $quiz->create($request,$TeacherId);
         return response()->json([
-            'status' => 'Success',
+            'status'  => 'Success',
             'message' => __('messages.success_store_quiz')
         ],201);
     }
@@ -24,7 +26,7 @@ class QuizApiController extends Controller
         if($quizzes->count()>0){
             return response()->json([
                 'status' => 'Success',
-                'data'   => $quizzes
+                'data'   => QuizResource::collection($quizzes)
             ],200);
         }
 
@@ -39,13 +41,13 @@ class QuizApiController extends Controller
         $results = $quiz->getResults($QuizID);
         if($results->count()>0){
             return response()->json([
-                'status' => 'Success',
-                'results' => $results
+                'status'  => 'Success',
+                'results' => QuizResultResource::collection($results)
             ],200);
         }
 
         return response()->json([
-            'status' => 'Failed',
+            'status'  => 'Failed',
             'message' => __('messages.no_results')
         ],404);
     }

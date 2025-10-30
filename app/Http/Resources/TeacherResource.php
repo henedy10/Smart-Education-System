@@ -15,9 +15,12 @@ class TeacherResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'data'    => new UserResource($this->whenLoaded('user')),
-            'class'   => $this->class,
-            'subject' => $this->subject,
+            'data'             => new UserResource($this->whenLoaded('user')),
+            'class'            => $this->class,
+            'subject'          => $this->subject,
+            'lessons_count'    => $this->whenCounted('lessons'),
+            'homeworks_count'  => $this->whenCounted('homeworks'),
+            'quizzes_count'    => $this->whenCounted('quizzes'),
         ];
     }
 }
