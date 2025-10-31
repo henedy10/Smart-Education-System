@@ -13,6 +13,8 @@ use App\Http\Requests\admin\teacher\
     store as TeacherStore,
     update,
 };
+use App\Http\Resources\TeacherResource;
+use App\Http\Resources\UserResource;
 use App\Services\Admin\TeacherService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -22,7 +24,7 @@ class TeacherApiController extends Controller
     public function index(Request $request)
     {
         $name     = $request->query('name');
-        $teachers = Teacher::whereHas('user', function (Builder $query) use($name) {
+        $teachers = Teacher::with('user')->whereHas('user', function (Builder $query) use($name) {
                     $query->whereNull('deleted_at')
                         ->where('name','LIKE','%'.$name.'%')
                     ;})->get();
@@ -32,7 +34,7 @@ class TeacherApiController extends Controller
         if($teachers->count() > 0){
             return response()->json([
                 'status'                 => 'Success',
-                'teachers'               => $teachers,
+                'teachers'               => TeacherResource::collection($teachers),
                 'count_teachers_trashed' => $count_teachers_trashed
             ],200);
         }
@@ -90,7 +92,7 @@ class TeacherApiController extends Controller
         if($teachers->count()>0){
             return response()->json([
                 'status'   => 'Success',
-                'teachers' => $teachers
+                'teachers' => UserResource::collection($teachers)
             ],200);
         }
 

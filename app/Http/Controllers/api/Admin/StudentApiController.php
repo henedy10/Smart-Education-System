@@ -15,6 +15,8 @@ use App\Http\Requests\admin\student\
 use App\Services\Admin\StudentService;
 use Illuminate\Database\Eloquent\Builder;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\StudentResource;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 
 class StudentApiController extends Controller
@@ -22,7 +24,7 @@ class StudentApiController extends Controller
     public function index(Request $request)
     {
         $name     = $request->query('name');
-        $students = Student::whereHas('user', function (Builder $query) use ($name) {
+        $students = Student::with('user')->whereHas('user', function (Builder $query) use ($name) {
                     $query->whereNull('deleted_at')
                             ->where('name','LIKE','%'.$name.'%');})->get();
 
@@ -31,7 +33,7 @@ class StudentApiController extends Controller
         if($students->count() > 0){
             return response()->json([
                 'status'                 => 'Success',
-                'students'               => $students,
+                'students'               => StudentResource::collection($students),
                 'count_students_trashed' => $count_students_trashed
             ],200);
         }
@@ -87,13 +89,13 @@ class StudentApiController extends Controller
 
         if($students->count()>0){
             return response()->json([
-                'status' => 'Success',
-                'students' => $students
+                'status'   => 'Success',
+                'students' => UserResource::collection($students)
             ],200);
         }
 
         return response()->json([
-            'status' => 'Failed',
+            'status'  => 'Failed',
             'message' => 'There is no trashed students'
         ],404);
     }

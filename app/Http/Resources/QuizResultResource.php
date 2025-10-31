@@ -16,8 +16,9 @@ class QuizResultResource extends JsonResource
     {
         return [
             'title'        => $this->quiz->title,
-            'student_mark' => $this->student_mark,
             'quiz_mark'    => $this->quiz_mark,
+            'student'      => new StudentResource($this->whenLoaded('student')),
+            'student_mark' => $this->student_mark,
         ];
     }
 }

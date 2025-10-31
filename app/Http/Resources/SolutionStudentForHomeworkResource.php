@@ -15,6 +15,7 @@ class SolutionStudentForHomeworkResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'student'                => new StudentResource($this->whenLoaded('student')),
             'homework_solution_file' => $this->homework_solution_file,
             'student_grade'          => new HomeworkGradeResource($this->whenLoaded('homeworkGrade')),
         ];

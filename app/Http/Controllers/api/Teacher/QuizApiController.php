@@ -31,7 +31,7 @@ class QuizApiController extends Controller
         }
 
         return response()->json([
-            'status' => 'Failed',
+            'status'  => 'Failed',
             'message' => __('messages.no_results')
         ],404);
     }

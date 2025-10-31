@@ -10,6 +10,7 @@ use App\Http\Requests\teacher\homeworks\
 use App\Services\Teacher\HomeworkService;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\HomeworkResource;
+use App\Http\Resources\SolutionStudentForHomeworkResource;
 use Illuminate\Http\Request;
 
 class HomeworkApiController extends Controller
@@ -41,13 +42,13 @@ class HomeworkApiController extends Controller
         ],201);
     }
 
-    public function indexSolution($TeacherId,HomeworkService $solution)
+    public function indexSolution($homeworkId , $TeacherId, HomeworkService $solution)
     {
-        $solutions = $solution->indexSolution(request()->homework_id);
-        if($solutions->count()>0){
+        $solutions = $solution->indexSolution($homeworkId);
+        if($solutions->count() > 0){
             return response()->json([
                 'status'    => 'Success',
-                'solutions' => $solutions
+                'solutions' => SolutionStudentForHomeworkResource::collection($solutions)
             ],200);
         }
 

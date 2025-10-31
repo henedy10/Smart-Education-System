@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Services\Admin\DashboardService;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,7 @@ class DashboardApiController extends Controller
 
         return response()->json([
             'status'         => 'Success',
-            'data'           => $dashboard,
+            'data'           => new UserResource($dashboard),
             'count_teachers' => $count_teachers,
             'count_students' => $count_students
         ],200);

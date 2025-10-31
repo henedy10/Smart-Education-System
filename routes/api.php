@@ -128,9 +128,9 @@ Route::middleware(['SetLocaleApi'])->group(function(){
                     Route::prefix('/homeworks/teacher/{teacherId}')->group(function()
                     {
                         Route::post('','storeHomework');
-                        Route::get('/solutions','indexSolution');
                         Route::get('/correction','indexHomework');
                     });
+                    Route::get('/homeworks/{homeworkId}/teacher/{teacherId}/solutions','indexSolution');
 
                     Route::prefix('/homeworks/{studentId}/grades')->group(function()
                     {
@@ -141,11 +141,11 @@ Route::middleware(['SetLocaleApi'])->group(function(){
 
                 Route::controller(TeacherQuizApiController::class)->group(function()
                 {
-                    Route::prefix('/quizzes/{teacherId}')->group(function()
+                    Route::prefix('/quizzes/{quizId}/teachers/{teacherId}')->group(function()
                     {
                         Route::post('','storeQuiz');
                         Route::get('','indexResults');
-                        Route::get('/results/{quizId}','showResult');
+                        Route::get('/results','showResult');
                     });
                 });
             });

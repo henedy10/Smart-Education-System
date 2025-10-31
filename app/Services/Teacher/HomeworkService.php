@@ -19,7 +19,7 @@ class HomeworkService
 
     public function indexSolution($homeworkId)
     {
-        $solutions = SolutionStudentForHomework::where('homework_id',$homeworkId)->get();
+        $solutions = SolutionStudentForHomework::with('student')->where('homework_id',$homeworkId)->get();
         return $solutions;
     }
 
