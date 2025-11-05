@@ -28,21 +28,54 @@ class StudentApiController extends Controller
                     $query->whereNull('deleted_at')
                             ->where('name','LIKE','%'.$name.'%');})->get();
 
-        $count_students_trashed = User::onlyTrashed()->where('user_as' , 'student')->count();
+        $lastModified = $students->max(function($student){
+            $studentUpdated = strtotime($student->updated_at);
+            $userUpdated    = $student->user ? strtotime($student->user->updated_at) : 0;
+            return max($studentUpdated,$userUpdated);
+        });
 
+        $lastModifiedHttp = gmdate('D, d M Y H:i:s',$lastModified) . ' GMT';
+        $count_students_trashed = User::onlyTrashed()->where('user_as' , 'student')->count();
+        $clientEtag = $request->header('If-None-Match');
         if($students->count() > 0){
-            return response()->json([
+            $data =
+            [
                 'status'                 => 'Success',
                 'students'               => StudentResource::collection($students),
                 'count_students_trashed' => $count_students_trashed
-            ],200);
+            ];
+            $etag = md5(json_encode($data));
+
+            if(($clientEtag && $clientEtag === $etag)){
+                return response()->noContent(304)
+                    ->header('ETag' , $etag)
+                    ->header('Last-Modified',$lastModifiedHttp);
+            }
+
+            if($request->header('If-Modified-Since')){
+                $ifModifiedSinceTime = strtotime($request->header('If-Modified-Since'));
+                if($ifModifiedSinceTime >= $lastModified){
+                    return response()->noContent(304)
+                        ->header('ETag' , $etag)
+                        ->header('Last-Modified',$lastModifiedHttp);
+                }
+            }
+            return response()->json($data,200)
+                ->header('Content-Type','application/json')
+                ->header('Content-Length',strlen(json_encode($data)))
+                ->header('ETag',$etag)
+                ->header('Last-Modified',$lastModifiedHttp);
         }
 
-        return response()->json([
+        $data =
+        [
             'status'                 => 'Failed',
             'students'               =>  __('messages.no_students'),
             'count_students_trashed' => $count_students_trashed
-        ],404);
+        ];
+
+        return response()->json($data,404)
+                ->header('Content-Type','application/json');
     }
 
     public function store(store $request , StudentService $Service)
