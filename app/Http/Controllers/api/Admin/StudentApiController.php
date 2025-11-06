@@ -34,13 +34,14 @@ class StudentApiController extends Controller
             return max($studentUpdated,$userUpdated);
         });
 
-        $lastModifiedHttp = gmdate('D, d M Y H:i:s',$lastModified) . ' GMT';
+        $lastModifiedHttp       = gmdate('D, d M Y H:i:s',$lastModified) . ' GMT';
         $count_students_trashed = User::onlyTrashed()->where('user_as' , 'student')->count();
-        $clientEtag = $request->header('If-None-Match');
+        $clientEtag             = $request->header('If-None-Match');
+
         if($students->count() > 0){
             $data =
             [
-                'status'                 => 'Success',
+                'status'                 => 'success',
                 'students'               => StudentResource::collection($students),
                 'count_students_trashed' => $count_students_trashed
             ];
@@ -67,48 +68,56 @@ class StudentApiController extends Controller
                 ->header('Last-Modified',$lastModifiedHttp);
         }
 
-        $data =
-        [
-            'status'                 => 'Failed',
-            'students'               =>  __('messages.no_students'),
+        return response()->json([
+            'status'                 => 'failed',
+            'message'                =>  __('messages.no_students'),
             'count_students_trashed' => $count_students_trashed
-        ];
-
-        return response()->json($data,404)
-                ->header('Content-Type','application/json');
+        ],404)->header('Content-Type','application/json');
     }
 
     public function store(store $request , StudentService $Service)
     {
-        $Service->store($request);
-        return response()->json([
-            'status'  => 'Success',
-            'message' => 'Student created successfully'
-        ],201);
+        $student = $Service->store($request);
+        $data    =
+        [
+            'status'     => 'success',
+            'message'    => 'Student created successfully',
+            'student'    => new StudentResource($student)
+        ];
+
+        return response()->json($data,201)
+                ->header('Content-Type','application/json')
+                ->header('Content-Length',strlen(json_encode($data)));
     }
 
-    public function update(update $request , $studentId , StudentService $Service)
+    public function update(update $request , $userId , StudentService $Service)
     {
-        $Service->update($request,$studentId);
-        return response()->json([
-            'status'  => 'Success',
-            'message' => 'Student updated successfully'
-        ],200);
+        $student = $Service->update($request,$userId);
+        $data    =
+        [
+            'status'   => 'success',
+            'message'  => 'Student updated successfully',
+            'student'  => new StudentResource($student)
+        ];
+
+        return response()->json($data,200)
+                ->header('Content-Type','application/json')
+                ->header('Content-Length',strlen(json_encode($data)));
     }
 
     public function trash($studentId , StudentService $Service)
     {
         if($Service->trash($studentId)){
             return response()->json([
-                'status'  => 'Success',
+                'status'  => 'success',
                 'message' => 'تم حذف الطالب مؤقتا'
-            ],200);
+            ],200)->header('Content-Type','application/json');
         }
 
         return response()->json([
-            'status'  => 'Failed',
+            'status'  => 'failed',
             'message' => 'هذا الطالب غير موجود !'
-        ],404);
+        ],404)->header('Content-Type','application/json');
     }
 
     public function indexTrash(Request $request)
@@ -122,13 +131,13 @@ class StudentApiController extends Controller
 
         if($students->count()>0){
             return response()->json([
-                'status'   => 'Success',
+                'status'   => 'success',
                 'students' => UserResource::collection($students)
             ],200);
         }
 
         return response()->json([
-            'status'  => 'Failed',
+            'status'  => 'failed',
             'message' => 'There is no trashed students'
         ],404);
     }
@@ -137,13 +146,13 @@ class StudentApiController extends Controller
     {
         if($Service->forceDelete($studentId)){
             return response()->json([
-                'status'  => 'Success',
+                'status'  => 'success',
                 'message' => 'تم حذف الطالب نهائيا'
             ],200);
         }
 
         return response()->json([
-            'status'  => 'Failed',
+            'status'  => 'failed',
             'message' => 'هذا الطالب غير موجود !'
         ],404);
     }
@@ -152,13 +161,13 @@ class StudentApiController extends Controller
     {
         if($Service->restore($studentId)){
             return response()->json([
-                'status'  => 'Success',
+                'status'  => 'success',
                 'message' => 'تم استرجاع الطالب بنجاح'
             ],200);
         }
 
         return response()->json([
-            'status'  => 'Failed',
+            'status'  => 'failed',
             'message' => 'هذا الطالب غير موجود !'
         ],404);
     }

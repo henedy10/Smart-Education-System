@@ -16,16 +16,17 @@ class DashboardService
     public function index()
     {
         $userId         = $this->getUserId();
-        $dashboard      = User::firstWhere('id',$userId);
+        $user           = User::firstWhere('id',$userId);
         $count_teachers = Teacher::count();
         $count_students = Student::count();
-
+        $lastModified   =  max($user->updated_at , Teacher::pluck('updated_at')->max(),Student::pluck('updated_at')->max());
         return
         [
             'userId'         =>  $userId,
-            'dashboard'      =>  $dashboard,
+            'user'           =>  $user,
             'count_teachers' =>  $count_teachers,
             'count_students' =>  $count_students,
+            'last_modified'  =>  $lastModified,
         ];
     }
 }
