@@ -129,17 +129,49 @@ class StudentApiController extends Controller
                         ->onlyTrashed()
                         ->get();
 
-        if($students->count()>0){
-            return response()->json([
+        $lastModified = $students->max(function($student){
+            $studentUpdated = $student->updated_at ? strtotime($student->updated_at) : 0;
+            return $studentUpdated;
+        });
+
+        $lastModifiedHttp = gmdate('D, d M Y H:i:s',$lastModified) . ' GMT';
+
+        if($students->count() > 0){
+            $data =
+            [
                 'status'   => 'success',
                 'students' => UserResource::collection($students)
-            ],200);
+            ];
+            $etag = md5(json_encode($data));
+
+            if($clientEtag = $request->header('If-None-Match')){
+                if($clientEtag === $etag){
+                    return response()->noContent(304)
+                            ->header('ETag',$etag)
+                            ->header('Last-Modified',$lastModifiedHttp);
+                }
+            }
+
+            if($request->header('If-Modified-Since')){
+                $ifModifiedSinceTime = strtotime($request->header('If-Modified-Since'));
+                if($ifModifiedSinceTime >= $lastModified){
+                    return response()->noContent(304)
+                            ->header('ETag',$etag)
+                            ->header('Last-Modified',$lastModifiedHttp);
+                }
+            }
+
+            return response()->json($data,200)
+                    ->header('Content-Type','application/json')
+                    ->header('Content-Length',strlen(json_encode($data)))
+                    ->header('ETag',$etag)
+                    ->header('Last-Modified',$lastModifiedHttp);
         }
 
         return response()->json([
             'status'  => 'failed',
             'message' => 'There is no trashed students'
-        ],404);
+        ],404)->header('Content-Type','application/json');
     }
 
     public function forceDelete($studentId,StudentService $Service)
@@ -148,13 +180,13 @@ class StudentApiController extends Controller
             return response()->json([
                 'status'  => 'success',
                 'message' => 'تم حذف الطالب نهائيا'
-            ],200);
+            ],200)->header('Content-Type','application/json');
         }
 
         return response()->json([
             'status'  => 'failed',
             'message' => 'هذا الطالب غير موجود !'
-        ],404);
+        ],404)->header('Content-Type','application/json');
     }
 
     public function restore($studentId,StudentService $Service)

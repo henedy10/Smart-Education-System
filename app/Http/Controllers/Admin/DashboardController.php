@@ -10,7 +10,7 @@ class DashboardController extends Controller
     public function index(DashboardService $Service)
     {
         $info           = $Service->index();
-        $dashboard      = $info['dashboard'];
+        $dashboard      = $info['user'];
         $count_teachers = $info['count_teachers'];
         $count_students = $info['count_students'];
 

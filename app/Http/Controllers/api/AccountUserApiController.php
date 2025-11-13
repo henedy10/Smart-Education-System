@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers\api;
 
-use Illuminate\Support\Facades\Cookie;
-use App\Models\{User};
-use App\Http\Requests\account\{login, updatePassword};
+use App\Models\
+{
+    User
+};
+use App\Http\Requests\account\
+{
+    login,
+    updatePassword
+};
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class AccountUserApiController extends Controller
