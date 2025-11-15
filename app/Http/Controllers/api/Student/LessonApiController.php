@@ -14,13 +14,13 @@ class LessonApiController extends Controller
 
         if($lessons->isEmpty()){
             return response()->json([
-                'status' => 'Failed',
+                'status' => 'failed',
                 'msg'    => 'No lessons found!'
             ],404);
         }
 
         return response()->json([
-            'status'    => 'Success',
+            'status'    => 'success',
             'lessons'   => LessonResource::collection($lessons),
         ],200);
     }

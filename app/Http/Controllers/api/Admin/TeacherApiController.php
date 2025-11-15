@@ -111,13 +111,13 @@ class TeacherApiController extends Controller
             return response()->json([
                 'status'  => 'Success',
                 'message' => 'تم حذف المدرس مؤقتا'
-            ],200);
+            ],200)->header('Content-Type','application/json');
         }
 
         return response()->json([
             'status'  => 'Failed',
             'message' => 'هذا المدرس غير موجود !'
-        ],404);
+        ],404)->header('Content-Type','application/json');
     }
 
     public function indexTrash(Request $request)
@@ -129,17 +129,50 @@ class TeacherApiController extends Controller
                         ->onlyTrashed()
                         ->get();
 
+        $lastModified = $teachers->max(function($teacher){
+            $teacherUpdated = $teacher->updated_at ? strtotime($teacher->updated_at) : 0;
+            return $teacherUpdated;
+        });
+
+        $lastModifiedHttp = gmdate('D, d M Y H:i:s',$lastModified) . ' GMT';
+
         if($teachers->count()>0){
-            return response()->json([
+            $data =
+            [
                 'status'   => 'Success',
                 'teachers' => UserResource::collection($teachers)
-            ],200);
+            ];
+            $etag = md5(json_encode($data));
+
+            if($clientEtag = $request->header('If-None-Match')){
+                if($clientEtag === $etag){
+                    return response()->noContent(304)
+                            ->header('ETag',$etag)
+                            ->header('Last-Modified',$lastModifiedHttp);
+                }
+            }
+
+            if($request->header('If-Modified-Since')){
+                $ifModifiedSinceTime = strtotime($request->header('If-Modified-Since'));
+                if($ifModifiedSinceTime >= $lastModified){
+                    return response()->noContent(304)
+                            ->header('ETag',$etag)
+                            ->header('Last-Modified',$lastModifiedHttp);
+                }
+            }
+
+            return response()->json($data,200)
+                    ->header('Content-Type','application/json')
+                    ->header('Content-Length',strlen(json_encode($data)))
+                    ->header('ETag',$etag)
+                    ->header('Last-Modified',$lastModifiedHttp);
+            return response()->json($data,200);
         }
 
         return response()->json([
             'status'  => 'Failed',
             'message' => 'There is no trashed teachers'
-        ],404);
+        ],404)->header('Content-Type','application/json');
     }
 
     public function forceDelete($teacherId,TeacherService $Service)
@@ -148,13 +181,13 @@ class TeacherApiController extends Controller
             return response()->json([
                 'status'  => 'Success',
                 'message' => 'تم حذف المدرس نهائيا'
-            ],200);
+            ],200)->header('Content-Type','application/json');
         }
 
         return response()->json([
             'status'  => 'Failed',
             'message' => 'هذا المدرس غير موجود !'
-        ],404);
+        ],404)->header('Content-Type','application/json');
     }
 
     public function restore($teacherId,TeacherService $Service)
@@ -163,12 +196,12 @@ class TeacherApiController extends Controller
             return response()->json([
                 'status'  => 'Success',
                 'message' => 'تم استرجاع المدرس بنجاح'
-            ],200);
+            ],200)->header('Content-Type','application/json');
         }
 
         return response()->json([
             'status'  => 'Failed',
             'message' => 'هذا المدرس غير موجود !'
-        ],404);
+        ],404)->header('Content-Type','application/json');
     }
 }

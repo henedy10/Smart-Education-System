@@ -18,13 +18,13 @@ class QuizApiController extends Controller
 
         if($quiz){
             return response()->json([
-                'status' => 'Success',
+                'status' => 'success',
                 'data'   => new QuizResource($quiz)
             ],200);
         }
 
         return response()->json([
-            'status'  => 'Failed',
+            'status'  => 'failed',
             'message' => __('messages.no_quiz'),
         ],404);
     }
@@ -37,13 +37,13 @@ class QuizApiController extends Controller
         if(!$quiz)
         {
             return response()->json([
-                'status'   => 'Failed',
+                'status'   => 'failed',
                 'message'  => __('messages.no_quiz'),
             ],404);
         }
 
         return response()->json([
-            'status'  => 'Success',
+            'status'  => 'success',
             'quiz'    => new QuizResource($quiz),
         ],200);
     }
@@ -57,7 +57,7 @@ class QuizApiController extends Controller
 
         if($quiz){
             return response()->json([
-                'status'      => 'Success',
+                'status'      => 'success',
                 'student'     => new StudentResource($student),
                 'quiz'        => new QuizResource($quiz),
                 'studentMark' => $studentMark
@@ -65,7 +65,7 @@ class QuizApiController extends Controller
         }
 
         return response()->json([
-            'status'      => 'Failed',
+            'status'      => 'failed',
             'message'     => __('messages.no_quiz')
         ],404);
     }
@@ -75,13 +75,13 @@ class QuizApiController extends Controller
         $results = $result->indexResult($class,$subject);
         if($results->count() > 0){
             return response()->json([
-                'status'  => 'Success',
+                'status'  => 'success',
                 'results' => QuizResultResource::collection($results)
             ],200);
         }
 
         return response()->json([
-            'status'  => 'Failed',
+            'status'  => 'failed',
             'message' => __('messages.no_results')
         ],404);
     }

@@ -26,6 +26,6 @@ class HomeApiController extends Controller
         return response()->json([
             'status'  => 'Failed',
             'message' => 'There is no content now !'
-        ],404);
+        ],404)->header('Content-Type','application/json');
     }
 }

@@ -20,13 +20,13 @@ class HomeworkApiController extends Controller
         $homeworks = $homework->index($class,$subject);
         if($homeworks->isEmpty()){
             return response()->json([
-                'status'  => 'Failed',
+                'status'  => 'failed',
                 'message' => 'No homeworks found!',
             ],404);
         }
 
         return response()->json([
-            'status'      => 'Success',
+            'status'      => 'success',
             'homeworks'   => HomeworkResource::collection($homeworks),
         ],200);
     }
@@ -36,13 +36,13 @@ class HomeworkApiController extends Controller
         $saved = $solution->storeSolution($request,$homeworkId);
         if(!$saved){
             return response()->json([
-                'status'  => 'Failed',
+                'status'  => 'failed',
                 'message' => __('messages.no_more_upload_solution')
             ],400);
         }
 
         return response()->json([
-            'status'  => 'Success',
+            'status'  => 'success',
             'message' => __('messages.success_store_homework_solution')
         ],201);
     }
@@ -52,13 +52,13 @@ class HomeworkApiController extends Controller
         $homeworkDetails = $grade->showGrade($homeworkId);
         if(!$homeworkDetails){
             return response()->json([
-                'status'  => 'Failed',
+                'status'  => 'failed',
                 'message' => __('messages.no_assessment')
             ],404);
         }
 
         return response()->json([
-            'status' => 'Success',
+            'status' => 'success',
             'data'   => new SolutionStudentForHomeworkResource($homeworkDetails)
         ],200);
     }

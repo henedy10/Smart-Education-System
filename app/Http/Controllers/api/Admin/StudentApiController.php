@@ -195,12 +195,12 @@ class StudentApiController extends Controller
             return response()->json([
                 'status'  => 'success',
                 'message' => 'تم استرجاع الطالب بنجاح'
-            ],200);
+            ],200)->header('Content-Type','application/json');
         }
 
         return response()->json([
             'status'  => 'failed',
             'message' => 'هذا الطالب غير موجود !'
-        ],404);
+        ],404)->header('Content-Type','application/json');
     }
 }
