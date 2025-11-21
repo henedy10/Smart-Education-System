@@ -13,6 +13,10 @@ use App\Services\Admin\StudentService;
 
 class StudentController extends Controller
 {
+    public function __construct(protected StudentService $Service)
+    {
+    }
+
     public function index()
     {
         return view('admin.student.index');
@@ -23,27 +27,27 @@ class StudentController extends Controller
         return view('admin.student.create');
     }
 
-    public function store(store $request , StudentService $Service)
+    public function store(store $request)
     {
-        $Service->store($request);
+        $this->Service->store($request);
         return redirect()->back()->with(['successCreateMsg' => 'Student created successfully']);
     }
 
-    public function edit($studentId, StudentService $Service)
+    public function edit($studentId,)
     {
-        $student = $Service->edit($studentId);
+        $student = $this->Service->edit($studentId);
         return view('admin.student.edit',compact('student'));
     }
 
-    public function update(update $request , $studentId , StudentService $Service)
+    public function update(update $request,$studentId)
     {
-        $Service->update($request,$studentId);
+        $this->Service->update($request,$studentId);
         return redirect()->back()->with(['successEditMsg' => 'Student updated successfully']);
     }
 
-    public function trash($studentId , StudentService $Service)
+    public function trash($studentId)
     {
-        $Service->trash($studentId);
+        $this->Service->trash($studentId);
         return redirect()->back()->with(['successDeleteMsg' => 'تم حذف الطالب مؤقتا']);
     }
 
@@ -52,15 +56,15 @@ class StudentController extends Controller
         return view('admin.student.trash');
     }
 
-    public function forceDelete($studentId,StudentService $Service)
+    public function forceDelete($studentId)
     {
-        $Service->forceDelete($studentId);
+        $this->Service->forceDelete($studentId);
         return redirect()->back()->with(['successDeleteMsg' => 'تم حذف الطالب نهائيا']);
     }
 
-    public function restore($studentId,StudentService $Service)
+    public function restore($studentId)
     {
-        $Service->restore($studentId);
+        $this->Service->restore($studentId);
         return redirect()->back()->with(['successRestoreMsg' => 'تم استرجاع الطالب بنجاح']);
     }
 }

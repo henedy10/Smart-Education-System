@@ -12,6 +12,9 @@ use App\Services\Admin\TeacherService;
 
 class TeacherController extends Controller
 {
+    public function __construct(protected TeacherService $Service)
+    {
+    }
 
     public function index()
     {
@@ -23,27 +26,27 @@ class TeacherController extends Controller
         return view('admin.teacher.create');
     }
 
-    public function store(TeacherStore $request ,TeacherService $Service)
+    public function store(TeacherStore $request)
     {
-        $Service->store($request);
+        $this->Service->store($request);
         return redirect()->back()->with(['successCreateMsg' => 'Teacher created successfully']);
     }
 
-    public function edit($teacherId , TeacherService $Service)
+    public function edit($teacherId)
     {
-        $teacher = $Service->edit($teacherId);
+        $teacher = $this->Service->edit($teacherId);
         return view('admin.teacher.edit',compact('teacher'));
     }
 
-    public function update(update $request ,$teacherId,TeacherService $Service)
+    public function update(update $request ,$teacherId)
     {
-        $Service->update($request,$teacherId);
+        $this->Service->update($request,$teacherId);
         return redirect()->back()->with(['successEditMsg' => 'Teacher updated successfully']);
     }
 
-    public function trash($teacherId , TeacherService $Service)
+    public function trash($teacherId)
     {
-        $Service->trash($teacherId);
+        $this->Service->trash($teacherId);
         return redirect()->back()->with(['successDeleteMsg' => 'تم حذف المدرس مؤقتا']);
     }
 
@@ -52,15 +55,15 @@ class TeacherController extends Controller
         return view('admin.teacher.trash');
     }
 
-    public function forceDelete($teacherId,TeacherService $Service)
+    public function forceDelete($teacherId)
     {
-        $Service->forceDelete($teacherId);
+        $this->Service->forceDelete($teacherId);
         return redirect()->back()->with(['successDeleteMsg' => 'تم حذف المدرس نهائيا']);
     }
 
-    public function restore($teacherId , TeacherService $Service)
+    public function restore($teacherId)
     {
-        $Service->restore($teacherId);
+        $this->Service->restore($teacherId);
         return redirect()->back()->with(['successRestoreMsg' => 'تم استرجاع المدرس بنجاح']);
     }
 }

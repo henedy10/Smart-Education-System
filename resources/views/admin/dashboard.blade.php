@@ -47,7 +47,7 @@
                     <div>
                         <p class="text-gray-600 text-sm">{{__('messages.greeting')}} 👋</p>
                         <h2 class="text-xl font-semibold text-gray-800">
-                            <span id="adminName">{{$dashboard->name}}</span>
+                            <span id="adminName">{{$info['user']->name}}</span>
                         </h2>
                     </div>
                 </div>
@@ -65,12 +65,12 @@
             <div class="grid md:grid-cols-3 gap-4">
                 <div class="bg-white shadow rounded-lg p-4">
                     <h3 class="text-lg font-bold text-blue-600 mb-2">{{__('messages.num_students')}}</h3>
-                    <p class="text-3xl font-semibold text-blue-800">{{$count_students}}</p>
+                    <p class="text-3xl font-semibold text-blue-800">{{$info['count_students']}}</p>
                 </div>
 
                 <div class="bg-white shadow rounded-lg p-4">
                     <h3 class="text-lg font-bold text-green-600 mb-2">{{__('messages.num_teachers')}}</h3>
-                    <p class="text-3xl font-semibold text-green-800">{{$count_teachers}}</p>
+                    <p class="text-3xl font-semibold text-green-800">{{$info['count_teachers']}}</p>
                 </div>
             </div>
         </div>
