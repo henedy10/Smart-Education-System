@@ -7,9 +7,13 @@ use App\Http\Resources\LessonResource;
 
 class LessonApiController extends Controller
 {
-    public function index($class,$subject,LessonService $lesson)
+    public function __construct(protected LessonService $lesson)
     {
-        $lessons = $lesson->index($class,$subject);
+    }
+
+    public function index($class,$subject)
+    {
+        $lessons = $this->lesson->index($class,$subject);
 
         if($lessons->isEmpty()){
             return response()->json([

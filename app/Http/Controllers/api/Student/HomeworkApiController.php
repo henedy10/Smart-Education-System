@@ -13,9 +13,12 @@ use App\Http\Resources\
 
 class HomeworkApiController extends Controller
 {
-    public function index($class, $subject, HomeworkService $homework)
+    public function __construct(protected HomeworkService $homework)
     {
-        $homeworks = $homework->index($class,$subject);
+    }
+    public function index($class, $subject)
+    {
+        $homeworks = $this->homework->index($class,$subject);
         if($homeworks->isEmpty()){
             return response()->json([
                 'status'  => 'failed',
@@ -29,9 +32,9 @@ class HomeworkApiController extends Controller
         ],200);
     }
 
-    public function storeSolution(storeHomeworkSolutions $request , HomeworkService $solution , $homeworkId)
+    public function storeSolution(storeHomeworkSolutions $request,$homeworkId)
     {
-        $saved = $solution->storeSolution($request,$homeworkId);
+        $saved = $this->homework->storeSolution($request->validated(),$homeworkId);
         if(!$saved){
             return response()->json([
                 'status'  => 'failed',
@@ -45,9 +48,9 @@ class HomeworkApiController extends Controller
         ],201);
     }
 
-    public function showGrade(HomeworkService $grade , $homeworkId)
+    public function showGrade($homeworkId)
     {
-        $homeworkDetails = $grade->showGrade($homeworkId);
+        $homeworkDetails = $this->homework->showGrade($homeworkId);
         if(!$homeworkDetails){
             return response()->json([
                 'status'  => 'failed',

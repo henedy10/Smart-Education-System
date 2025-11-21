@@ -2,7 +2,12 @@
 
 namespace App\Services\Student;
 
-use App\Traits\{UserHelper,UploadFile};
+use App\Traits\
+{
+    UserHelper,
+    UploadFile
+};
+
 use App\Models\
 {
     Homework,
@@ -34,8 +39,8 @@ class HomeworkService
             return false;
         }
 
-        $filePath  = $this->uploadFile($student->user->name,$request->file);
-        $solution  = SolutionStudentForHomework::create([
+        $filePath = $this->uploadFile($student->user->name,$request->file);
+        $solution = SolutionStudentForHomework::create([
             'homework_solution_file'  => $filePath,
             'student_id'              => $student->id,
             'homework_id'             => $homeworkId,
@@ -46,8 +51,8 @@ class HomeworkService
 
     public function showGrade($homeworkId)
     {
-        $studentId       = Student::where('user_id',$this->getUserId())->value('id');
-        $Grade           = SolutionStudentForHomework::with('homeworkGrade')
+        $studentId  = Student::where('user_id',$this->getUserId())->value('id');
+        $Grade      = SolutionStudentForHomework::with('homeworkGrade')
                                                     ->where('student_id',$studentId)
                                                     ->where('homework_id',$homeworkId)
                                                     ->first();

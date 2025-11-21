@@ -4,17 +4,22 @@ namespace App\Http\Controllers\api\Student;
 
 use App\Services\Student\QuizService;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\OptionResource;
-use App\Http\Resources\QuizResource;
-use App\Http\Resources\QuizResultResource;
-use App\Http\Resources\StudentResource;
-use Illuminate\Http\Request;
+use App\Http\Resources\
+{
+    QuizResource,
+    QuizResultResource,
+    StudentResource
+};
 
 class QuizApiController extends Controller
 {
-    public function showAvailableQuiz($class, $subject, QuizService $quiz)
+    public function __construct(protected QuizService $quiz)
     {
-        $quiz = $quiz->showAvailableQuiz($class,$subject);
+    }
+
+    public function showAvailableQuiz($class, $subject)
+    {
+        $quiz = $this->quiz->showAvailableQuiz($class,$subject);
 
         if($quiz){
             return response()->json([
@@ -29,12 +34,11 @@ class QuizApiController extends Controller
         ],404);
     }
 
-    public function showQuizContent($class, $subject, QuizService $content)
+    public function showQuizContent($class, $subject)
     {
-        $content = $content->showContentQuiz($class,$subject);
-        $quiz    = $content['quiz'];
+        $content = $this->quiz->showContentQuiz($class,$subject);
 
-        if(!$quiz)
+        if(!$content['quiz'])
         {
             return response()->json([
                 'status'   => 'failed',
@@ -44,23 +48,20 @@ class QuizApiController extends Controller
 
         return response()->json([
             'status'  => 'success',
-            'quiz'    => new QuizResource($quiz),
+            'quiz'    => new QuizResource($content['quiz']),
         ],200);
     }
 
-    public function storeAnswer($class, $subject, QuizService $quiz)
+    public function storeAnswer($class, $subject)
     {
-        $info        = $quiz->storeAnswer($class,$subject);
-        $student     = $info['student'];
-        $quiz        = $info['quiz'];
-        $studentMark = $info['studentMark'];
+        $info = $this->quiz->storeAnswer($class,$subject);
 
-        if($quiz){
+        if($info['quiz']){
             return response()->json([
                 'status'      => 'success',
-                'student'     => new StudentResource($student),
-                'quiz'        => new QuizResource($quiz),
-                'studentMark' => $studentMark
+                'student'     => new StudentResource($info['student']),
+                'quiz'        => new QuizResource($info['quiz']),
+                'studentMark' => $info['studentMark']
             ],201);
         }
 
@@ -70,9 +71,10 @@ class QuizApiController extends Controller
         ],404);
     }
 
-    public function indexResult($class, $subject, QuizService $result)
+    public function indexResult($class, $subject)
     {
-        $results = $result->indexResult($class,$subject);
+        $results = $this->quiz->indexResult($class,$subject);
+
         if($results->count() > 0){
             return response()->json([
                 'status'  => 'success',
