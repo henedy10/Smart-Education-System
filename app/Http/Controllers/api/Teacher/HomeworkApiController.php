@@ -9,15 +9,21 @@ use App\Http\Requests\teacher\homeworks\
 };
 use App\Services\Teacher\HomeworkService;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\HomeworkResource;
-use App\Http\Resources\SolutionStudentForHomeworkResource;
-use Illuminate\Http\Request;
+use App\Http\Resources\
+{
+    HomeworkResource,
+    SolutionStudentForHomeworkResource
+};
 
 class HomeworkApiController extends Controller
 {
-    public function indexHomework($TeacherId, HomeworkService $homework)
+    public function __construct(protected HomeworkService $homework)
     {
-        $homeworks = $homework->indexHomework($TeacherId);
+    }
+
+    public function indexHomework($TeacherId)
+    {
+        $homeworks = $this->homework->indexHomework($TeacherId);
 
         if($homeworks->count() > 0){
             return response()->json([
@@ -32,9 +38,9 @@ class HomeworkApiController extends Controller
         ],404);
     }
 
-    public function storeHomework(storeHomework $request, $TeacherId, HomeworkService $homework)
+    public function storeHomework(storeHomework $request, $TeacherId)
     {
-        $homework = $homework->storeHomework($request,$TeacherId);
+        $this->homework->storeHomework($request,$TeacherId);
 
         return response()->json([
             'status'  => 'Success',
@@ -42,9 +48,9 @@ class HomeworkApiController extends Controller
         ],201);
     }
 
-    public function indexSolution($homeworkId , $TeacherId, HomeworkService $solution)
+    public function indexSolution($homeworkId)
     {
-        $solutions = $solution->indexSolution($homeworkId);
+        $solutions = $this->homework->indexSolution($homeworkId);
         if($solutions->count() > 0){
             return response()->json([
                 'status'    => 'Success',
@@ -58,18 +64,18 @@ class HomeworkApiController extends Controller
         ],404);
     }
 
-    public function storeHomeworkGrades(storeHomeworkGrades $request, $StudentId, HomeworkService $grade)
+    public function storeHomeworkGrades(storeHomeworkGrades $request, $StudentId)
     {
-        $grade->storeHomeworkGrade($request,$StudentId);
+        $this->homework->storeHomeworkGrade($request,$StudentId);
         return response()->json([
             'status'  => 'Success',
             'message' => __('messages.success_store_homework_grade')
         ],201);
     }
 
-    public function updateHomeworkGrade(updateHomeworkGrades $request, $StudentId, HomeworkService $grade)
+    public function updateHomeworkGrade(updateHomeworkGrades $request, $StudentId)
     {
-        $grade->updateHomeworkGrade($request,$StudentId);
+        $this->homework->updateHomeworkGrade($request,$StudentId);
         return response()->json([
             'status'  => 'Success',
             'message' => __('messages.success_update_homework_grade')

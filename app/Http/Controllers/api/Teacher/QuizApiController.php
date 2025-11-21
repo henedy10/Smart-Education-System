@@ -5,24 +5,32 @@ namespace App\Http\Controllers\api\Teacher;
 use App\Http\Controllers\Controller;
 use App\Services\Teacher\QuizService;
 use App\Http\Requests\teacher\quizzes\storeQuiz;
-use App\Http\Resources\QuizResource;
-use App\Http\Resources\QuizResultResource;
-use Illuminate\Http\Request;
+use App\Http\Resources\
+{
+    QuizResource,
+    QuizResultResource
+};
 
 class QuizApiController extends Controller
 {
-    public function storeQuiz(storeQuiz $request, $TeacherId, QuizService $quiz)
+    public function __construct(protected QuizService $quiz)
     {
-        $quiz->create($request,$TeacherId);
+    }
+
+    public function storeQuiz(storeQuiz $request,$TeacherId)
+    {
+        $this->quiz->store($request->validated(),$TeacherId);
+
         return response()->json([
             'status'  => 'Success',
             'message' => __('messages.success_store_quiz')
         ],201);
     }
 
-    public function indexResults($TeacherId , QuizService $quiz)
+    public function indexResults($TeacherId)
     {
-        $quizzes = $quiz->getAll($TeacherId);
+        $quizzes = $this->quiz->getAll($TeacherId);
+
         if($quizzes->count()>0){
             return response()->json([
                 'status' => 'Success',
@@ -36,9 +44,10 @@ class QuizApiController extends Controller
         ],404);
     }
 
-    public function showResult($TeacherId,$QuizID, QuizService $quiz)
+    public function showResult($QuizID)
     {
-        $results = $quiz->getResults($QuizID);
+        $results = $this->quiz->getResults($QuizID);
+        
         if($results->count()>0){
             return response()->json([
                 'status'  => 'Success',
