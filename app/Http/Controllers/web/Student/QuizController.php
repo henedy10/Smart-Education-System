@@ -7,52 +7,42 @@ use App\Services\Student\QuizService;
 
 class QuizController extends Controller
 {
+    public function __construct(protected QuizService $quiz)
+    {
+    }
+
     public function showAction($class,$subject)
     {
         return view('student.show_action_content_quiz',compact('class','subject'));
     }
 
-    public function showAvailableQuiz($class, $subject, QuizService $quiz)
+    public function showAvailableQuiz($class,$subject)
     {
-        $quiz = $quiz->showAvailableQuiz($class,$subject);
+        $quiz = $this->quiz->showAvailableQuiz($class,$subject);
 
-        return view('student.show_quiz',[
-            'quiz'      =>  $quiz,
-            'class'     =>  $class,
-            'subject'   =>  $subject
-        ]);
+        return view('student.show_quiz',compact('quiz','class','subject'));
     }
 
-    public function showQuizContent($class, $subject, QuizService $content)
+    public function showQuizContent($class,$subject)
     {
-        $content = $content->showContentQuiz($class,$subject);
-        $quiz    = $content['quiz'];
-
-        if($quiz->count() == 0)
+        $quiz = $this->quiz->showContentQuiz($class,$subject);
+        if($quiz->count() === 0)
         {
             return redirect()->back()->withErrors(['quiz' => __('messages.no_quiz')]);
         }
 
-        return view('student.show_content_quiz',compact(
-            'quiz',
-            'class',
-            'subject',
-        ));
+        return view('student.show_content_quiz',compact('quiz','class','subject'));
     }
 
-    public function storeAnswer($class, $subject, QuizService $quiz)
+    public function storeAnswer($class,$subject)
     {
-        $info        = $quiz->storeAnswer($class,$subject);
-        $student     = $info['student'];
-        $quiz        = $info['quiz'];
-        $studentMark = $info['studentMark'];
-
-        return view('student.show_result',compact('student','quiz','studentMark','class','subject'));
+        $info = $this->quiz->storeAnswer($class,$subject);
+        return view('student.show_result',compact('info','class','subject'));
     }
 
-    public function indexResult($class, $subject, QuizService $result)
+    public function indexResult($class,$subject)
     {
-        $results = $result->indexResult($class,$subject);
+        $results = $this->quiz->indexResult($class,$subject);
         return view('student.show_quiz_results',compact('class','subject','results'));
     }
 }

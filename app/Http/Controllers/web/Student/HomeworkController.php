@@ -8,9 +8,13 @@ use App\Http\Requests\student\storeHomeworkSolutions;
 
 class HomeworkController extends Controller
 {
-    public function index($class, $subject, HomeworkService $homework)
+    public function __construct(protected HomeworkService $homework)
     {
-        $homeworks = $homework->index($class,$subject);
+    }
+
+    public function index($class,$subject)
+    {
+        $homeworks = $this->homework->index($class,$subject);
         return view('student.show_homework',compact
         (
             'subject',
@@ -19,7 +23,7 @@ class HomeworkController extends Controller
         ));
     }
 
-    public function createSolution($class, $subject)
+    public function createSolution($class,$subject)
     {
         $homework_id = request()->upload_homework;
         return view('student.show_homework_uploading',compact
@@ -30,9 +34,9 @@ class HomeworkController extends Controller
         ));
     }
 
-    public function storeSolution(storeHomeworkSolutions $request , HomeworkService $solution , $homeworkId)
+    public function storeSolution(storeHomeworkSolutions $request,$homeworkId)
     {
-        $saved = $solution->storeSolution($request,$homeworkId);
+        $saved = $this->homework->storeSolution($request,$homeworkId);
         if($saved){
             return redirect()->back()->with(['success' => __('messages.success_store_homework_solution')]);
         }
@@ -40,9 +44,9 @@ class HomeworkController extends Controller
         return redirect()->back()->with(['failed' => __('messages.no_more_upload_solution')]);
     }
 
-    public function showGrade($class,$subject,HomeworkService $grade,$homeworkId)
+    public function showGrade($class,$subject,$homeworkId)
     {
-        $homeworkDetails = $grade->showGrade($homeworkId);
+        $homeworkDetails = $this->homework->showGrade($homeworkId);
         return view('student.show_homework_grade',compact
         (
             'class',

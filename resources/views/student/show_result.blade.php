@@ -9,12 +9,12 @@
         <h1 class="text-2xl font-bold text-center text-blue-700 mb-4">{{__('messages.result')}}</h1>
 
         <div class="mb-4 text-center">
-            <p class="text-gray-700 text-lg">{{__('messages.name') }}: <span class="font-semibold text-black">{{$student->user->name}}</span></p>
-            <p class="text-gray-700 text-lg">{{__('messages.title') }}: <span class="font-semibold text-black">{{$quiz->title}}</span></p>
+            <p class="text-gray-700 text-lg">{{__('messages.name') }}: <span class="font-semibold text-black">{{$info['student']->user->name}}</span></p>
+            <p class="text-gray-700 text-lg">{{__('messages.title') }}: <span class="font-semibold text-black">{{$info['quiz']->title}}</span></p>
         </div>
 
         <div class="bg-blue-100 text-blue-800 text-center py-4 rounded-lg mb-4">
-            <p class="text-xl font-bold">{{__('messages.grade'). ":" .$studentMark ."/". $quiz->quiz_mark}}</p>
+            <p class="text-xl font-bold">{{__('messages.grade'). ":" .$info['studentMark'] ."/". $info['quiz']->quiz_mark}}</p>
         </div>
 
         <div class="text-sm text-gray-600 text-center">

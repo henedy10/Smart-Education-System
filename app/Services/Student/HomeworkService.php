@@ -14,6 +14,14 @@ class HomeworkService
 {
     use UserHelper;
 
+    public function uploadFile($studentName,$file)
+    {
+        $fileName = $studentName.'.'.$file->getClientOriginalExtension();
+        $filePath = $file->storeAs('solutions_homework',$fileName,'public');
+
+        return $filePath;
+    }
+
     public function index($class,$subject)
     {
         $homeworks = Homework::whereHas('teacher',function($q) use($class,$subject){
@@ -23,10 +31,9 @@ class HomeworkService
         return $homeworks;
     }
 
-    public function storeSolution($request ,$homeworkId)
+    public function storeSolution($request,$homeworkId)
     {
-        $userId          = $this->getUserId();
-        $student         = Student::with('user')->firstWhere('user_id',$userId);
+        $student         = Student::with('user')->firstWhere('user_id',$this->getUserId());
         $alreadyUploaded = SolutionStudentForHomework::where('student_id',$student->id)
                                                     ->where('homework_id',$homeworkId)
                                                     ->exists();
@@ -34,10 +41,9 @@ class HomeworkService
         if($alreadyUploaded || is_null($alreadyUploaded)){
             return false;
         }
-        $fileName    = $student->user->name.'.'.$request->file('file')->getClientOriginalExtension();
-        $filePath    = $request->file('file')->storeAs('solutions_homework',$fileName,'public');
 
-        $solution    = SolutionStudentForHomework::create([
+        $filePath  = $this->uploadFile($student->user->name,$request->file);
+        $solution  = SolutionStudentForHomework::create([
             'homework_solution_file'  => $filePath,
             'student_id'              => $student->id,
             'homework_id'             => $homeworkId,
@@ -48,8 +54,7 @@ class HomeworkService
 
     public function showGrade($homeworkId)
     {
-        $userId          = $this->getUserId();
-        $studentId       = Student::where('user_id',$userId)->value('id');
+        $studentId       = Student::where('user_id',$this->getUserId())->value('id');
         $Grade           = SolutionStudentForHomework::with('homeworkGrade')
                                                     ->where('student_id',$studentId)
                                                     ->where('homework_id',$homeworkId)

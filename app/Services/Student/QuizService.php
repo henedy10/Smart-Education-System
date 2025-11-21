@@ -39,20 +39,15 @@ class QuizService
                     ->orderBy('start_time','desc')
                     ->first();
 
-        return
-        [
-            'quiz'    => $quiz,
-        ];
+        return $quiz;
     }
 
     public function storeAnswer($class,$subject)
     {
         $studentMark     = 0;
         $check_selection = [];
-        $userId  = $this->getUserId();
 
-        $student = Student::with('user')->firstWhere('user_id',$userId);
-
+        $student   = Student::with('user')->firstWhere('user_id',$this->getUserId());
         $teacherId = Teacher::where('class',$class)
                                 ->where('subject',$subject)
                                 ->value('id');
@@ -101,13 +96,13 @@ class QuizService
 
     public function indexResult($class, $subject)
     {
-        $userId    = $this->getUserId();
-        $studentId = Student::where('user_id',$userId)->value('id');
+        $studentId = Student::where('user_id',$this->getUserId())->value('id');
         $teacherId = Teacher::where('class',$class)
                             ->where('subject',$subject)
                             ->value('id');
 
-        $results = QuizResult::with('quiz')->where('student_id',$studentId)
+        $results = QuizResult::with('quiz')
+                            ->where('student_id',$studentId)
                             ->where('teacher_id',$teacherId)
                             ->orderBy('created_at','desc')
                             ->get();
