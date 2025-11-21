@@ -8,10 +8,8 @@ use App\Http\Requests\student\storeHomeworkSolutions;
 use App\Http\Resources\
 {
     HomeworkResource,
-    HomeworkGradeResource,
     SolutionStudentForHomeworkResource,
 };
-use Illuminate\Http\Request;
 
 class HomeworkApiController extends Controller
 {

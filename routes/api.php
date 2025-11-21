@@ -22,17 +22,6 @@ use App\Http\Controllers\api\Teacher\
     DashboardApiController,
 };
 
-// use App\Http\Middleware\api\
-// {
-//     CheckAdminApi,
-//     PreventBackHistoryApi,
-//     SetLocaleApi,
-// };
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
 Route::middleware(['SetLocaleApi'])->group(function(){
     Route::controller(AccountUserApiController::class)->group(function ()
     {

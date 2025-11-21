@@ -4,7 +4,6 @@ namespace App\Http\Controllers\api\Student;
 use App\Services\Student\LessonService;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LessonResource;
-use Illuminate\Http\Request;
 
 class LessonApiController extends Controller
 {
@@ -16,12 +15,20 @@ class LessonApiController extends Controller
             return response()->json([
                 'status' => 'failed',
                 'msg'    => 'No lessons found!'
-            ],404);
+            ],404)->header('Content-Type','application/json');
         }
 
-        return response()->json([
+        $data =
+        [
             'status'    => 'success',
             'lessons'   => LessonResource::collection($lessons),
-        ],200);
+        ];
+
+        $etag = md5(json_encode($data));
+
+        return response()->json($data,200)
+                ->header('Content-Type','application/json')
+                ->header('ETag',$etag)
+                ->header('Last-Modified',0);
     }
 }

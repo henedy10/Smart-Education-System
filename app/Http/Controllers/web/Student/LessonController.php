@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Student;
+namespace App\Http\Controllers\web\Student;
 
 use App\Http\Controllers\Controller;
 use App\Services\Student\LessonService;

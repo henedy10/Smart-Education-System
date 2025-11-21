@@ -1,11 +1,10 @@
 <?php
 
-use App\Http\Controllers\AccountUserController;
-use App\Http\Controllers\admin\AdminController;
-use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
-use App\Http\Controllers\Admin\StudentController;
-use App\Http\Controllers\Admin\TeacherController;
-use App\Http\Controllers\Student\
+use App\Http\Controllers\web\AccountUserController;
+use App\Http\Controllers\web\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\web\Admin\StudentController;
+use App\Http\Controllers\web\Admin\TeacherController;
+use App\Http\Controllers\web\Student\
 {
     HomeController,
     HomeworkController,
@@ -13,7 +12,7 @@ use App\Http\Controllers\Student\
     QuizController,
 };
 
-use App\Http\Controllers\Teacher\
+use App\Http\Controllers\web\Teacher\
 {
     HomeworkController as TeacherHomeworkController,
     LessonController as TeacherLessonController,

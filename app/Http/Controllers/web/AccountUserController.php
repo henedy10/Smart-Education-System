@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\web;
+
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cookie;
 use App\Models\{User};
 use App\Http\Requests\account\{login, updatePassword};
