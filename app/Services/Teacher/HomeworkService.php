@@ -8,16 +8,11 @@ use App\Models\
     SolutionStudentForHomework,
     HomeworkGrade,
 };
+use App\Traits\UploadFile;
 
-class HomeworkService
-{
-    public function uploadFile($title,$file)
-    {
-        $fileName = $title . '.' . request()->file('file_homework')->getClientOriginalExtension();
-        $filePath = $file->storeAs('homeworks',$fileName,'public');
+class HomeworkService {
 
-        return $filePath;
-    }
+    use UploadFile;
 
     public function indexHomework($TeacherId)
     {
@@ -54,7 +49,7 @@ class HomeworkService
                                         'student_mark'  => $data['student_mark'],
                                         'homework_id'   => $data['homework_id'],
                                     ]);
-                                    
+
         SolutionStudentForHomework::where('student_id',$StudentId)
                                     ->where('homework_id',$data['homework_id'])
                                     ->update(['correction_status' => true]);

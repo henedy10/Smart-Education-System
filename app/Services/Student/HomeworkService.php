@@ -2,7 +2,7 @@
 
 namespace App\Services\Student;
 
-use App\Traits\UserHelper;
+use App\Traits\{UserHelper,UploadFile};
 use App\Models\
 {
     Homework,
@@ -12,15 +12,7 @@ use App\Models\
 
 class HomeworkService
 {
-    use UserHelper;
-
-    public function uploadFile($studentName,$file)
-    {
-        $fileName = $studentName.'.'.$file->getClientOriginalExtension();
-        $filePath = $file->storeAs('solutions_homework',$fileName,'public');
-
-        return $filePath;
-    }
+    use UserHelper,UploadFile;
 
     public function index($class,$subject)
     {

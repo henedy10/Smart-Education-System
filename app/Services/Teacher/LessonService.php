@@ -3,16 +3,11 @@
 namespace App\Services\Teacher;
 
 use App\Models\Lesson;
+use App\Traits\UploadFile;
 
-class LessonService
-{
-    public function uploadFile($title,$file)
-    {
-        $fileName = $title . '.' . request()->file('file_lesson')->getClientOriginalExtension();
-        $filePath = $file->storeAs('lessons',$fileName,'public');
+class LessonService {
 
-        return $filePath;
-    }
+    use UploadFile;
 
     public function index($TeacherId)
     {
