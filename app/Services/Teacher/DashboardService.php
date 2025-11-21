@@ -7,10 +7,10 @@ use App\Models\Teacher;
 class DashboardService
 {
     use UserHelper;
+
     public function index()
     {
-        $userId    = $this->getUserId();
-        $dashboard = Teacher::with('user')->where('user_id',$userId)
+        $dashboard = Teacher::with('user')->where('user_id',$this->getUserId())
                         ->withCount('lessons','homeworks','quizzes')
                         ->first();
 

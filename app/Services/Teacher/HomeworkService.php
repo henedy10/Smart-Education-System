@@ -11,6 +11,14 @@ use App\Models\
 
 class HomeworkService
 {
+    public function uploadFile($title,$file)
+    {
+        $fileName = $title . '.' . request()->file('file_homework')->getClientOriginalExtension();
+        $filePath = $file->storeAs('homeworks',$fileName,'public');
+
+        return $filePath;
+    }
+
     public function indexHomework($TeacherId)
     {
         $homeworks = Homework::where('teacher_id',$TeacherId)->get();
@@ -23,49 +31,42 @@ class HomeworkService
         return $solutions;
     }
 
-    public function storeHomework($request,$TeacherId)
+    public function storeHomework($data,$TeacherId)
     {
-        $fileName = $request->title_homework . '.' . request()->file('file_homework')->getClientOriginalExtension();
-        $filePath = $request->file('file_homework')->storeAs('homeworks',$fileName,'public');
+        $filePath = $this->uploadFile($data['title_homework'] , $data['file_homework']);
         $homework = Homework::create([
                                         'teacher_id'        => $TeacherId,
-                                        'title_homework'    => $request->title_homework,
+                                        'title_homework'    => $data['title_homework'],
                                         'file_homework'     => $filePath,
-                                        'content_homework'  => $request->content_homework,
-                                        'deadline'          => $request->deadline_homework,
-                                        'homework_mark'     => $request->homework_mark,
+                                        'content_homework'  => $data['content_homework'],
+                                        'deadline'          => $data['deadline_homework'],
+                                        'homework_mark'     => $data['homework_mark'],
                                     ]);
 
         return $homework;
     }
 
-    public function storeHomeworkGrade($request,$StudentId)
+    public function storeHomeworkGrade($data,$StudentId)
     {
-        $student_mark = $request->student_mark;
-        $homeworkId   = $request->homework_id;
-        $solutionId   = $request->solution_id;
-        $Grade        = HomeworkGrade::create([
+        $Grade = HomeworkGrade::create([
                                         'student_id'    => $StudentId,
-                                        'solution_id'   => $solutionId,
-                                        'student_mark'  => $student_mark,
-                                        'homework_id'   => $homeworkId,
+                                        'solution_id'   => $data['solution_id'],
+                                        'student_mark'  => $data['student_mark'],
+                                        'homework_id'   => $data['homework_id'],
                                     ]);
-        $correctionStatus = SolutionStudentForHomework::where('student_id',$StudentId)
-                                                    ->where('homework_id',$homeworkId)
-                                                    ->first();
-        $correctionStatus->update(['correction_status' => true]);
+                                    
+        SolutionStudentForHomework::where('student_id',$StudentId)
+                                    ->where('homework_id',$data['homework_id'])
+                                    ->update(['correction_status' => true]);
 
         return $Grade;
     }
 
-    public function updateHomeworkGrade($request,$StudentId)
+    public function updateHomeworkGrade($data,$StudentId)
     {
-        $homeworkId   = $request->homework_id;
-        $student_mark = $request->student_mark;
-        $Grade        = HomeworkGrade::where('student_id',$StudentId)
-                                    ->where('homework_id',$homeworkId)
-                                    ->first();
-        $Grade->update(['student_mark' => $student_mark]);
+        $Grade = HomeworkGrade::where('student_id',$StudentId)
+                                    ->where('homework_id',$data['homework_id'])
+                                    ->update(['student_mark' => $data['student_mark']]);
 
         return $Grade;
     }

@@ -6,22 +6,27 @@ use App\Models\Lesson;
 
 class LessonService
 {
+    public function uploadFile($title,$file)
+    {
+        $fileName = $title . '.' . request()->file('file_lesson')->getClientOriginalExtension();
+        $filePath = $file->storeAs('lessons',$fileName,'public');
+
+        return $filePath;
+    }
+
     public function index($TeacherId)
     {
         $lessons = Lesson::where('teacher_id',$TeacherId)->get();
         return $lessons;
     }
 
-    public function store($request, $TeacherId)
+    public function store($data, $TeacherId)
     {
-        $fileName     = $request->title_lesson . '.' . request()->file('file_lesson')->getClientOriginalExtension();
-        $filePath     = $request->file('file_lesson')->storeAs('lessons',$fileName,'public');
-        $title_lesson = $request->title_lesson;
-
-        $lesson = Lesson::create([
-            'teacher_id'   => $TeacherId,
-            'file_lesson'  => $filePath,
-            'title_lesson' => $title_lesson,
+        $filePath = $this->uploadFile($data['title_lesson'],$data['file_lesson']);
+        $lesson   = Lesson::create([
+                'teacher_id'   => $TeacherId,
+                'file_lesson'  => $filePath,
+                'title_lesson' => $data['title_lesson'],
         ]);
 
         return $lesson;

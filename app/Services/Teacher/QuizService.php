@@ -2,29 +2,33 @@
 
 namespace App\Services\Teacher;
 
-use App\Models\{Quiz,Question,Option,Teacher,Student,QuizResult};
+use App\Models\
+{
+    Quiz,
+    Question,
+    Option,
+    Teacher,
+    Student,
+    QuizResult
+};
 
 class QuizService
 {
-    public function create($request,$TeacherId)
+    public function store($data,$TeacherId)
     {
-        $quiz_title       =  $request->quiz_title;
-        $quiz_date        =  $request->quiz_date;
-        $quiz_duration    =  $request->quiz_duration;
-        $quiz_description =  $request->quiz_description;
-        $question_title   =  $request->question_title;
-        $correct_option   =  $request->correct_option;
-        $option_title     =  $request->option_title;
-        $question_mark    =  $request->question_mark;
-        $option_index     = 0;
-        $quiz_mark        = 0;
+        $question_title   =  $data['question_title'];
+        $correct_option   =  $data['correct_option'];
+        $option_title     =  $data['option_title'];
+        $question_mark    =  $data['question_mark'];
+        $option_index     =  0;
+        $quiz_mark        =  0;
 
         $Quiz = Quiz::create([
                 'teacher_id'  => $TeacherId,
-                'title'       => $quiz_title,
-                'description' => $quiz_description,
-                'start_time'  => $quiz_date,
-                'duration'    => $quiz_duration,
+                'title'       => $data['quiz_title'],
+                'description' => $data['quiz_description'],
+                'start_time'  => $data['quiz_date'],
+                'duration'    => $data['quiz_duration'],
                 'quiz_mark'   => $quiz_mark,
             ]);
 
