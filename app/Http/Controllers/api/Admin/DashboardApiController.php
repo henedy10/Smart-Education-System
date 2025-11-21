@@ -11,17 +11,14 @@ class DashboardApiController extends Controller
 {
     public function index(DashboardService $Service , Request $request)
     {
-        $info           = $Service->index();
-        $user           = $info['user'];
-        $count_teachers = $info['count_teachers'];
-        $count_students = $info['count_students'];
+        $info = $Service->index();
 
         $data =
             [
                 'status'         => 'success',
-                'data'           => new UserResource($user),
-                'count_teachers' => $count_teachers,
-                'count_students' => $count_students
+                'data'           => new UserResource($info['user']),
+                'count_teachers' => $info['count_teachers'],
+                'count_students' => $info['count_students']
             ];
 
         $etag = md5(json_encode($data));
@@ -42,7 +39,7 @@ class DashboardApiController extends Controller
                         ->header('Last-Modified',$lastModified);
             }
         }
-        
+
         return response()->json($data,200)
                         ->header('Content-Type','application/json')
                         ->header('Content-Length',strlen(json_encode($data)))

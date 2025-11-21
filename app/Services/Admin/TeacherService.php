@@ -2,6 +2,7 @@
 
 namespace App\Services\Admin;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Builder;
 use App\Models\
 {
     Teacher,
@@ -10,6 +11,31 @@ use App\Models\
 
 class TeacherService
 {
+    public function index($data)
+    {
+        $name     = $data->query('name');
+        $teachers = Teacher::with('user')->whereHas('user', function (Builder $query) use($name) {
+                    $query->whereNull('deleted_at')
+                        ->where('name','LIKE','%'.$name.'%')
+                    ;})->get();
+
+        $lastModified = $teachers->max(function($teacher){
+            $teacherUpdated = strtotime($teacher->updated_at);
+            $userUpdated    = $teacher->user ? strtotime($teacher->user->updated_at) : 0;
+            return max($teacherUpdated,$userUpdated);
+        });
+        $lastModifiedHttp       = gmdate('D, d M Y H:i:s',$lastModified) . ' GMT';
+        $clientEtag             = $data->header('If-None-Match');
+        $count_teachers_trashed = User::onlyTrashed()->where('user_as' , 'teacher')->count();
+
+        return [
+            'teachers'               => $teachers,
+            'lastModified'           => $lastModified,
+            'lastModifiedHttp'       => $lastModifiedHttp,
+            'clientEtag'             => $clientEtag,
+            'count_teachers_trashed' => $count_teachers_trashed
+        ];
+    }
     public function store($request)
     {
         $validated = $request->validated();
@@ -66,6 +92,29 @@ class TeacherService
     {
         $query = User::where('id',$teacherId)->delete();
         return $query ? true : false;
+    }
+
+    public function indexTrash($data)
+    {
+        $name     = $data->query('name');
+        $teachers = User::with('teacher')
+                        ->where('user_as','teacher')
+                        ->where('name','LIKE','%'.$name.'%')
+                        ->onlyTrashed()
+                        ->get();
+
+        $lastModified = $teachers->max(function($teacher){
+            $teacherUpdated = $teacher->updated_at ? strtotime($teacher->updated_at) : 0;
+            return $teacherUpdated;
+        });
+
+        $lastModifiedHttp = gmdate('D, d M Y H:i:s',$lastModified) . ' GMT';
+
+        return [
+            'teachers'         => $teachers,
+            'lastModified'     => $lastModified,
+            'lastModifiedHttp' => $lastModifiedHttp
+        ];
     }
 
     public function forceDelete($teacherId)

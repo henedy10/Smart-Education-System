@@ -3,11 +3,6 @@
 namespace App\Http\Controllers\api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\
-{
-    Teacher,
-    User,
-};
 use App\Http\Requests\admin\teacher\
 {
     store as TeacherStore,
@@ -16,68 +11,58 @@ use App\Http\Requests\admin\teacher\
 use App\Http\Resources\TeacherResource;
 use App\Http\Resources\UserResource;
 use App\Services\Admin\TeacherService;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class TeacherApiController extends Controller
 {
+    public function __construct(protected TeacherService $teacher)
+    {
+    }
+
     public function index(Request $request)
     {
-        $name     = $request->query('name');
-        $teachers = Teacher::with('user')->whereHas('user', function (Builder $query) use($name) {
-                    $query->whereNull('deleted_at')
-                        ->where('name','LIKE','%'.$name.'%')
-                    ;})->get();
+        $info = $this->teacher->index($request->validated());
 
-        $lastModified = $teachers->max(function($teacher){
-            $teacherUpdated = strtotime($teacher->updated_at);
-            $userUpdated    = $teacher->user ? strtotime($teacher->user->updated_at) : 0;
-            return max($teacherUpdated,$userUpdated);
-        });
-        $lastModifiedHttp       = gmdate('D, d M Y H:i:s',$lastModified) . ' GMT';
-        $clientEtag             = $request->header('If-None-Match');
-        $count_teachers_trashed = User::onlyTrashed()->where('user_as' , 'teacher')->count();
-
-        if($teachers->count() > 0){
+        if($info['teachers']->count() > 0){
             $data =
             [
                 'status'                 => 'Success',
-                'teachers'               => TeacherResource::collection($teachers),
-                'count_teachers_trashed' => $count_teachers_trashed
+                'teachers'               => TeacherResource::collection($info['teachers']),
+                'count_teachers_trashed' => $info['count_teachers_trashed']
             ];
             $etag = md5(json_encode($data));
 
-            if(($clientEtag && $clientEtag === $etag)){
+            if(($info['clientEtag'] && $info['clientEtag'] === $etag)){
                 return response()->noContent(304)
                     ->header('ETag' , $etag)
-                    ->header('Last-Modified',$lastModifiedHttp);
+                    ->header('Last-Modified',$info['lastModifiedHttp']);
             }
 
             if($request->header('If-Modified-Since')){
                 $ifModifiedSinceTime = strtotime($request->header('If-Modified-Since'));
-                if($ifModifiedSinceTime >= $lastModified){
+                if($ifModifiedSinceTime >= $info['lastModified']){
                     return response()->noContent(304)
                         ->header('ETag' , $etag)
-                        ->header('Last-Modified',$lastModifiedHttp);
+                        ->header('Last-Modified',$info['lastModifiedHttp']);
                 }
             }
             return response()->json($data,200)
                 ->header('Content-Type','application/json')
                 ->header('Content-Length',strlen(json_encode($data)))
                 ->header('ETag',$etag)
-                ->header('Last-Modified',$lastModifiedHttp);
+                ->header('Last-Modified',$info['lastModifiedHttp']);
         }
 
         return response()->json([
             'status'                 => 'Failed',
             'teachers'               =>  __('messages.no_teachers'),
-            'count_teachers_trashed' => $count_teachers_trashed
+            'count_teachers_trashed' => $info['count_teachers_trashed']
         ],404)->header('Content-Type','application/json');
     }
 
-    public function store(TeacherStore $request ,TeacherService $Service)
+    public function store(TeacherStore $request)
     {
-        $teacher = $Service->store($request);
+        $teacher = $this->teacher->store($request);
         $data    =
         [
             'status'  => 'Success',
@@ -90,9 +75,9 @@ class TeacherApiController extends Controller
                 ->header('Content-Length',strlen(json_encode($data)));
     }
 
-    public function update(update $request ,$userId,TeacherService $Service)
+    public function update(update $request ,$userId)
     {
-        $teacher = $Service->update($request,$userId);
+        $teacher = $this->teacher->update($request,$userId);
         $data    =
         [
             'status'  => 'Success',
@@ -105,9 +90,9 @@ class TeacherApiController extends Controller
                 ->header('Content-Length',strlen(json_encode($data)));
     }
 
-    public function trash($teacherId , TeacherService $Service)
+    public function trash($teacherId)
     {
-        if($Service->trash($teacherId)){
+        if($this->teacher->trash($teacherId)){
             return response()->json([
                 'status'  => 'Success',
                 'message' => 'تم حذف المدرس مؤقتا'
@@ -122,25 +107,13 @@ class TeacherApiController extends Controller
 
     public function indexTrash(Request $request)
     {
-        $name     = $request->query('name');
-        $teachers = User::with('teacher')
-                        ->where('user_as','teacher')
-                        ->where('name','LIKE','%'.$name.'%')
-                        ->onlyTrashed()
-                        ->get();
+        $info = $this->teacher->indexTrash($request->validated());
 
-        $lastModified = $teachers->max(function($teacher){
-            $teacherUpdated = $teacher->updated_at ? strtotime($teacher->updated_at) : 0;
-            return $teacherUpdated;
-        });
-
-        $lastModifiedHttp = gmdate('D, d M Y H:i:s',$lastModified) . ' GMT';
-
-        if($teachers->count()>0){
+        if($info['teachers']->count()>0){
             $data =
             [
                 'status'   => 'Success',
-                'teachers' => UserResource::collection($teachers)
+                'teachers' => UserResource::collection($info['teachers'])
             ];
             $etag = md5(json_encode($data));
 
@@ -148,16 +121,16 @@ class TeacherApiController extends Controller
                 if($clientEtag === $etag){
                     return response()->noContent(304)
                             ->header('ETag',$etag)
-                            ->header('Last-Modified',$lastModifiedHttp);
+                            ->header('Last-Modified',$info['lastModifiedHttp']);
                 }
             }
 
             if($request->header('If-Modified-Since')){
                 $ifModifiedSinceTime = strtotime($request->header('If-Modified-Since'));
-                if($ifModifiedSinceTime >= $lastModified){
+                if($ifModifiedSinceTime >= $info['lastModified']){
                     return response()->noContent(304)
                             ->header('ETag',$etag)
-                            ->header('Last-Modified',$lastModifiedHttp);
+                            ->header('Last-Modified',$info['lastModifiedHttp']);
                 }
             }
 
@@ -165,7 +138,7 @@ class TeacherApiController extends Controller
                     ->header('Content-Type','application/json')
                     ->header('Content-Length',strlen(json_encode($data)))
                     ->header('ETag',$etag)
-                    ->header('Last-Modified',$lastModifiedHttp);
+                    ->header('Last-Modified',$info['lastModifiedHttp']);
             return response()->json($data,200);
         }
 
@@ -175,9 +148,9 @@ class TeacherApiController extends Controller
         ],404)->header('Content-Type','application/json');
     }
 
-    public function forceDelete($teacherId,TeacherService $Service)
+    public function forceDelete($teacherId)
     {
-        if($Service->forceDelete($teacherId)){
+        if($this->teacher->forceDelete($teacherId)){
             return response()->json([
                 'status'  => 'Success',
                 'message' => 'تم حذف المدرس نهائيا'
@@ -190,9 +163,9 @@ class TeacherApiController extends Controller
         ],404)->header('Content-Type','application/json');
     }
 
-    public function restore($teacherId,TeacherService $Service)
+    public function restore($teacherId)
     {
-        if($Service->restore($teacherId)){
+        if($this->teacher->restore($teacherId)){
             return response()->json([
                 'status'  => 'Success',
                 'message' => 'تم استرجاع المدرس بنجاح'

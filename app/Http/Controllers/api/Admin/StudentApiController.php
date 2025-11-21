@@ -2,82 +2,71 @@
 
 namespace App\Http\Controllers\api\Admin;
 
-use App\Models\
-{
-    User,
-    Student,
-};
 use App\Http\Requests\admin\student\
 {
     store,
     update,
 };
 use App\Services\Admin\StudentService;
-use Illuminate\Database\Eloquent\Builder;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\StudentResource;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\
+{
+    StudentResource,
+    UserResource
+};
 use Illuminate\Http\Request;
 
 class StudentApiController extends Controller
 {
+    public function __construct(protected StudentService $student)
+    {
+    }
+
     public function index(Request $request)
     {
-        $name     = $request->query('name');
-        $students = Student::with('user')->whereHas('user', function (Builder $query) use ($name) {
-                    $query->whereNull('deleted_at')
-                            ->where('name','LIKE','%'.$name.'%');})->get();
+        $info = $this->student->index($request->validated());
 
-        $lastModified = $students->max(function($student){
-            $studentUpdated = strtotime($student->updated_at);
-            $userUpdated    = $student->user ? strtotime($student->user->updated_at) : 0;
-            return max($studentUpdated,$userUpdated);
-        });
-
-        $lastModifiedHttp       = gmdate('D, d M Y H:i:s',$lastModified) . ' GMT';
-        $count_students_trashed = User::onlyTrashed()->where('user_as' , 'student')->count();
-        $clientEtag             = $request->header('If-None-Match');
-
-        if($students->count() > 0){
+        if($info['students']->count() > 0)
+        {
             $data =
             [
                 'status'                 => 'success',
-                'students'               => StudentResource::collection($students),
-                'count_students_trashed' => $count_students_trashed
+                'students'               => StudentResource::collection($info['students']),
+                'count_students_trashed' => $info['count_students_trashed']
             ];
             $etag = md5(json_encode($data));
 
-            if(($clientEtag && $clientEtag === $etag)){
+            if(($info['clientEtag'] && $info['clientEtag'] === $etag)){
                 return response()->noContent(304)
                     ->header('ETag' , $etag)
-                    ->header('Last-Modified',$lastModifiedHttp);
+                    ->header('Last-Modified',$info['lastModifiedHttp']);
             }
 
             if($request->header('If-Modified-Since')){
                 $ifModifiedSinceTime = strtotime($request->header('If-Modified-Since'));
-                if($ifModifiedSinceTime >= $lastModified){
+                if($ifModifiedSinceTime >= $info['lastModified']){
                     return response()->noContent(304)
                         ->header('ETag' , $etag)
-                        ->header('Last-Modified',$lastModifiedHttp);
+                        ->header('Last-Modified',$info['lastModifiedHttp']);
                 }
             }
             return response()->json($data,200)
                 ->header('Content-Type','application/json')
                 ->header('Content-Length',strlen(json_encode($data)))
                 ->header('ETag',$etag)
-                ->header('Last-Modified',$lastModifiedHttp);
+                ->header('Last-Modified',$info['lastModifiedHttp']);
         }
 
         return response()->json([
             'status'                 => 'failed',
             'message'                =>  __('messages.no_students'),
-            'count_students_trashed' => $count_students_trashed
+            'count_students_trashed' => $info['count_students_trashed']
         ],404)->header('Content-Type','application/json');
     }
 
-    public function store(store $request , StudentService $Service)
+    public function store(store $request)
     {
-        $student = $Service->store($request);
+        $student = $this->student->store($request->validated());
         $data    =
         [
             'status'     => 'success',
@@ -90,9 +79,9 @@ class StudentApiController extends Controller
                 ->header('Content-Length',strlen(json_encode($data)));
     }
 
-    public function update(update $request , $userId , StudentService $Service)
+    public function update(update $request,$userId)
     {
-        $student = $Service->update($request,$userId);
+        $student = $this->student->update($request->validated(),$userId);
         $data    =
         [
             'status'   => 'success',
@@ -105,9 +94,9 @@ class StudentApiController extends Controller
                 ->header('Content-Length',strlen(json_encode($data)));
     }
 
-    public function trash($studentId , StudentService $Service)
+    public function trash($studentId)
     {
-        if($Service->trash($studentId)){
+        if($this->student->trash($studentId)){
             return response()->json([
                 'status'  => 'success',
                 'message' => 'تم حذف الطالب مؤقتا'
@@ -122,25 +111,13 @@ class StudentApiController extends Controller
 
     public function indexTrash(Request $request)
     {
-        $name     = $request->query('name');
-        $students = User::with('student')
-                        ->where('user_as','student')
-                        ->where('name','LIKE','%'.$name.'%')
-                        ->onlyTrashed()
-                        ->get();
+        $info = $this->student->indexTrash($request->validated());
 
-        $lastModified = $students->max(function($student){
-            $studentUpdated = $student->updated_at ? strtotime($student->updated_at) : 0;
-            return $studentUpdated;
-        });
-
-        $lastModifiedHttp = gmdate('D, d M Y H:i:s',$lastModified) . ' GMT';
-
-        if($students->count() > 0){
+        if($info['students']->count() > 0){
             $data =
             [
                 'status'   => 'success',
-                'students' => UserResource::collection($students)
+                'students' => UserResource::collection($info['students'])
             ];
             $etag = md5(json_encode($data));
 
@@ -148,16 +125,16 @@ class StudentApiController extends Controller
                 if($clientEtag === $etag){
                     return response()->noContent(304)
                             ->header('ETag',$etag)
-                            ->header('Last-Modified',$lastModifiedHttp);
+                            ->header('Last-Modified',$info['lastModifiedHttp']);
                 }
             }
 
             if($request->header('If-Modified-Since')){
                 $ifModifiedSinceTime = strtotime($request->header('If-Modified-Since'));
-                if($ifModifiedSinceTime >= $lastModified){
+                if($ifModifiedSinceTime >= $info['lastModified']){
                     return response()->noContent(304)
                             ->header('ETag',$etag)
-                            ->header('Last-Modified',$lastModifiedHttp);
+                            ->header('Last-Modified',$info['lastModifiedHttp']);
                 }
             }
 
@@ -165,7 +142,7 @@ class StudentApiController extends Controller
                     ->header('Content-Type','application/json')
                     ->header('Content-Length',strlen(json_encode($data)))
                     ->header('ETag',$etag)
-                    ->header('Last-Modified',$lastModifiedHttp);
+                    ->header('Last-Modified',$info['lastModifiedHttp']);
         }
 
         return response()->json([
@@ -174,9 +151,9 @@ class StudentApiController extends Controller
         ],404)->header('Content-Type','application/json');
     }
 
-    public function forceDelete($studentId,StudentService $Service)
+    public function forceDelete($studentId)
     {
-        if($Service->forceDelete($studentId)){
+        if($this->student->forceDelete($studentId)){
             return response()->json([
                 'status'  => 'success',
                 'message' => 'تم حذف الطالب نهائيا'
@@ -189,9 +166,9 @@ class StudentApiController extends Controller
         ],404)->header('Content-Type','application/json');
     }
 
-    public function restore($studentId,StudentService $Service)
+    public function restore($studentId)
     {
-        if($Service->restore($studentId)){
+        if($this->student->restore($studentId)){
             return response()->json([
                 'status'  => 'success',
                 'message' => 'تم استرجاع الطالب بنجاح'
