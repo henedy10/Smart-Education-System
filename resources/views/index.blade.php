@@ -3,14 +3,19 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.3.2/css/flag-icons.min.css" />
     <title>{{__('messages.login')}}</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gradient-to-r from-blue-50 to-blue-100 flex items-center justify-center min-h-screen font-sans">
 
     <div class="absolute top-5 right-5 flex gap-3">
-        <a href="{{route('SetLocale','en')}}" class="px-3 py-1 rounded-lg bg-gray-200 hover:bg-gray-300 text-sm">English</a>
-        <a href="{{route('SetLocale','ar')}}" class="px-3 py-1 rounded-lg bg-gray-200 hover:bg-gray-300 text-sm">عربي</a>
+        @foreach ( config('lang.supported') as $locale => $lang )
+            <a href="{{route('SetLocale',$lang['locale'])}}" class="px-3 py-1 rounded-lg bg-gray-200 hover:bg-gray-300 text-sm flex items-center gap-2">
+                <img src="{{asset('flags/'.$lang['flag'])}}" alt="{{$lang['name']}}" width="22" class="inline-block">
+                {{$lang['name']}}
+            </a>
+        @endforeach
     </div>
 
     <div class="bg-white shadow-2xl rounded-2xl w-full max-w-md p-8 space-y-6 border border-gray-200">

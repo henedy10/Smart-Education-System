@@ -31,8 +31,8 @@ use Illuminate\Support\Facades\Route;
 
 // Localization
 Route::get('/lang/{locale}',function (string $locale){
-    if (!in_array($locale, ['en', 'ar'])) {
-        session(['locale' => 'en']);
+    if (!array_key_exists($locale,config('lang.supported'))) {
+        session(['locale' => config('lang.default')]);
     }else{
         session(['locale' => $locale]);
     }
