@@ -6,6 +6,7 @@ use App\Http\Controllers\api\AccountUserApiController;
 use App\Http\Controllers\api\Admin\DashboardApiController as AdminDashboardApiController;
 use App\Http\Controllers\api\Admin\StudentApiController;
 use App\Http\Controllers\api\Admin\TeacherApiController;
+use App\Http\Controllers\api\lang\LanguageApiController;
 use App\Http\Controllers\api\Student\
 {
     HomeApiController,
@@ -23,6 +24,7 @@ use App\Http\Controllers\api\Teacher\
 };
 
 Route::middleware(['SetLocaleApi'])->group(function(){
+    Route::get('/languages',[LanguageApiController::class,'index']);
     Route::controller(AccountUserApiController::class)->group(function ()
     {
         Route::post('/passwords','updatePassword')->middleware('throttle:updatePasswordApi');
