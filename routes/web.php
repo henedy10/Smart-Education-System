@@ -1,10 +1,18 @@
 <?php
 
-use App\Http\Controllers\web\AccountUserController;
-use App\Http\Controllers\web\Admin\DashboardController as AdminDashboardController;
-use App\Http\Controllers\web\Admin\StudentController;
-use App\Http\Controllers\web\Admin\TeacherController;
-use App\Http\Controllers\web\Auth\LoginController;
+use App\Http\Controllers\web\Admin\
+{
+    DashboardController as AdminDashboardController,
+    StudentController,
+    TeacherController
+};
+
+use App\Http\Controllers\web\Auth\
+{
+    LoginController,
+    LogoutController
+};
+
 use App\Http\Controllers\web\Student\
 {
     HomeController,
@@ -53,6 +61,7 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
         // });
     Route::get('/',[LoginController::class,'index'])->name('index');
     Route::post('/login',[LoginController::class,'login'])->name('login');
+    Route::post('/logout',LogoutController::class)->name('logout');
 
     /** Admin Routes */
     Route::middleware(CheckAdmin::class)->group(function(){
