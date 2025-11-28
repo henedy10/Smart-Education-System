@@ -29,11 +29,11 @@
         @endif
 
         {{-- Error Message --}}
-        @error('login')
+        @if(session('error'))
             <div class="bg-red-100 border border-red-300 text-red-700 p-3 rounded-lg text-sm">
-                * {{ $message }}
+                {{ session('error') }}
             </div>
-        @enderror
+        @endif
 
         <form action="{{route('login')}}" method="POST" class="space-y-5">
             @csrf
@@ -64,9 +64,9 @@
                     <input type="checkbox" name="remember_me" class="form-checkbox text-blue-600 rounded">
                     <span class="ml-2 text-gray-600">{{__('messages.remember_me')}} </span>
                 </label>
-                <a href="{{route('Password.Edit')}}" class="text-blue-600 hover:underline">
+                {{-- <a href="{{route('Password.Edit')}}" class="text-blue-600 hover:underline">
                     {{__('messages.forget_password')}}
-                </a>
+                </a> --}}
             </div>
 
             {{-- Submit Button --}}

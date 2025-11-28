@@ -4,6 +4,7 @@ use App\Http\Controllers\web\AccountUserController;
 use App\Http\Controllers\web\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\web\Admin\StudentController;
 use App\Http\Controllers\web\Admin\TeacherController;
+use App\Http\Controllers\web\Auth\LoginController;
 use App\Http\Controllers\web\Student\
 {
     HomeController,
@@ -41,16 +42,17 @@ Route::get('/lang/{locale}',function (string $locale){
 })->name('SetLocale');
 
 Route::middleware([PreventBackHistory::class , SetLocale::class])->group(function(){
-    Route::controller(AccountUserController::class)->group(function ()
-    {
-        Route::middleware('checkLogin')->group(function(){
-            Route::get('/','index')->name('index');
-            Route::get('/passwords/edit','editPassword')->name('Password.Edit');
-        });
-        Route::post('/passwords','updatePassword')->middleware('throttle:updatePassword')->name('Password.Update');
-        Route::post('/login','login')->middleware('throttle:login')->name('login');
-        Route::get('/logout','logout')->name('LogOut');
-    });
+    // Route::controller(AccountUserController::class)->group(function ()
+    // {
+    //     Route::middleware('checkLogin')->group(function(){
+        //         Route::get('/passwords/edit','editPassword')->name('Password.Edit');
+        //     });
+        //     Route::post('/passwords','updatePassword')->middleware('throttle:updatePassword')->name('Password.Update');
+        //     Route::post('/login','login')->middleware('throttle:login')->name('login');
+        //     Route::get('/logout','logout')->name('LogOut');
+        // });
+    Route::get('/',[LoginController::class,'index'])->name('index');
+    Route::post('/login',[LoginController::class,'login'])->name('login');
 
     /** Admin Routes */
     Route::middleware(CheckAdmin::class)->group(function(){
