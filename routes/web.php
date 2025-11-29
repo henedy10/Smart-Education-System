@@ -9,6 +9,7 @@ use App\Http\Controllers\web\Admin\
 
 use App\Http\Controllers\web\Auth\
 {
+    ForgotPasswordController,
     LoginController,
     LogoutController
 };
@@ -59,9 +60,12 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
         //     Route::post('/login','login')->middleware('throttle:login')->name('login');
         //     Route::get('/logout','logout')->name('LogOut');
         // });
-    Route::get('/',[LoginController::class,'index'])->name('index');
+    Route::view('/','auth.login')->name('index');
+    Route::view('/forgot-password','auth.passwords.forgot-password')->name('password.request');
     Route::post('/login',[LoginController::class,'login'])->name('login');
     Route::post('/logout',LogoutController::class)->name('logout');
+    Route::post('/forgot-password',ForgotPasswordController::class)->name('password.email');
+    Route::view('/reset-password/{token}','auth.passwords.reset-password')->name('password.reset');
 
     /** Admin Routes */
     Route::middleware(CheckAdmin::class)->group(function(){

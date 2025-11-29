@@ -64,9 +64,9 @@
                     <input type="checkbox" name="remember_me" class="form-checkbox text-blue-600 rounded">
                     <span class="ml-2 text-gray-600">{{__('messages.remember_me')}} </span>
                 </label>
-                {{-- <a href="{{route('Password.Edit')}}" class="text-blue-600 hover:underline">
+                <a href="{{route('password.request')}}" class="text-blue-600 hover:underline">
                     {{__('messages.forget_password')}}
-                </a> --}}
+                </a>
             </div>
 
             {{-- Submit Button --}}
