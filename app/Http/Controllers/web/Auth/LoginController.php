@@ -8,7 +8,7 @@ use App\Services\Auth\LoginService;
 
 class LoginController extends Controller
 {
-    public function login(LoginService $service , LoginRequest $request )
+    public function __invoke(LoginService $service , LoginRequest $request )
     {
         if($user = $service->login($request))
         {

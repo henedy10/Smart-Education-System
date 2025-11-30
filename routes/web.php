@@ -11,7 +11,8 @@ use App\Http\Controllers\web\Auth\
 {
     ForgotPasswordController,
     LoginController,
-    LogoutController
+    LogoutController,
+    ResetPasswordController
 };
 
 use App\Http\Controllers\web\Student\
@@ -39,7 +40,7 @@ use App\Http\Middleware\
 
 use Illuminate\Support\Facades\Route;
 
-// Localization
+/********************* Localization Route *******************/
 Route::get('/lang/{locale}',function (string $locale){
     if (!array_key_exists($locale,config('lang.supported'))) {
         session(['locale' => config('lang.default')]);
@@ -51,23 +52,17 @@ Route::get('/lang/{locale}',function (string $locale){
 })->name('SetLocale');
 
 Route::middleware([PreventBackHistory::class , SetLocale::class])->group(function(){
-    // Route::controller(AccountUserController::class)->group(function ()
-    // {
-    //     Route::middleware('checkLogin')->group(function(){
-        //         Route::get('/passwords/edit','editPassword')->name('Password.Edit');
-        //     });
-        //     Route::post('/passwords','updatePassword')->middleware('throttle:updatePassword')->name('Password.Update');
-        //     Route::post('/login','login')->middleware('throttle:login')->name('login');
-        //     Route::get('/logout','logout')->name('LogOut');
-        // });
+
+    /********************** Auth Routes **********************/
     Route::view('/','auth.login')->name('index');
-    Route::view('/forgot-password','auth.passwords.forgot-password')->name('password.request');
-    Route::post('/login',[LoginController::class,'login'])->name('login');
+    Route::post('/login',LoginController::class)->name('login');
     Route::post('/logout',LogoutController::class)->name('logout');
     Route::post('/forgot-password',ForgotPasswordController::class)->name('password.email');
+    Route::view('/forgot-password','auth.passwords.forgot-password')->name('password.request');
     Route::view('/reset-password/{token}','auth.passwords.reset-password')->name('password.reset');
+    Route::post('/reset-password',ResetPasswordController::class)->name('password.update');
 
-    /** Admin Routes */
+    /************************* Admin Routes ********************/
     Route::middleware(CheckAdmin::class)->group(function(){
         Route::controller(AdminDashboardController::class)->group(function(){
             Route::get('/admin/dashboard' , 'index')->name('admin.index');
@@ -98,7 +93,7 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
         });
     });
 
-    /** Student Routes */
+    /**************************** Student Routes ****************************/
         Route::middleware('CheckStudent')->group(function()
         {
             Route::name('student.')->group(function()
@@ -139,7 +134,7 @@ Route::middleware([PreventBackHistory::class , SetLocale::class])->group(functio
             });
         });
 
-    /** Teacher Routes */
+    /****************************** Teacher Routes ************************************/
 
         Route::middleware('CheckTeacher')->group(function()
         {

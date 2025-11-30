@@ -8,15 +8,15 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SendPasswordResetLink extends Mailable
+class SendPasswordResetLinkMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $resetUrl;
 
-    public function __construct($token)
+    public function __construct(string $token)
     {
-        $this->resetUrl = url("/reset-password/{$token}");
+        $this->resetUrl = url('reset-password/'.$token);
     }
 
 
@@ -31,7 +31,7 @@ class SendPasswordResetLink extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.reset-password',
+            view: 'mail.reset-password',
         );
     }
 

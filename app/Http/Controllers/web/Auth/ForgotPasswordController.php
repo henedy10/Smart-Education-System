@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\web\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ForgotPasswordRequest;
-use App\Mail\SendPasswordResetLink;
+use App\Http\Requests\Auth\ForgotPasswordRequest;
+use App\Mail\SendPasswordResetLinkMail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-
-use function Symfony\Component\Clock\now;
 
 class ForgotPasswordController extends Controller
 {
@@ -22,7 +20,7 @@ class ForgotPasswordController extends Controller
             ['token' => $token , 'created_at' => now()]
         );
 
-        Mail::to($request->email)->send(new SendPasswordResetLink($token));
+        Mail::to($request->email)->send(new SendPasswordResetLinkMail($token));
 
         return back()->with('success','We have sent you an email with the reset link');
 
