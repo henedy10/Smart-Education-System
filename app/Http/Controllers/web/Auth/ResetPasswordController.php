@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\
     Hash
 };
 use App\Models\User;
+use Carbon\Carbon;
 
 class ResetPasswordController extends Controller
 {
@@ -20,7 +21,11 @@ class ResetPasswordController extends Controller
             ->where('email',$request->email)
             ->first();
 
-        if(!$result){
+        $tokenExpire    = 60;
+        $tokenCreatedAt = Carbon::parse($request->created_at);
+        $diffInMinutes  = $tokenCreatedAt->diffInMinutes(Carbon::now());
+
+        if(!$result || $diffInMinutes > $tokenExpire ){
             return back()->with('error','Invalid token or email address !');
         }
 
