@@ -4,16 +4,20 @@ namespace App\Http\Controllers\web\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Services\Auth\LoginService;
+use Illuminate\Support\Facades\Auth;
+
 
 class LoginController extends Controller
 {
-    public function __invoke(LoginService $service , LoginRequest $request )
+    public function __invoke(LoginRequest $request )
     {
-        if($user = $service->login($request))
+        if(Auth::attempt($request->only('email','password')))
         {
-            return $user->user_as === "admin" ?
-                redirect()->route('admin.index') : ($user->user_as === "teacher" ?
+            Auth::logoutOtherDevices($request->password);
+            $request->session()->regenerate();
+
+            return Auth::user()->user_as === "admin" ?
+                redirect()->route('admin.index') : (Auth::user()->user_as === "teacher" ?
                 redirect()->route('teacher.index') : redirect()->route('student.index'));
         }
 
