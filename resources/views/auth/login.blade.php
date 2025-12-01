@@ -70,7 +70,7 @@
             </div>
 
             {{-- Submit Button --}}
-            <button type="submit" name="submit"
+            <button type="submit" 
                 class="w-full bg-blue-600 text-white py-2.5 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md font-semibold">
                 {{__('messages.login')}}
             </button>

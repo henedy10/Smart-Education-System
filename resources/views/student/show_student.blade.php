@@ -12,7 +12,7 @@
             <i data-lucide="user" class="w-6 h-6 text-blue-600"></i>
             <span class="text-lg font-semibold text-gray-800">👋 {{__('messages.greeting')}}, <span id="studentName">{{$info['student']->user->name}}</span></span>
         </div>
-        <form action="{{route("LogOut")}}" method="GET">
+        <form action="{{route("logout")}}" method="POST">
             @csrf
             <button type="submit" class="w-full md:w-auto text-center border border-red-600 text-red-600 font-medium px-5 py-2 rounded-xl hover:bg-red-600 hover:text-white transition-all duration-300">{{__('messages.logout')}}</button>
         </form>

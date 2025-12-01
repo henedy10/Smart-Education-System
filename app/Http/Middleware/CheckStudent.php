@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
 class CheckStudent
 {
@@ -15,7 +16,7 @@ class CheckStudent
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(session()->has('user_as') && session('user_as') === 'student' ){
+        if(Auth::check() && Auth::user()->user_as === 'student'){
             return $next($request);
         }
 
