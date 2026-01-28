@@ -53,7 +53,7 @@
                 </div>
 
                 <!-- Right: Logout -->
-                <form action="{{route("Logout")}}" method="GET" class="w-full md:w-auto">
+                <form action="{{route("logout")}}" method="POST" class="w-full md:w-auto">
                     @csrf
                     <button type="submit"
                         class="w-full md:w-auto px-6 py-2 border border-red-600 text-red-600 rounded-xl font-medium hover:bg-red-600 hover:text-white transition-all duration-300">

@@ -2,10 +2,13 @@
 
 namespace Database\Seeders;
 
+use Database\Factories\UserFactory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 
 class UserSeeder extends Seeder
 {
@@ -14,11 +17,8 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('users')->insert([
-            'name'     => 'ahmedfaisal',
-            'email'    => 'ahmedfaisalzayed288@gmail.com',
-            'password' => Hash::make('123456789'),
-            'user_as'  => 'student'
-        ]);
+        $user = User::factory()
+        ->state(['user_as' => 'admin'])
+        ->create();
     }
 }

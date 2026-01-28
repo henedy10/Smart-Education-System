@@ -19,7 +19,7 @@ class HomeService
         $student = Student::whereHas('user',function($q) use($userId){
             $q->select('name')->where('id',$userId);
         })->first();
-        $teachers = Teacher::with('user')->where('class',$student->class)->get();
+        $teachers = Teacher::with('user')->where('class',$student->class)->cursor();
 
         return
         [
