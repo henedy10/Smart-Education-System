@@ -6,6 +6,10 @@ use App\Http\Controllers\api\AccountUserApiController;
 use App\Http\Controllers\api\Admin\DashboardApiController as AdminDashboardApiController;
 use App\Http\Controllers\api\Admin\StudentApiController;
 use App\Http\Controllers\api\Admin\TeacherApiController;
+use App\Http\Controllers\api\Auth\ForgotPasswordApiController;
+use App\Http\Controllers\api\Auth\LoginApiController;
+use App\Http\Controllers\api\Auth\LogoutApiController;
+use App\Http\Controllers\api\Auth\ResetPasswordApiController;
 use App\Http\Controllers\api\lang\LanguageApiController;
 use App\Http\Controllers\api\Student\
 {
@@ -25,12 +29,14 @@ use App\Http\Controllers\api\Teacher\
 
 Route::middleware(['SetLocaleApi'])->group(function(){
     Route::get('/languages',[LanguageApiController::class,'index']);
-    Route::controller(AccountUserApiController::class)->group(function ()
-    {
-        Route::post('/passwords','updatePassword')->middleware('throttle:updatePasswordApi');
-        Route::post('/login','login')->middleware('throttle:loginApi');
-        Route::get('/logout','logout')->middleware('auth:sanctum');
-    });
+    Route::post('/login',LoginApiController::class);
+    Route::post('/logout',LogoutApiController::class)->middleware('auth:sanctum');
+    Route::post('/forgot-password',ForgotPasswordApiController::class);
+    Route::post('/reset-password',ResetPasswordApiController::class);
+    // Route::controller(AccountUserApiController::class)->group(function ()
+    // {
+    //     Route::post('/login','login')->middleware('throttle:loginApi');
+    // });
 
     /** Admin Routes */
     Route::middleware(['auth:sanctum','CheckAdminApi'])->group(function(){
