@@ -22,7 +22,6 @@ class store extends FormRequest
     public function rules(): array
     {
         return [
-            'user_as'  => 'in:teacher',
             'name'     => 'required|string',
             'email'    => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',

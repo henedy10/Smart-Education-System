@@ -1,7 +1,11 @@
 <?php
 
 namespace App\Services\Admin;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\
+{
+    Hash,
+    DB
+};
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\
 {
@@ -40,20 +44,21 @@ class TeacherService
     {
         $validated = $request->validated();
 
-        $user = User::create([
-            'user_as'  => $validated['user_as'],
-            'email'    => $validated['email'],
-            'name'     => $validated['name'],
-            'password' => Hash::make($validated['password']),
-        ]);
+        $teacher = DB::transaction(function () use($validated){
+            $user = User::create([
+                'user_as'  => 'teacher',
+                'email'    => $validated['email'],
+                'name'     => $validated['name'],
+                'password' => Hash::make($validated['password']),
+            ]);
 
-        $teacher = Teacher::create([
-            'user_id' => $user->id,
-            'class'   => $validated['class'],
-            'subject' => $validated['subject'],
-        ]);
+            $user->Teacher()->create([
+                'class'   => $validated['class'],
+                'subject' => $validated['subject'],
+            ]);
+        });
 
-        return $teacher->loadMissing('user');
+        return $teacher;
     }
 
     public function edit($teacherId)
@@ -64,28 +69,28 @@ class TeacherService
 
     public function update($request ,$userId)
     {
-        $validated = $request->validated();
-        $user      = User::findOrFail($userId);
+        $validated  = $request->validated();
+        $user       = User::findOrFail($userId);
         $updateData =
         [
             'user_as'  => $validated['user_as'],
             'email'    => $validated['email'],
             'name'     => $validated['name'],
+            'password' => Hash::make($validated['password'])
         ];
 
-        if(!empty($validated['password'])){
-            $updateData['password'] = Hash::make($validated['password']);
-        }
+        $teacher = DB::transaction(function () use($updateData,$user,$validated) {
+            $user->update($updateData);
 
-        $user->update($updateData);
+            $user->teacher()->update([
+                'class'   => $validated['class'],
+                'subject' => $validated['subject'],
+            ]);
 
-        $teacher = Teacher::firstWhere('user_id' , $user->id);
-        $teacher->update([
-            'class'   => $validated['class'],
-            'subject' => $validated['subject'],
-        ]);
+            return $user;
+        });
 
-        return $teacher->loadMissing('user');
+        return $teacher;
     }
 
     public function trash($teacherId)

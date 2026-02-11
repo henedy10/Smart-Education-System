@@ -55,7 +55,7 @@
                     @enderror
             </div>
 
-            <!-- Email -->
+            <!-- password -->
             <div>
                 <label for="password" class="block text-gray-700 font-medium mb-2">{{__('messages.password')}} <span class="text-red-500">*</span></label>
                 <input type="password" name="password" id="password" value="{{old('password',$teacher->password)}}"

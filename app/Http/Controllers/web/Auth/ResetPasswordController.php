@@ -19,7 +19,7 @@ class ResetPasswordController extends Controller
         $result = DB::table('password_reset_tokens')
             ->where('token',$request->token)
             ->where('email',$request->email)
-            ->first();
+            ->exists();
 
         $tokenExpire    = 60;
         $tokenCreatedAt = Carbon::parse($request->created_at);

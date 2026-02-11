@@ -29,10 +29,6 @@
     <div class="w-full max-w-3xl bg-white rounded-2xl shadow-md p-8">
         <form class="space-y-6" method="POST" action="{{route('admin.teacher.store')}}">
             @csrf
-            <!-- User As -->
-            <div>
-                <input type="hidden" name="user_as" value="teacher">
-            </div>
 
             <!-- Name -->
             <div>
