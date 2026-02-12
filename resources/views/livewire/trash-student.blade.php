@@ -19,7 +19,6 @@
                     <th class="py-3 px-4 font-semibold text-sm uppercase tracking-wide">{{__('messages.name')}}</th>
                     <th class="py-3 px-4 font-semibold text-sm uppercase tracking-wide">{{__('messages.email')}}</th>
                     <th class="py-3 px-4 font-semibold text-sm uppercase tracking-wide">{{__('messages.class')}}</th>
-                    <th class="py-3 px-4 font-semibold text-sm uppercase tracking-wide">{{__('messages.subject')}}</th>
                     <th class="py-3 px-4 font-semibold text-sm uppercase tracking-wide text-center">{{__('messages.actions')}}</th>
                 </tr>
             </thead>
@@ -31,7 +30,6 @@
                         <td class="py-3 px-4 font-semibold text-gray-800">{{ $student->name }}</td>
                         <td class="py-3 px-4 text-blue-600 font-medium">{{ $student->email }}</td>
                         <td class="py-3 px-4 text-gray-700">{{ $student->student->class }}</td>
-                        <td class="py-3 px-4 text-gray-700">{{ $student->student->subject }}</td>
                         <td class="py-3 px-4 text-center flex justify-center space-x-2">
                             <form action="{{route('admin.student.restore',$student->id)}}" method="POST">
                                 @csrf

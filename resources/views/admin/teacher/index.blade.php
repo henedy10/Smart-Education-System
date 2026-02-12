@@ -1,74 +1,92 @@
-<!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" dir="{{ __('messages.page_direction') }}">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+@extends('layouts.admin')
 
-    <title>{{__('messages.teachers_list')}}</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    @livewireStyles
-</head>
+@section('title', __('messages.teachers_list'))
+@section('breadcrumb_current', __('messages.teachers'))
+@section('page_title', __('messages.teachers_list'))
 
-<body class="bg-gray-100 min-h-screen flex flex-col items-center p-10">
-    <!-- Success Message -->
-    @if (session('successDeleteMsg'))
-        <div class="mb-6 w-full max-w-2xl px-4">
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-xl shadow text-center">
-                {{ session('successDeleteMsg') }}
+@section('content')
+    <!-- Alerts & Notices -->
+    <div class="space-y-4 mb-10">
+        <!-- Success Message -->
+        @if (session('successDeleteMsg'))
+            <div
+                class="flex items-center gap-3 px-6 py-4 bg-emerald-50 border border-emerald-100 text-emerald-700 rounded-2xl shadow-sm animate-in fade-in slide-in-from-top-4 duration-500">
+                <i data-lucide="check-circle" class="w-5 h-5"></i>
+                <p class="text-sm font-bold">{{ session('successDeleteMsg') }}</p>
+            </div>
+        @endif
+
+        <!-- Warning Message -->
+        <div id="alert"
+            class="hidden items-start gap-4 px-6 py-5 bg-amber-50 border border-amber-100 text-amber-800 rounded-2xl shadow-sm transition-all duration-300">
+            <div class="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-600"></i>
+            </div>
+            <div class="pt-1">
+                <h4 class="text-sm font-black uppercase tracking-widest mb-1">Retention Policy</h4>
+                <p class="text-xs leading-relaxed opacity-80">
+                    If you delete a teacher, their data can be retrieved again within <strong>30 days</strong>.
+                    After that, it will be <strong>permanently removed</strong> from the system.
+                </p>
             </div>
         </div>
-    @endif
+    </div>
 
-    <div class="w-full">
-        <div class="p-3 rounded-xl flex flex-row-reverse gap-1">
-            <!-- الزرار في اليمين -->
+    <!-- Actions Header -->
+    <div class="flex flex-col sm:flex-row justify-between items-end sm:items-center gap-6 mb-12">
+        <div class="flex items-center gap-3">
             <button id="btn"
-            class="bg-red-500 text-white rounded-full w-6 h-6 text-sm font-semibold  hover:bg-red-600 transition">
-            !
+                class="group flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-100 text-gray-400 hover:text-amber-600 hover:bg-amber-50 hover:border-amber-100 rounded-xl transition-all shadow-sm">
+                <i data-lucide="info" class="w-4 h-4"></i>
+                <span class="text-[10px] font-black uppercase tracking-widest">Notice</span>
             </button>
+            <a href="{{route('admin.teacher.index.trash')}}"
+                class="flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-100 text-gray-400 hover:text-red-600 hover:bg-red-50 hover:border-red-100 rounded-xl transition-all shadow-sm">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                <span class="text-[10px] font-black uppercase tracking-widest">Trash</span>
+            </a>
+        </div>
 
-        <!-- الرسالة -->
-        <p id="alert"
-            class="hidden text-sm text-red-800 bg-red-100 px-4 py-2 rounded-lg leading-relaxed transition-all duration-300">
-            ⚠️ <strong>Warning:</strong> If you delete a teacher, their data can be retrieved again within
-            <strong>30 days</strong>. After that, it will be permanently deleted automatically.
-        </p>
+        <div>
+            <a href="{{route('admin.teacher.create')}}"
+                class="flex items-center gap-3 px-6 py-3 bg-blue-600 text-white rounded-2xl shadow-lg shadow-blue-100 hover:bg-blue-700 hover:scale-[1.02] transition-all group">
+                <div class="w-6 h-6 bg-white/20 rounded-lg flex items-center justify-center">
+                    <i data-lucide="plus" class="w-4 h-4 text-white"></i>
+                </div>
+                <span class="text-xs font-black uppercase tracking-widest">{{__('messages.add-teacher')}}</span>
+            </a>
 
+            <a href="{{route('admin.index')}}"
+                class="flex items-center gap-2 px-4 py-2 text-gray-500 hover:text-blue-600 transition-colors">
+                <i data-lucide="arrow-{{ __('messages.page_direction') == 'rtl' ? 'right' : 'left' }}"
+                    class="w-4 h-4"></i>
+                <span class="text-[10px] font-black uppercase tracking-widest">{{__('messages.previous-page')}}</span>
+            </a>
         </div>
     </div>
 
-    <!-- زر الرجوع -->
-    <div class="w-full max-w-6xl flex justify-start mb-6">
-        <a href="{{route('admin.index')}}"
-           class="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition">
-            <!-- أيقونة سهم -->
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-            {{__('messages.previous-page')}}
-        </a>
+    <!-- Search & List -->
+    <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden p-8 md:p-12">
+        @livewire('search-teacher')
     </div>
+@endsection
 
-    <h1 class="text-3xl font-bold text-gray-800 mb-8">{{__('messages.teachers_list')}}</h1>
-
-
-    @livewire('search-teacher')
+@push('scripts')
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let btn = document.getElementById('btn');
+            let alert = document.getElementById('alert');
 
-        let btn   = document.getElementById('btn')
-        let alert = document.getElementById('alert')
+            if (btn && alert) {
+                btn.addEventListener('click', function () {
+                    alert.classList.toggle('hidden');
+                    lucide.createIcons(); // Refresh icons if needed
+                });
+            }
+        });
 
-        function confirmDelete()
-        {
-            return confirm('Are you sure to delete it ?')
+        function confirmDelete() {
+            return confirm('Are you sure you want to delete this teacher?');
         }
-
-        btn.addEventListener('click',function(){
-            alert.classList.toggle('hidden')
-        })
-
     </script>
-@livewireScripts
-</body>
-</html>
+@endpush

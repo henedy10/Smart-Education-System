@@ -9,24 +9,6 @@
             placeholder="{{__('messages.search_by_name')}} ...."
             class="flex-1 min-w-[220px] px-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
-
-        <!-- Buttons -->
-        <div class="flex items-center gap-3">
-            <a
-                href="{{route('admin.student.create')}}"
-                class="bg-green-600 text-white px-5 py-2 rounded-xl shadow hover:bg-green-700 transition font-medium cursor-pointer"
-            >
-                + {{__('messages.add-student')}}
-            </a>
-
-            <a
-                href="{{route('admin.student.index.trash')}}"
-                class="text-lg text-red-600 hover:text-red-700 flex items-center gap-1"
-            >
-                <i class="fa-solid fa-trash"></i>
-                <span>({{$count_students_trashed}})</span>
-            </a>
-        </div>
     </div>
 
     <!-- Table Container -->
