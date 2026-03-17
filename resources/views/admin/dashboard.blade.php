@@ -18,6 +18,10 @@
         </h3>
     </div>
 
+    <form action="{{route('logout')}}" method="POST">
+        @csrf
+        <button type="submit">Logout</button>
+    </form>
     <!-- Analytics Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         <!-- Students Analytics -->
