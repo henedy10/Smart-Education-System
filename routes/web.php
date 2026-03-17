@@ -54,8 +54,8 @@ Route::get('/lang/{locale}',function (string $locale){
 Route::middleware([PreventBackHistory::class , SetLocale::class])->group(function(){
 
     /********************** Auth Routes **********************/
-    Route::view('/','auth.login')->name('index');
-    Route::post('/login',LoginController::class)->middleware('throttle:login')->name('login');
+    Route::get('/',[LoginController::class,'index'])->name('index');
+    Route::post('/login',[LoginController::class,'login'])->middleware('throttle:login')->name('login');
     Route::post('/logout',LogoutController::class)->name('logout');
     Route::post('/forgot-password',ForgotPasswordController::class)->name('password.email');
     Route::view('/forgot-password','auth.passwords.forgot-password')->name('password.request');
