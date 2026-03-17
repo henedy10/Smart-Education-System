@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function __invoke(LoginRequest $request )
+    public function Login(LoginRequest $request )
     {
         if(Auth::attempt($request->only('email','password'),$request->remember_me))
         {
@@ -22,5 +22,10 @@ class LoginController extends Controller
         }
 
         return back()->with('error','Invalid Incredientials !');
+    }
+
+    public function index()
+    {
+        return view('auth.login');
     }
 }
