@@ -40,6 +40,7 @@ use App\Http\Middleware\
 
 use Illuminate\Support\Facades\Route;
 
+Route::view('/','auth.login');
 /********************* Localization Route *******************/
 Route::get('/lang/{locale}',function (string $locale){
     if (!array_key_exists($locale,config('lang.supported'))) {
@@ -54,44 +55,13 @@ Route::get('/lang/{locale}',function (string $locale){
 Route::middleware([PreventBackHistory::class , SetLocale::class])->group(function(){
 
     /********************** Auth Routes **********************/
-    Route::get('/',[LoginController::class,'index'])->name('index');
+    Route::get('/login',[LoginController::class,'index'])->name('index');
     Route::post('/login',[LoginController::class,'login'])->name('login');
     Route::post('/logout',LogoutController::class)->name('logout');
     Route::post('/forgot-password',ForgotPasswordController::class)->name('password.email');
     Route::view('/forgot-password','auth.passwords.forgot-password')->name('password.request');
     Route::view('/reset-password/{token}','auth.passwords.reset-password')->name('password.reset');
     Route::post('/reset-password',ResetPasswordController::class)->name('password.update');
-
-    /************************* Admin Routes ********************/
-    Route::middleware(CheckAdmin::class)->group(function(){
-        Route::controller(AdminDashboardController::class)->group(function(){
-            Route::get('/admin/dashboard' , 'index')->name('admin.index');
-        });
-
-        Route::controller(StudentController::class)->group(function(){
-            Route::get('/students','index')->name('admin.student.index');
-            Route::get('/students/create','create')->name('admin.student.create');
-            Route::post('/students','store')->name('admin.student.store');
-            Route::get('/students/{user}/edit','edit')->name('admin.student.edit');
-            Route::put('/students/{user}','update')->name('admin.student.update');
-            Route::delete('/students/{user}/trash','trash')->name('admin.student.trash');
-            Route::get('/students/trashed','indexTrash')->name('admin.student.index.trash');
-            Route::delete('/students/{user}/force-delete','forceDelete')->name('admin.student.forceDelete');
-            Route::post('/students/{user}/restore','restore')->name('admin.student.restore');
-        });
-
-        Route::controller(TeacherController::class)->group(function(){
-            Route::get('/teachers','index')->name('admin.teacher.index');
-            Route::get('/teachers/create','create')->name('admin.teacher.create');
-            Route::get('/teachers/{user}/edit','edit')->name('admin.teacher.edit');
-            Route::put('/teachers/{user}','update')->name('admin.teacher.update');
-            Route::post('/teachers','store')->name('admin.teacher.store');
-            Route::delete('/teachers/{user}/trash','trash')->name('admin.teacher.trash');
-            Route::get('/teachers/trashed','indexTrash')->name('admin.teacher.index.trash');
-            Route::delete('/teachers/{user}/force-delete','forceDelete')->name('admin.teacher.forceDelete');
-            Route::post('/teachers/{user}/restore','restore')->name('admin.teacher.restore');
-        });
-    });
 
     /**************************** Student Routes ****************************/
         Route::middleware('CheckStudent')->group(function()

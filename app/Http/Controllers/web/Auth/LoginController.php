@@ -17,7 +17,7 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             return Auth::user()->user_as === "admin" ?
-                redirect()->route('admin.index') : (Auth::user()->user_as === "teacher" ?
+                redirect()->route('filament.admin.pages.dashboard') : (Auth::user()->user_as === "teacher" ?
                 redirect()->route('teacher.index') : redirect()->route('student.index'));
         }
 
