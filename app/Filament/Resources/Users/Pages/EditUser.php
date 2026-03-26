@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Filament\Resources\Teachers\Pages;
+namespace App\Filament\Resources\Users\Pages;
 
-use App\Filament\Resources\Teachers\TeacherResource;
+use App\Filament\Resources\Users\UserResource;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 
-class EditTeacher extends EditRecord
+class EditUser extends EditRecord
 {
-    protected static string $resource = TeacherResource::class;
+    protected static string $resource = UserResource::class;
 
     protected function getHeaderActions(): array
     {
