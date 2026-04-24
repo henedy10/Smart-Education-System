@@ -35,7 +35,7 @@ return new class extends Migration
                 ->on('questions')
                 ->onDelete('cascade');
 
-            $table->enum('select_option',['الإجابة 1','الإجابة 2','الإجابة 3','الإجابة 4'])->nullable();
+            $table->enum('select_option', ['الإجابة 1', 'الإجابة 2', 'الإجابة 3', 'الإجابة 4'])->nullable();
             $table->boolean('status_option');
             $table->timestamps();
         });

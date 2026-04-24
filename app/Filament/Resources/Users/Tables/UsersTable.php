@@ -25,8 +25,8 @@ class UsersTable
                     ->searchable(),
                 TextColumn::make('user_as')
                     ->badge()
-                    ->color(function($state){
-                        return $state == 'teacher' ? 'warning' : 'success' ;
+                    ->color(function ($state) {
+                        return $state == 'teacher' ? 'warning' : 'success';
                     })
                     ->searchable(),
                 TextColumn::make('created_at')

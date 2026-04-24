@@ -6,17 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
 {
-    protected $guarded=[];
+    protected $guarded = [];
 
-    public function quiz() {
+    public function quiz()
+    {
         return $this->belongsTo(Quiz::class);
     }
 
-    public function options(){
+    public function options()
+    {
         return $this->hasMany(Option::class);
     }
 
-    public function studentOptions(){
+    public function studentOptions()
+    {
         return $this->hasMany(StudentOption::class);
     }
 }

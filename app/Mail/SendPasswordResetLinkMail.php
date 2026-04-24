@@ -19,14 +19,12 @@ class SendPasswordResetLinkMail extends Mailable
         $this->resetUrl = url('reset-password/'.$token);
     }
 
-
     public function envelope(): Envelope
     {
         return new Envelope(
             subject: 'Send Password Reset Link',
         );
     }
-
 
     public function content(): Content
     {

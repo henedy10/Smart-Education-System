@@ -2,15 +2,12 @@
 
 namespace App\Services\Student;
 
+use App\Models\Quiz;
+use App\Models\QuizResult;
+use App\Models\Student;
+use App\Models\StudentOption;
+use App\Models\Teacher;
 use App\Traits\UserHelper;
-use App\Models\
-{
-    Teacher,
-    Student,
-    Quiz,
-    StudentOption,
-    QuizResult,
-};
 
 class QuizService
 {
@@ -18,93 +15,92 @@ class QuizService
 
     public function showAvailableQuiz($class, $subject)
     {
-        $quiz = Quiz::whereHas('teacher',function($q) use($class,$subject){
-            $q->where('class',$class)->where('subject',$subject);
+        $quiz = Quiz::whereHas('teacher', function ($q) use ($class, $subject) {
+            $q->where('class', $class)->where('subject', $subject);
         })
-        ->orderBy('start_time','desc')
-        ->first();
+            ->orderBy('start_time', 'desc')
+            ->first();
 
         return $quiz;
     }
 
-    public function showContentQuiz($class,$subject)
+    public function showContentQuiz($class, $subject)
     {
-        $teacherId = Teacher::where('class',$class)
-                    ->where('subject',$subject)
-                    ->value('id');
+        $teacherId = Teacher::where('class', $class)
+            ->where('subject', $subject)
+            ->value('id');
 
         $quiz = Quiz::with('questions.options')
-                    ->where('teacher_id',$teacherId)
-                    ->orderBy('start_time','desc')
-                    ->first();
+            ->where('teacher_id', $teacherId)
+            ->orderBy('start_time', 'desc')
+            ->first();
 
         return $quiz;
     }
 
-    public function storeAnswer($class,$subject)
+    public function storeAnswer($class, $subject)
     {
-        $studentMark     = 0;
+        $studentMark = 0;
         $check_selection = [];
 
-        $student   = Student::with('user')->firstWhere('user_id',$this->getUserId());
-        $teacherId = Teacher::where('class',$class)
-                                ->where('subject',$subject)
-                                ->value('id');
+        $student = Student::with('user')->firstWhere('user_id', $this->getUserId());
+        $teacherId = Teacher::where('class', $class)
+            ->where('subject', $subject)
+            ->value('id');
 
         $quiz = Quiz::with('questions')
-                            ->where('teacher_id',$teacherId)
-                            ->orderBy('start_time','desc')
-                            ->first();
+            ->where('teacher_id', $teacherId)
+            ->orderBy('start_time', 'desc')
+            ->first();
 
-        if($quiz){
-            foreach($quiz->questions as $Q)
-            {
-                $options                 = request()->answer;
-                $check_selection[$Q->id] = (isset($options[$Q->id]) && $Q -> correct_option == $options[$Q->id]) ? true : false;
+        if ($quiz) {
+            foreach ($quiz->questions as $Q) {
+                $options = request()->answer;
+                $check_selection[$Q->id] = (isset($options[$Q->id]) && $Q->correct_option == $options[$Q->id]) ? true : false;
 
                 StudentOption::create([
-                    'student_id'     =>  $student->id,
-                    'quiz_id'        =>  $quiz->id,
-                    'question_id'    =>  $Q->id,
-                    'select_option'  =>  $options[$Q->id] ?? null,
-                    'status_option'  =>  $check_selection[$Q->id],
+                    'student_id' => $student->id,
+                    'quiz_id' => $quiz->id,
+                    'question_id' => $Q->id,
+                    'select_option' => $options[$Q->id] ?? null,
+                    'status_option' => $check_selection[$Q->id],
                 ]);
 
-                if($check_selection[$Q->id]){
+                if ($check_selection[$Q->id]) {
                     $studentMark += $Q->question_mark;
                 }
             }
-            $student_result = QuizResult::where('student_id',$student->id)
-                                        ->where('quiz_id',$quiz->id)
-                                        ->first();
-            if($student_result)
-            {
+            $student_result = QuizResult::where('student_id', $student->id)
+                ->where('quiz_id', $quiz->id)
+                ->first();
+            if ($student_result) {
                 $student_result->update([
                     'student_mark' => $studentMark,
-                    'test'         => true,
+                    'test' => true,
                 ]);
             }
         }
+
         return
         [
-            'student'     => $student,
-            'quiz'        => $quiz,
+            'student' => $student,
+            'quiz' => $quiz,
             'studentMark' => $studentMark,
         ];
     }
 
     public function indexResult($class, $subject)
     {
-        $studentId = Student::where('user_id',$this->getUserId())->value('id');
-        $teacherId = Teacher::where('class',$class)
-                            ->where('subject',$subject)
-                            ->value('id');
+        $studentId = Student::where('user_id', $this->getUserId())->value('id');
+        $teacherId = Teacher::where('class', $class)
+            ->where('subject', $subject)
+            ->value('id');
 
         $results = QuizResult::with('quiz')
-                            ->where('student_id',$studentId)
-                            ->where('teacher_id',$teacherId)
-                            ->orderBy('created_at','desc')
-                            ->get();
+            ->where('student_id', $studentId)
+            ->where('teacher_id', $teacherId)
+            ->orderBy('created_at','desc')
+            ->get();
 
         return $results;
     }

@@ -28,7 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->profile(EditProfile::class,isSimple:false)
+            ->profile(EditProfile::class, isSimple: false)
             ->globalSearch(false)
             ->colors([
                 'primary' => Color::Amber,

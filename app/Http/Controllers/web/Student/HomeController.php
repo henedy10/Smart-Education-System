@@ -10,11 +10,12 @@ class HomeController extends Controller
     public function index(HomeService $info)
     {
         $info = $info->index();
-        return view('student.show_student',compact('info'));
+
+        return view('student.show_student', compact('info'));
     }
 
-    public function showContent($class,$subject)
+    public function showContent($class, $subject)
     {
-        return view('student.show_content',compact('class','subject'));
+        return view('student.show_content', compact('class', 'subject'));
     }
 }

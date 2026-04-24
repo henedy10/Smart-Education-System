@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Services\Teacher;
-use App\Traits\UserHelper;
+
 use App\Models\Teacher;
+use App\Traits\UserHelper;
 
 class DashboardService
 {
@@ -10,9 +11,9 @@ class DashboardService
 
     public function index()
     {
-        $dashboard = Teacher::with('user')->where('user_id',$this->getUserId())
-                        ->withCount('lessons','homeworks','quizzes')
-                        ->first();
+        $dashboard = Teacher::with('user')->where('user_id', $this->getUserId())
+            ->withCount('lessons', 'homeworks', 'quizzes')
+            ->first();
 
         return $dashboard;
     }

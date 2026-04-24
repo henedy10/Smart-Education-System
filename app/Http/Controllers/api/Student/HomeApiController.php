@@ -11,17 +11,17 @@ class HomeApiController extends Controller
     public function index(HomeService $info)
     {
         $info = $info->index();
-        if($info['teachers']->count()>0){
+        if ($info['teachers']->count() > 0) {
             return response()->json([
-                'status'    =>  'Success',
-                'student'   =>  $info['student']->user->name,
-                'teachers'  =>  TeacherResource::collection($info['teachers'])
-            ],200);
+                'status' => 'Success',
+                'student' => $info['student']->user->name,
+                'teachers' => TeacherResource::collection($info['teachers']),
+            ], 200);
         }
 
         return response()->json([
-            'status'  => 'Failed',
-            'message' => 'There is no content now !'
-        ],404)->header('Content-Type','application/json');
+            'status' => 'Failed',
+            'message' => 'There is no content now !',
+        ], 404)->header('Content-Type', 'application/json');
     }
 }

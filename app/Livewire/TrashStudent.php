@@ -12,11 +12,11 @@ class TrashStudent extends Component
     public function render()
     {
         $students = User::with('student')
-                        ->where('user_as','student')
-                        ->where('name','LIKE','%'.$this->query.'%')
-                        ->onlyTrashed()
-                        ->get();
+            ->where('user_as', 'student')
+            ->where('name', 'LIKE', '%'.$this->query.'%')
+            ->onlyTrashed()
+            ->get();
 
-        return view('livewire.trash-student',compact('students'));
+        return view('livewire.trash-student', compact('students'));
     }
 }

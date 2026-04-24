@@ -5,17 +5,17 @@ return [
 
     'supported' => [
         'en' => [
-            'name'      => 'english',
+            'name' => 'english',
             'direction' => 'ltr',
-            'flag'      => 'gb.svg',
-            'locale'    => 'en'
+            'flag' => 'gb.svg',
+            'locale' => 'en',
         ],
 
         'ar' => [
-            'name'      => 'عربي',
+            'name' => 'عربي',
             'direction' => 'rtl',
-            'flag'      => 'eg.svg',
-            'locale'    => 'ar'
-        ]
-    ]
+            'flag' => 'eg.svg',
+            'locale' => 'ar',
+        ],
+    ],
 ];

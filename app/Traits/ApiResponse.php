@@ -2,23 +2,23 @@
 
 namespace App\Traits;
 
-trait ApiResponse {
-
-    public function success($data = null , $message = "Success" ,$status = 200)
+trait ApiResponse
+{
+    public function success($data = null, $message = 'Success', $status = 200)
     {
         return response()->json([
-            'status'  => true,
+            'status' => true,
             'message' => $message,
-            'data'    => $data,
-        ],$status)->header('Content-Type' , 'application/json');
+            'data' => $data,
+        ], $status)->header('Content-Type', 'application/json');
     }
 
-    public function error( $message = "Error" , $errors = null , $status = 404)
+    public function error($message = 'Error', $errors = null, $status = 404)
     {
         return response()->json([
-            'status'  => false,
+            'status' => false,
             'message' => $message,
-            'errors'  => $errors,
-        ],$status)->header('Content-Type' , 'application/json');
+            'errors' => $errors,
+        ], $status)->header('Content-Type', 'application/json');
     }
 }

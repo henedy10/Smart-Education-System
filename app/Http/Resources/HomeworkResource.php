@@ -15,13 +15,13 @@ class HomeworkResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'                => $this->id,
-            'file_homework'     => $this->file_homework,
-            'content_homework'  => $this->content_homework,
-            'deadline'          => $this->deadline,
-            'title_homework'    => $this->title_homework,
-            'homework_mark'     => $this->homework_mark,
-            'data'              => $this->whenLoaded('teacher')
+            'id' => $this->id,
+            'file_homework' => $this->file_homework,
+            'content_homework' => $this->content_homework,
+            'deadline' => $this->deadline,
+            'title_homework' => $this->title_homework,
+            'homework_mark' => $this->homework_mark,
+            'data' => $this->whenLoaded('teacher'),
         ];
     }
 }

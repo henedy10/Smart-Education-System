@@ -21,7 +21,7 @@ return new class extends Migration
                 ->onDelete('cascade');
 
             $table->string('option_title');
-            $table->enum('option_key',['الإجابة 1','الإجابة 2','الإجابة 3','الإجابة 4']);
+            $table->enum('option_key', ['الإجابة 1', 'الإجابة 2', 'الإجابة 3', 'الإجابة 4']);
             $table->timestamps();
         });
     }

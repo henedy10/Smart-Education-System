@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\teacher\homeworks;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class storeHomework extends FormRequest
@@ -17,16 +18,16 @@ class storeHomework extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'content_homework'   => 'required|string|max:255',
-            'title_homework'     => 'required|string|max:255',
-            'file_homework'      => 'required|file|mimes:pdf,doc,docx,zip,rar,jpg,png|max:10240',
-            'deadline_homework'  => 'required|date',
-            'homework_mark'      => 'required|integer|min:0',
+            'content_homework' => 'required|string|max:255',
+            'title_homework' => 'required|string|max:255',
+            'file_homework' => 'required|file|mimes:pdf,doc,docx,zip,rar,jpg,png|max:10240',
+            'deadline_homework' => 'required|date',
+            'homework_mark' => 'required|integer|min:0',
         ];
     }
 }

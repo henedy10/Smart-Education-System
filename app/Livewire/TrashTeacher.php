@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Livewire;
-use App\Models\User;
 
+use App\Models\User;
 use Livewire\Component;
 
 class TrashTeacher extends Component
@@ -12,11 +12,11 @@ class TrashTeacher extends Component
     public function render()
     {
         $teachers = User::with('teacher')
-                        ->where('user_as','teacher')
-                        ->where('name','LIKE','%'.$this->query.'%')
-                        ->onlyTrashed()
-                        ->get();
+            ->where('user_as', 'teacher')
+            ->where('name', 'LIKE', '%'.$this->query.'%')
+            ->onlyTrashed()
+            ->get();
 
-        return view('livewire.trash-teacher',compact('teachers'));
+        return view('livewire.trash-teacher', compact('teachers'));
     }
 }

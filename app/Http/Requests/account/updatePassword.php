@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\account;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class updatePassword extends FormRequest
@@ -17,14 +18,14 @@ class updatePassword extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'email'             => 'required | email|exists:users,email',
-            'NewPassword'       => 'required | min:8',
-            'ConfirmPassword'   => 'required | same:NewPassword',
+            'email' => 'required | email|exists:users,email',
+            'NewPassword' => 'required | min:8',
+            'ConfirmPassword' => 'required | same:NewPassword',
         ];
     }
 }

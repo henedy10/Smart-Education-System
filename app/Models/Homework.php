@@ -6,19 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Homework extends Model
 {
-    protected $table='homeworks';
+    protected $table = 'homeworks';
 
-    protected $guarded=[];
+    protected $guarded = [];
 
-    public function teacher(){
+    public function teacher()
+    {
         return $this->belongsTo(Teacher::class);
     }
 
-    public function homeworkGrades(){
+    public function homeworkGrades()
+    {
         return $this->hasMany(HomeworkGrade::class);
     }
 
-    public function homeworkSolutions(){
+    public function homeworkSolutions()
+    {
         return $this->hasMany(SolutionStudentForHomework::class);
     }
 }

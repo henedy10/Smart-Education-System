@@ -1,11 +1,13 @@
 <?php
 
 namespace Database\Factories;
-use Illuminate\Support\Str;
+
+use App\Models\Teacher;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Teacher>
+ * @extends Factory<Teacher>
  */
 class TeacherFactory extends Factory
 {
@@ -18,7 +20,7 @@ class TeacherFactory extends Factory
     {
         return [
             'class' => Str::random(10),
-            'subject' => Str::random(10)
+            'subject' => Str::random(10),
         ];
     }
 }

@@ -11,12 +11,14 @@ class LessonController extends Controller
     public function index($TeacherId, LessonService $lesson)
     {
         $lessons = $lesson->index($TeacherId);
-        return view('teacher.show_lesson',compact('TeacherId','lessons'));
+
+        return view('teacher.show_lesson', compact('TeacherId', 'lessons'));
     }
 
-    public function store(storeLesson $request , $TeacherId, LessonService $lesson)
+    public function store(storeLesson $request, $TeacherId, LessonService $lesson)
     {
-        $lesson->store($request->validated(),$TeacherId);
-        return redirect()->back()->with(['success' =>  __('messages.success_store_lesson')]);
+        $lesson->store($request->validated(), $TeacherId);
+
+        return redirect()->back()->with(['success' => __('messages.success_store_lesson')]);
     }
 }

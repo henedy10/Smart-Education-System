@@ -11,9 +11,10 @@ class DashboardApiController extends Controller
     public function index(DashboardService $dashboard)
     {
         $teacher = $dashboard->index();
+
         return response()->json([
             'status' => 'Success',
-            'data'   => new TeacherResource($teacher)
-        ],200);
+            'data' => new TeacherResource($teacher),
+        ], 200);
     }
 }

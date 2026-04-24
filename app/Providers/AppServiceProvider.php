@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,18 +29,20 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perHour(5)->by($request->ip())->response(function (Request $request, array $headers) {
                 $retryAfterSeconds = $headers['Retry-After'] ?? 3600;
                 $availableAt = now()->addSeconds($retryAfterSeconds)->format('Y-m-d H:i:s');
-                return response()->view('errors.too-many-requests',compact('availableAt'));
+
+                return response()->view('errors.too-many-requests', compact('availableAt'));
             });
         });
         RateLimiter::for('loginApi', function (Request $request) {
             return Limit::perHour(5)->by($request->ip())->response(function (Request $request, array $headers) {
                 $retryAfterSeconds = $headers['Retry-After'] ?? 3600;
                 $availableAt = now()->addSeconds($retryAfterSeconds)->format('Y-m-d H:i:s');
+
                 return response()->json([
-                    'success'     => false,
-                    'msg'         => 'too-many-requests',
+                    'success' => false,
+                    'msg' => 'too-many-requests',
                     'availableAt' => $availableAt,
-                ],429)->header('X-Rate-Limiting-Remaining',0);
+                ], 429)->header('X-Rate-Limiting-Remaining', 0);
             });
         });
 
@@ -48,18 +50,20 @@ class AppServiceProvider extends ServiceProvider
             return Limit::perHour(5)->by($request->ip())->response(function (Request $request, array $headers) {
                 $retryAfterSeconds = $headers['Retry-After'] ?? 3600;
                 $availableAt = now()->addSeconds($retryAfterSeconds)->format('Y-m-d H:i:s');
-                return response()->view('errors.too-many-requests',compact('availableAt'));
+
+                return response()->view('errors.too-many-requests', compact('availableAt'));
             });
         });
         RateLimiter::for('updatePasswordApi', function (Request $request) {
             return Limit::perHour(5)->by($request->ip())->response(function (Request $request, array $headers) {
                 $retryAfterSeconds = $headers['Retry-After'] ?? 3600;
                 $availableAt = now()->addSeconds($retryAfterSeconds)->format('Y-m-d H:i:s');
+
                 return response()->json([
-                    'success'     => false,
-                    'msg'         => 'too-many-requests',
+                    'success' => false,
+                    'msg' => 'too-many-requests',
                     'availableAt' => $availableAt,
-                ],429)->header('X-Rate-Limiting-Remaining',0);
+                ], 429)->header('X-Rate-Limiting-Remaining', 0);
             });
         });
     }

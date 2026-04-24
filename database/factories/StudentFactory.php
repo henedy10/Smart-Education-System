@@ -2,11 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\Student;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Student>
+ * @extends Factory<Student>
  */
 class StudentFactory extends Factory
 {
@@ -18,7 +19,7 @@ class StudentFactory extends Factory
     public function definition(): array
     {
         return [
-            "class" => Str::random(10)
+            'class' => Str::random(10),
         ];
     }
 }

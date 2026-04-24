@@ -2,12 +2,9 @@
 
 namespace App\Services\Student;
 
+use App\Models\Student;
+use App\Models\Teacher;
 use App\Traits\UserHelper;
-use App\Models\
-{
-    Teacher,
-    Student,
-};
 
 class HomeService
 {
@@ -15,15 +12,15 @@ class HomeService
 
     public function index()
     {
-        $userId  = $this->getUserId();
-        $student = Student::whereHas('user',function($q) use($userId){
-            $q->select('name')->where('id',$userId);
+        $userId = $this->getUserId();
+        $student = Student::whereHas('user', function ($q) use ($userId) {
+            $q->select('name')->where('id', $userId);
         })->first();
-        $teachers = Teacher::with('user')->where('class',$student->class)->cursor();
+        $teachers = Teacher::with('user')->where('class', $student->class)->cursor();
 
         return
         [
-            'student'  => $student,
+            'student' => $student,
             'teachers' => $teachers,
         ];
     }

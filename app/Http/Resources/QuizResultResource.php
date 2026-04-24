@@ -15,9 +15,9 @@ class QuizResultResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'title'        => $this->quiz->title,
-            'quiz_mark'    => $this->quiz_mark,
-            'student'      => new StudentResource($this->whenLoaded('student')),
+            'title' => $this->quiz->title,
+            'quiz_mark' => $this->quiz_mark,
+            'student' => new StudentResource($this->whenLoaded('student')),
             'student_mark' => $this->student_mark,
         ];
     }

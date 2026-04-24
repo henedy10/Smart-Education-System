@@ -15,9 +15,9 @@ return new class extends Migration
             // foreign key
             $table->unsignedBigInteger('homework_id');
             $table->foreign('homework_id')
-                    ->references('id')
-                    ->on('homeworks')
-                    ->onDelete('cascade');
+                ->references('id')
+                ->on('homeworks')
+                ->onDelete('cascade');
         });
     }
 

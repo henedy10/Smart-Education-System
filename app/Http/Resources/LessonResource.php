@@ -16,9 +16,9 @@ class LessonResource extends JsonResource
     {
         return
         [
-            'teacher-data'  => new TeacherResource($this->whenLoaded('teacher')),
-            'file_lesson'   => $this->file_lesson,
-            'title_lesson'  => $this->title_lesson,
+            'teacher-data' => new TeacherResource($this->whenLoaded('teacher')),
+            'file_lesson' => $this->file_lesson,
+            'title_lesson' => $this->title_lesson,
         ];
     }
 }

@@ -31,13 +31,13 @@ class UserInfolist
                             ->label('subject'),
                         TextEntry::make('user_as')
                             ->badge()
-                            ->color(function($state){
-                                return $state == 'teacher' ? 'warning' : 'success' ;
+                            ->color(function ($state) {
+                                return $state == 'teacher' ? 'warning' : 'success';
                             }),
                         TextEntry::make('deleted_at')
                             ->dateTime()
                             ->visible(fn (User $record): bool => $record->trashed()),
-                    ])
+                    ]),
             ]);
     }
 }

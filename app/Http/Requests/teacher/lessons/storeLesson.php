@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\teacher\lessons;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class storeLesson extends FormRequest
@@ -17,13 +18,13 @@ class storeLesson extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'title_lesson'  => 'required|string|max:255',
-            'file_lesson'   => 'required|file|mimes:pdf,doc,docx,zip,rar,jpg,png|max:10240',
+            'title_lesson' => 'required|string|max:255',
+            'file_lesson' => 'required|file|mimes:pdf,doc,docx,zip,rar,jpg,png|max:10240',
         ];
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\{User,Student};
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Student;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class StudentSeeder extends Seeder
@@ -14,7 +14,7 @@ class StudentSeeder extends Seeder
     public function run(): void
     {
         Student::factory()->for(User::factory()->state([
-            'user_as' => 'student'
+            'user_as' => 'student',
         ]))->create();
     }
 }

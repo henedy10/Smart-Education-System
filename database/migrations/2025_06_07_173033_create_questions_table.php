@@ -22,7 +22,7 @@ return new class extends Migration
                 ->onDelete('cascade');
 
             $table->string('title');
-            $table->enum('correct_option',['الإجابة 1','الإجابة 2','الإجابة 3','الإجابة 4']);
+            $table->enum('correct_option', ['الإجابة 1', 'الإجابة 2', 'الإجابة 3', 'الإجابة 4']);
             $table->timestamps();
         });
     }
