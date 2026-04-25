@@ -28,8 +28,8 @@
                         <a href="{{asset('storage/'.$homework->file_homework)}}" download class="bg-blue-600 text-white px-3 py-1 ml-2 rounded hover:bg-blue-500 text-sm">{{__('messages.download')}}</a>
                         <a href="{{asset('storage/'.$homework->file_homework)}}" target="_blank" class="bg-red-600 text-white px-3 py-1 ml-2 rounded hover:bg-red-500 text-sm">{{__('messages.show')}}</a>
                         @if (now('africa/cairo')<=$homework->deadline)
-                            <form action="{{route('student.homeworkSolution.create',[$class,$subject])}}" method="GET">
-                                <button type="submit" value="{{$homework->id}}" name="upload_homework" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 text-sm">{{__('messages.upload')}}</button>
+                            <form action="{{route('student.homeworkSolution.create',[$class,$subject,$homework->id])}}" method="GET">
+                                <button type="submit" name="upload_homework" class="bg-green-600 text-white px-3 py-1 ml-2 rounded hover:bg-green-500 text-sm">{{__('messages.upload')}}</button>
                             </form>
                         @else
                             <form action="{{route('student.homeworkDetails.show',[$class,$subject,$homework->id])}}" method="GET">

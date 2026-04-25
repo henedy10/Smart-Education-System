@@ -21,11 +21,11 @@ class HomeworkService
         return $homeworks;
     }
 
-    public function storeSolution($request, $homeworkId)
+    public function storeSolution($request)
     {
         $student = Student::with('user')->firstWhere('user_id', $this->getUserId());
         $alreadyUploaded = SolutionStudentForHomework::where('student_id', $student->id)
-            ->where('homework_id', $homeworkId)
+            ->where('homework_id', $request->homeworkId)
             ->exists();
 
         if ($alreadyUploaded || is_null($alreadyUploaded)) {
@@ -36,7 +36,7 @@ class HomeworkService
         $solution = SolutionStudentForHomework::create([
             'homework_solution_file' => $filePath,
             'student_id' => $student->id,
-            'homework_id' => $homeworkId,
+            'homework_id' => $request->homeworkId,
         ]);
 
         return $solution;

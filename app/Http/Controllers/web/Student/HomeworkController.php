@@ -21,20 +21,18 @@ class HomeworkController extends Controller
         ));
     }
 
-    public function createSolution($class, $subject)
+    public function createSolution($class, $subject, $homeworkId)
     {
-        $homework_id = request()->upload_homework;
-
         return view('student.show_homework_uploading', compact(
-            'homework_id',
+            'homeworkId',
             'class',
             'subject',
         ));
     }
 
-    public function storeSolution(storeHomeworkSolutions $request, $homeworkId)
+    public function storeSolution(storeHomeworkSolutions $request)
     {
-        $saved = $this->homework->storeSolution($request, $homeworkId);
+        $saved = $this->homework->storeSolution($request);
         if ($saved) {
             return redirect()->back()->with(['success' => __('messages.success_store_homework_solution')]);
         }

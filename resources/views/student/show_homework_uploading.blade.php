@@ -23,7 +23,7 @@
                     @endif
 
 
-            <form action="{{route('student.homeworkSolution.store',[$class,$subject])}}" method="POST" enctype="multipart/form-data" class="space-y-5">
+            <form action="{{route('student.homeworkSolution.store',[$class,$subject,$homeworkId])}}" method="POST" enctype="multipart/form-data" class="space-y-5">
                 @csrf
 
                 <!-- ملف الواجب -->
@@ -40,7 +40,6 @@
                 <!-- زر الإرسال -->
                     <div class="text-center flex justify-between">
                         <button type="submit"
-                            value="{{$homework_id}}"
                             name="homework_id"
                             class="bg-green-600 text-white font-semibold px-6 py-2 rounded hover:bg-green-700 transition">
                                 {{__('messages.upload')}}

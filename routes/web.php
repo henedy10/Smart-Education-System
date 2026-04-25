@@ -53,7 +53,7 @@ Route::middleware([SetLocale::class])->group(function () {
             Route::controller(HomeworkController::class)->group(function () {
                 Route::prefix('/homeworks/{class}/{subject}')->group(function () {
                     Route::get('', 'index')->name('homework.show');
-                    Route::get('/solutions/create', 'createSolution')->name('homeworkSolution.create');
+                    Route::get('{homeworkId}/solutions/create', 'createSolution')->name('homeworkSolution.create');
                     Route::post('/{homeworkId}/solutions/store', 'storeSolution')->name('homeworkSolution.store');
                     Route::get('/{homeworkId}/grade', 'showGrade')->name('homeworkDetails.show');
                 });
@@ -106,7 +106,7 @@ Route::middleware([SetLocale::class])->group(function () {
                     Route::post('', 'storeQuiz')->name('quizzes.store');
                     Route::get('/create', 'createQuiz')->name('quizzes.create');
                     Route::get('', 'showQuiz')->name('quizzes.show');
-                    Route::get('/results/{quizId}','showResult')->name('quizResults.show');
+                    Route::get('/results/{quizId}', 'showResult')->name('quizResults.show');
                 });
             });
         });
