@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\web\Auth;
 
+use App\DTOs\Auth\ForgetPasswordDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ForgotPasswordRequest;
 use App\Mail\SendPasswordResetLinkMail;
@@ -14,13 +15,14 @@ class ForgotPasswordController extends Controller
     public function __invoke(ForgotPasswordRequest $request)
     {
         $token = Str::random(60);
+        $dto = ForgetPasswordDTO::fromRequest($request);
 
         DB::table('password_reset_tokens')->updateOrInsert(
-            ['email' => $request->email],
+            ['email' => $dto->email],
             ['token' => $token, 'created_at' => now()]
         );
 
-        Mail::to($request->email)->send(new SendPasswordResetLinkMail($token));
+        Mail::to($dto->email)->send(new SendPasswordResetLinkMail($token));
 
         return back()->with('success', 'We have sent you an email with the reset link');
 

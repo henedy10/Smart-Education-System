@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\web\Auth;
 
+use App\DTOs\Auth\ResetPasswordDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Models\User;
@@ -13,8 +14,9 @@ class ResetPasswordController extends Controller
 {
     public function __invoke(ResetPasswordRequest $request)
     {
+        $dto = ResetPasswordDTO::fromRequest($request);
         $result = DB::table('password_reset_tokens')
-            ->where('email', $request->email)
+            ->where('email', $dto->email)
             ->first();
 
         if (! $result) {
@@ -29,10 +31,10 @@ class ResetPasswordController extends Controller
         }
 
         DB::table('password_reset_tokens')
-            ->where('email', $request->email)
+            ->where('email', $dto->email)
             ->delete();
 
-        User::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
+        User::where('email', $dto->email)->update(['password' => Hash::make($dto->password)]);
 
         return redirect()->route('index')->with('success', 'Password reset successfully, you can login now');
     }
