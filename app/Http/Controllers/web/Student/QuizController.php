@@ -24,9 +24,6 @@ class QuizController extends Controller
     public function showQuizContent($class, $subject)
     {
         $quiz = $this->quiz->showContentQuiz($class, $subject);
-        if ($quiz->count() === 0) {
-            return redirect()->back()->withErrors(['quiz' => __('messages.no_quiz')]);
-        }
 
         return view('student.show_content_quiz', compact('quiz', 'class', 'subject'));
     }
@@ -42,6 +39,6 @@ class QuizController extends Controller
     {
         $results = $this->quiz->indexResult($class, $subject);
 
-        return view('student.show_quiz_results',compact('class','subject','results'));
+        return view('student.show_quiz_results', compact('class', 'subject', 'results'));
     }
 }
