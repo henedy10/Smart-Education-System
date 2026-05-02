@@ -106,4 +106,5 @@ return [
     'upload_homework_solution' => 'Upload Homework Solution',
     'update_student' => 'Edit Student',
     'update_teacher' => 'Edit Teacher',
+    'analysis' => 'Analysis Lesson by AI',
 ];

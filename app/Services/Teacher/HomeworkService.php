@@ -11,21 +11,21 @@ class HomeworkService
 {
     use UploadFile;
 
-    public function indexHomework($TeacherId)
+    public function indexHomework(string $TeacherId)
     {
         $homeworks = Homework::where('teacher_id', $TeacherId)->get();
 
         return $homeworks;
     }
 
-    public function indexSolution($homeworkId)
+    public function indexSolution(string $homeworkId)
     {
         $solutions = SolutionStudentForHomework::with('student')->where('homework_id', $homeworkId)->get();
 
         return $solutions;
     }
 
-    public function storeHomework($data, $TeacherId)
+    public function storeHomework(array $data, string $TeacherId)
     {
         $filePath = $this->uploadFile($data['title_homework'], $data['file_homework']);
         $homework = Homework::create([
@@ -40,7 +40,7 @@ class HomeworkService
         return $homework;
     }
 
-    public function storeHomeworkGrade($data, $StudentId)
+    public function storeHomeworkGrade(array $data, string $StudentId)
     {
         $Grade = HomeworkGrade::create([
             'student_id' => $StudentId,
@@ -56,7 +56,7 @@ class HomeworkService
         return $Grade;
     }
 
-    public function updateHomeworkGrade($data, $StudentId)
+    public function updateHomeworkGrade(array $data, string $StudentId)
     {
         $Grade = HomeworkGrade::where('student_id', $StudentId)
             ->where('homework_id', $data['homework_id'])

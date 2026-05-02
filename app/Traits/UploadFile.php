@@ -4,7 +4,7 @@ namespace App\Traits;
 
 trait UploadFile
 {
-    public function uploadFile($studentName, $file)
+    public function uploadFile(string $studentName, $file)
     {
         $fileName = $studentName.'.'.$file->getClientOriginalExtension();
         $filePath = $file->storeAs('solutions_homework', $fileName, 'public');

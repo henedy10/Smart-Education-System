@@ -12,7 +12,7 @@ class DashboardService
     public function index()
     {
         $dashboard = Teacher::with('user')->where('user_id', $this->getUserId())
-            ->withCount('lessons', 'homeworks', 'quizzes')
+            ->withCount(['lessons', 'homeworks', 'quizzes'])
             ->first();
 
         return $dashboard;

@@ -8,14 +8,13 @@ use App\Services\Teacher\LessonService;
 
 class LessonController extends Controller
 {
-    public function index($TeacherId, LessonService $lesson)
+    public function index(string $TeacherId, LessonService $lesson)
     {
         $lessons = $lesson->index($TeacherId);
-
         return view('teacher.show_lesson', compact('TeacherId', 'lessons'));
     }
 
-    public function store(storeLesson $request, $TeacherId, LessonService $lesson)
+    public function store(storeLesson $request, string $TeacherId, LessonService $lesson)
     {
         $lesson->store($request->validated(), $TeacherId);
 

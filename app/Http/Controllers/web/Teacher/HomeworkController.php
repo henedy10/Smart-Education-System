@@ -12,45 +12,45 @@ class HomeworkController extends Controller
 {
     public function __construct(protected HomeworkService $homework) {}
 
-    public function showAction($TeacherId)
+    public function showAction(string $TeacherId)
     {
         return view('teacher.choose_action_homework', compact('TeacherId'));
     }
 
-    public function indexHomework($TeacherId)
+    public function indexHomework(string $TeacherId)
     {
         $homeworks = $this->homework->indexHomework($TeacherId);
 
         return view('teacher.correcting_homework', compact('TeacherId', 'homeworks'));
     }
 
-    public function createHomework($TeacherId)
+    public function createHomework(string $TeacherId)
     {
         return view('teacher.create_homework', compact('TeacherId'));
     }
 
-    public function storeHomework(storeHomework $request, $TeacherId)
+    public function storeHomework(storeHomework $request, string $TeacherId)
     {
         $this->homework->storeHomework($request->validated(), $TeacherId);
 
         return redirect()->back()->with(['success' => __('messages.success_store_homework')]);
     }
 
-    public function indexSolution($TeacherId)
+    public function indexSolution(string $TeacherId)
     {
         $solutions = $this->homework->indexSolution(request()->homework_id);
 
         return view('teacher.show_solutions_homework', compact('TeacherId', 'solutions'));
     }
 
-    public function storeHomeworkGrades(storeHomeworkGrades $request, $StudentId)
+    public function storeHomeworkGrades(storeHomeworkGrades $request, string $StudentId)
     {
         $this->homework->storeHomeworkGrade($request->validated(), $StudentId);
 
         return redirect()->back()->with(['success' => __('messages.success_store_homework_grade')]);
     }
 
-    public function updateHomeworkGrade(updateHomeworkGrades $request, $StudentId)
+    public function updateHomeworkGrade(updateHomeworkGrades $request, string $StudentId)
     {
         $this->homework->updateHomeworkGrade($request->validated(), $StudentId);
 

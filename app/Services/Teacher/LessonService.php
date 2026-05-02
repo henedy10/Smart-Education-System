@@ -9,14 +9,14 @@ class LessonService
 {
     use UploadFile;
 
-    public function index($TeacherId)
+    public function index(string $TeacherId)
     {
         $lessons = Lesson::where('teacher_id', $TeacherId)->get();
 
         return $lessons;
     }
 
-    public function store($data, $TeacherId)
+    public function store(array $data, string $TeacherId)
     {
         $filePath = $this->uploadFile($data['title_lesson'], $data['file_lesson']);
         $lesson = Lesson::create([

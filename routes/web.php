@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'auth.login');
 /********************* Localization Route *******************/
 Route::get('/lang/{locale}', function (string $locale) {
-    if (! array_key_exists($locale, config('lang.supported'))) {
+    if (!array_key_exists($locale, config('lang.supported'))) {
         session(['locale' => config('lang.default')]);
     } else {
         session(['locale' => $locale]);
@@ -48,6 +48,7 @@ Route::middleware([SetLocale::class])->group(function () {
 
             Route::controller(LessonController::class)->group(function () {
                 Route::get('/lessons/{class}/{subject}', 'index')->name('lesson.show');
+                Route::post('/lessons', 'analysisByAI')->name('lesson.analysis');
             });
 
             Route::controller(HomeworkController::class)->group(function () {
